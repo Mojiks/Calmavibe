@@ -1,0 +1,8 @@
+{
+  "name": "CalmaVibe",
+  "description": "Una aplicación web diseñada para brindar apoyo, paz y acompañamiento a personas que atraviesan momentos de ansiedad o depresión, con herramientas de IA, música relajante y diario personal.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ]
+}
