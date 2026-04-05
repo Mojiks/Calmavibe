@@ -3,7 +3,6 @@ export enum AppView {
   WELCOME = 'welcome',
   AUTH = 'auth',
   DASHBOARD = 'dashboard',
-  CHAT = 'chat',
   PROFILE = 'profile',
   ZEN_SPACE = 'zen_space',
   BOOKS = 'books',

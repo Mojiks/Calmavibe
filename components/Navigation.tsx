@@ -11,7 +11,6 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ currentView, setView }) => {
   const navItems = [
     { id: AppView.DASHBOARD, label: 'Inicio', icon: <Home size={20} /> },
-    { id: AppView.CHAT, label: 'Chat', icon: <MessageCircle size={20} /> },
     { id: AppView.DIRECTORY, label: 'Ayuda', icon: <MapPin size={20} /> },
     { id: AppView.BOOKS, label: 'Libros', icon: <BookOpen size={20} /> },
     { id: AppView.ZEN_SPACE, label: 'Zen', icon: <Wind size={20} /> },
