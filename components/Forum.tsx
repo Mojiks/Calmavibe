@@ -1,154 +1,188 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ForumPost, ForumComment, UserProfile } from '../types';
-import { geminiService } from '../services/gemini';
+import React, { useState, useEffect } from "react";
 
-interface ForumProps {
+interface UserProfile {
+  fullName: string;
+  photoUrl: string;
+  mood: string;
+}
+
+interface Comment {
+  id: number;
+  text: string;
+  author: UserProfile;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  author: UserProfile;
+  comments: Comment[];
+}
+
+interface Props {
   userProfile: UserProfile;
 }
 
-const bannedWords = ["suicidio", "matar", "odio", "idiota", "estupido", "imbecil"];
+const Forum: React.FC<Props> = ({ userProfile }) => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-const containsBannedWords = (text: string) => {
-  return bannedWords.some(word => text.toLowerCase().includes(word));
-};
-
-const Forum: React.FC<ForumProps> = ({ userProfile }) => {
-  const [posts, setPosts] = useState<ForumPost[]>([]);
-  const [comments, setComments] = useState<ForumComment[]>([]);
-  const [newTitle, setNewTitle] = useState('');
-  const [newContent, setNewContent] = useState('');
-  const [newComment, setNewComment] = useState('');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isModerating, setIsModerating] = useState(false);
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
+  // cargar posts
   useEffect(() => {
-    const saved = localStorage.getItem('posts');
+    const saved = localStorage.getItem("forumPosts");
     if (saved) setPosts(JSON.parse(saved));
   }, []);
 
-  const savePosts = (data: ForumPost[]) => {
-    setPosts(data);
-    localStorage.setItem('posts', JSON.stringify(data));
-  };
+  // guardar posts
+  useEffect(() => {
+    localStorage.setItem("forumPosts", JSON.stringify(posts));
+  }, [posts]);
 
-  // ✅ POST
-  const handleAddPost = async () => {
-    if (!newTitle || !newContent) return;
+  const handlePost = () => {
+    if (!title.trim() || !content.trim()) return;
 
-    if (containsBannedWords(newTitle + " " + newContent)) {
-      alert("Contenido no permitido.");
-      return;
-    }
-
-    setIsModerating(true);
-
-    const moderation = await geminiService.moderateText(newTitle + " " + newContent);
-
-    if (!moderation.allowed) {
-      alert("Publicación bloqueada.");
-      setIsModerating(false);
-      return;
-    }
-
-    const post: ForumPost = {
-      id: Date.now().toString(),
-      author: userProfile.fullName,
-      authorPhoto: userProfile.photoUrl,
-      date: 'Ahora',
-      title: newTitle,
-      content: newContent,
-      likes: 0,
-      category: 'General'
+    const newPost: Post = {
+      id: Date.now(),
+      title,
+      content,
+      author: userProfile,
+      comments: []
     };
 
-    savePosts([post, ...posts]);
-
-    setNewTitle('');
-    setNewContent('');
-    setIsModerating(false);
+    setPosts([newPost, ...posts]);
+    setTitle("");
+    setContent("");
   };
 
-  // ✅ COMMENT
-  const handleAddComment = async (postId: string) => {
-    if (!newComment) return;
+  const handleComment = (postId: number, text: string) => {
+    if (!text.trim()) return;
 
-    if (containsBannedWords(newComment)) {
-      alert("Comentario no permitido.");
-      return;
-    }
-
-    const moderation = await geminiService.moderateText(newComment);
-
-    if (!moderation.allowed) {
-      alert("Comentario bloqueado.");
-      return;
-    }
-
-    const comment: ForumComment = {
-      id: Date.now().toString(),
-      postId,
-      author: userProfile.fullName,
-      date: 'Ahora',
-      content: newComment
-    };
-
-    setComments([...comments, comment]);
-    setNewComment('');
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        const newComment: Comment = {
+          id: Date.now(),
+          text,
+          author: userProfile
+        };
+        return {
+          ...post,
+          comments: [...post.comments, newComment]
+        };
+      }
+      return post;
+    }));
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto text-white space-y-6">
 
-      <h2 className="text-2xl font-bold mb-4">Foro</h2>
+      <h2 className="text-2xl font-bold">Comunidad</h2>
 
-      <input
-        value={newTitle}
-        onChange={e => setNewTitle(e.target.value)}
-        placeholder="Título"
-        className="w-full mb-2 p-2 rounded bg-black/20"
-      />
+      {/* CREAR POST */}
+      <div className="bg-white/10 p-4 rounded-xl space-y-3">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Título"
+          className="w-full p-2 rounded bg-black/20"
+        />
 
-      <textarea
-        value={newContent}
-        onChange={e => setNewContent(e.target.value)}
-        placeholder="Contenido"
-        className="w-full mb-2 p-2 rounded bg-black/20"
-      />
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Comparte tu experiencia..."
+          className="w-full p-2 rounded bg-black/20"
+        />
 
-      <button
-        onClick={handleAddPost}
-        className="bg-blue-500 px-4 py-2 rounded"
-      >
-        Publicar
-      </button>
-
-      <div className="mt-6 space-y-4">
-        {posts.map(post => (
-          <div key={post.id} className="bg-white/10 p-4 rounded">
-
-            <h3 className="font-bold">{post.title}</h3>
-            <p>{post.content}</p>
-
-            <input
-              value={newComment}
-              onChange={e => setNewComment(e.target.value)}
-              placeholder="Comentar..."
-              className="w-full mt-2 p-2 rounded bg-black/20"
-            />
-
-            <button
-              onClick={() => handleAddComment(post.id)}
-              className="mt-2 bg-green-500 px-3 py-1 rounded"
-            >
-              Comentar
-            </button>
-
-          </div>
-        ))}
+        <button
+          onClick={handlePost}
+          className="bg-blue-500 px-4 py-2 rounded-lg"
+        >
+          Publicar
+        </button>
       </div>
 
+      {/* POSTS */}
+      {posts.map(post => (
+        <div key={post.id} className="bg-white/10 p-4 rounded-xl space-y-4">
+
+          {/* AUTOR */}
+          <div className="flex items-center gap-3">
+            <img
+              src={post.author.photoUrl || "https://via.placeholder.com/40"}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div>
+              <p className="font-semibold">
+                {post.author.fullName || "Usuario"}
+              </p>
+              <p className="text-xs opacity-70">
+                {post.author.mood || "Sin estado"}
+              </p>
+            </div>
+          </div>
+
+          {/* CONTENIDO */}
+          <h3 className="text-lg font-bold">{post.title}</h3>
+          <p className="opacity-90">{post.content}</p>
+
+          {/* COMENTARIOS */}
+          <div className="space-y-3">
+            {post.comments.map(c => (
+              <div key={c.id} className="flex gap-3 items-start">
+
+                <img
+                  src={c.author.photoUrl || "https://via.placeholder.com/30"}
+                  className="w-8 h-8 rounded-full"
+                />
+
+                <div className="bg-black/30 p-2 rounded-lg w-full">
+                  <p className="text-sm font-semibold">
+                    {c.author.fullName || "Usuario"}
+                  </p>
+                  <p className="text-xs opacity-70 mb-1">
+                    {c.author.mood || "Sin estado"}
+                  </p>
+                  <p className="text-sm">{c.text}</p>
+                </div>
+
+              </div>
+            ))}
+          </div>
+
+          {/* INPUT COMENTARIO */}
+          <CommentBox onSend={(text) => handleComment(post.id, text)} />
+
+        </div>
+      ))}
+
+    </div>
+  );
+};
+
+// COMPONENTE COMENTARIO
+const CommentBox = ({ onSend }: { onSend: (text: string) => void }) => {
+  const [text, setText] = useState("");
+
+  return (
+    <div className="flex gap-2 mt-2">
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Escribe un comentario..."
+        className="flex-1 p-2 rounded bg-black/20"
+      />
+      <button
+        onClick={() => {
+          onSend(text);
+          setText("");
+        }}
+        className="bg-green-500 px-3 rounded"
+      >
+        Enviar
+      </button>
     </div>
   );
 };

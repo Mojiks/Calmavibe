@@ -21,24 +21,49 @@ type UserProfile = {
   mood: string;
 };
 
+// 🧠 FRASES (puedes agregar más aquí)
+const PHRASES = [
+  "La paz interior comienza en el momento en que decides no permitir que otra persona o situación controle tus emociones.",
+  "Respira profundo. Este momento también pasará.",
+  "No tienes que tener todo resuelto hoy. Solo sigue avanzando.",
+  "Sanar no es lineal, pero cada paso cuenta.",
+  "Eres más fuerte de lo que crees, incluso en tus días difíciles.",
+  "Permítete sentir, pero no rendirte.",
+  "Hoy es una nueva oportunidad para empezar de nuevo."
+];
+
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.WELCOME);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [accepted, setAccepted] = useState(false);
 
-  // ✅ Perfil limpio
   const [userProfile, setUserProfile] = useState<UserProfile>({
     fullName: "",
     photoUrl: "",
     mood: ""
   });
 
-  // 🔥 cargar perfil guardado
+  const [dailyPhrase, setDailyPhrase] = useState("");
+
+  // 🔥 Cargar perfil
   useEffect(() => {
     const saved = localStorage.getItem("userProfile");
     if (saved) {
       setUserProfile(JSON.parse(saved));
+    }
+  }, []);
+
+  // 🔥 FRASE POR SESIÓN (CLAVE)
+  useEffect(() => {
+    const savedPhrase = sessionStorage.getItem("dailyPhrase");
+
+    if (savedPhrase) {
+      setDailyPhrase(savedPhrase);
+    } else {
+      const random = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+      sessionStorage.setItem("dailyPhrase", random);
+      setDailyPhrase(random);
     }
   }, []);
 
@@ -67,36 +92,35 @@ const App: React.FC = () => {
         }} />;
 
       case AppView.DASHBOARD:
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 text-white">
+        return (
+          <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 text-white">
 
-      {/* FRASE */}
-      <p className="text-lg md:text-xl max-w-2xl leading-relaxed opacity-90 mb-8">
-        "La paz interior empieza en el momento en que decides no permitir que otra persona o evento controle tus emociones."
-      </p>
+            {/* FRASE DINÁMICA */}
+            <p className="text-lg md:text-xl max-w-2xl leading-relaxed opacity-90 mb-8">
+              "{dailyPhrase}"
+            </p>
 
-      {/* SALUDO */}
-      <h1 className="text-4xl md:text-5xl font-bold italic mb-4">
-        Hola, {userProfile.fullName || "Usuario"}
-      </h1>
+            {/* SALUDO */}
+            <h1 className="text-4xl md:text-5xl font-bold italic mb-4">
+              Hola, {userProfile.fullName || "Usuario"}
+            </h1>
 
-      <p className="opacity-80 mb-6">
-        Bienvenido a tu espacio de calma
-      </p>
+            <p className="opacity-80 mb-6">
+              Bienvenido a tu espacio de calma
+            </p>
 
-      {/* ICONO */}
-      <div className="w-16 h-16 flex items-center justify-center rounded-full border border-white/30 mb-4 text-2xl">
-        🧘‍♂️
-      </div>
+            {/* ICONO */}
+            <div className="w-16 h-16 flex items-center justify-center rounded-full border border-white/30 mb-4 text-2xl">
+              🧘
+            </div>
 
-      {/* TEXTO INFERIOR */}
-      <p className="text-sm opacity-70 tracking-wide">
-        EXPLORA USANDO LA BARRA INFERIOR
-      </p>
+            <p className="text-sm opacity-70 tracking-wide">
+              Explora usando la barra inferior
+            </p>
 
-    </div>
-  );
-  
+          </div>
+        );
+
       case AppView.CHAT:
         return <ChatAI />;
 
@@ -129,7 +153,6 @@ const App: React.FC = () => {
     }
   };
 
-  // 🔐 BLOQUE LEGAL
   if (!accepted) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center p-6 z-50">
@@ -163,7 +186,6 @@ const App: React.FC = () => {
       }}
     >
 
-      {/* HEADER */}
       <header className="p-4 flex justify-between items-center text-white">
 
         <button onClick={() => setCurrentView(AppView.DASHBOARD)} className="text-2xl font-bold italic">
@@ -189,7 +211,6 @@ const App: React.FC = () => {
 
       </header>
 
-      {/* CONTENIDO */}
       <main className="flex-1 px-4 py-8 max-w-6xl mx-auto w-full mb-24">
         {renderView()}
       </main>
