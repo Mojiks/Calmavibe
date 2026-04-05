@@ -67,17 +67,36 @@ const App: React.FC = () => {
         }} />;
 
       case AppView.DASHBOARD:
-        return (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 text-white">
-            <h1 className="text-5xl font-bold italic">
-              Hola, {userProfile.fullName || "Usuario"}
-            </h1>
-            <p className="mt-4 text-lg opacity-80">
-              Bienvenido a tu espacio de calma
-            </p>
-          </div>
-        );
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 text-white">
 
+      {/* FRASE */}
+      <p className="text-lg md:text-xl max-w-2xl leading-relaxed opacity-90 mb-8">
+        "La paz interior empieza en el momento en que decides no permitir que otra persona o evento controle tus emociones."
+      </p>
+
+      {/* SALUDO */}
+      <h1 className="text-4xl md:text-5xl font-bold italic mb-4">
+        Hola, {userProfile.fullName || "Usuario"}
+      </h1>
+
+      <p className="opacity-80 mb-6">
+        Bienvenido a tu espacio de calma
+      </p>
+
+      {/* ICONO */}
+      <div className="w-16 h-16 flex items-center justify-center rounded-full border border-white/30 mb-4 text-2xl">
+        🧘‍♂️
+      </div>
+
+      {/* TEXTO INFERIOR */}
+      <p className="text-sm opacity-70 tracking-wide">
+        EXPLORA USANDO LA BARRA INFERIOR
+      </p>
+
+    </div>
+  );
+  
       case AppView.CHAT:
         return <ChatAI />;
 
