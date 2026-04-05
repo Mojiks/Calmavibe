@@ -15,12 +15,11 @@ export enum AppView {
 export interface UserProfile {
   fullName: string;
   photoUrl: string;
-  age?: string;
-  city?: string;
-  bio?: string;
-  medicalInfo: string;
-  emergencyContact: string;
-  emergencyPhone: string;
+  mood: string;
+  instagram?: string;
+  medicalInfo?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
 }
 
 export interface Message {
