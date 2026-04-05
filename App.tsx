@@ -1,103 +1,224 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { AppView } from './types';
 
-type View =
-  | "inicio"
-  | "ayuda"
-  | "libros"
-  | "zen"
-  | "diario"
-  | "foro"
-  | "perfil";
+import Navigation from './components/Navigation';
+import Welcome from './components/Welcome';
+import Auth from './components/Auth';
+import ChatAI from './components/ChatAI';
+import Profile from './components/Profile';
+import ZenSpace from './components/ZenSpace';
+import Books from './components/Books';
+import Journal from './components/Journal';
+import Forum from './components/Forum';
+import Directory from './components/Directory';
+
+import { Moon, Sun } from 'lucide-react';
+
+// ✅ Tipo limpio
+type UserProfile = {
+  fullName: string;
+  photoUrl: string;
+  mood: string;
+};
+
+// 🧠 FRASES (puedes agregar más aquí)
+const PHRASES = [
+  "La paz interior comienza en el momento en que decides no permitir que otra persona o situación controle tus emociones.",
+  "Respira profundo. Este momento también pasará.",
+  "No tienes que tener todo resuelto hoy. Solo sigue avanzando.",
+  "Sanar no es lineal, pero cada paso cuenta.",
+  "Eres más fuerte de lo que crees, incluso en tus días difíciles.",
+  "Permítete sentir, pero no rendirte.",
+  "Hoy es una nueva oportunidad para empezar de nuevo."
+];
 
 const App: React.FC = () => {
-  const [view, setView] = useState<View>("inicio");
+  const [currentView, setCurrentView] = useState<AppView>(AppView.WELCOME);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [accepted, setAccepted] = useState(false);
+
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    fullName: "",
+    photoUrl: "",
+    mood: ""
+  });
+
+  const [dailyPhrase, setDailyPhrase] = useState("");
+
+  // 🔥 Cargar perfil
+  useEffect(() => {
+    const saved = localStorage.getItem("userProfile");
+    if (saved) {
+      setUserProfile(JSON.parse(saved));
+    }
+  }, []);
+
+  // 🔥 FRASE POR SESIÓN (CLAVE)
+  useEffect(() => {
+    const savedPhrase = sessionStorage.getItem("dailyPhrase");
+
+    if (savedPhrase) {
+      setDailyPhrase(savedPhrase);
+    } else {
+      const random = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+      sessionStorage.setItem("dailyPhrase", random);
+      setDailyPhrase(random);
+    }
+  }, []);
+
+  // 🔐 aviso legal
+  useEffect(() => {
+    const acceptedStatus = localStorage.getItem("legalAccepted");
+    if (acceptedStatus === "true") {
+      setAccepted(true);
+    }
+  }, []);
+
+  const backgroundUrl = isDarkMode 
+    ? "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
+    : "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=2000";
 
   const renderView = () => {
-    switch (view) {
-      case "inicio":
+    switch (currentView) {
+
+      case AppView.WELCOME:
+        return <Welcome onStart={() => setCurrentView(AppView.AUTH)} />;
+
+      case AppView.AUTH:
+        return <Auth onLogin={() => {
+          setIsAuthenticated(true);
+          setCurrentView(AppView.DASHBOARD);
+        }} />;
+
+      case AppView.DASHBOARD:
         return (
-          <div className="text-center text-white mt-20">
-            <h1 className="text-4xl font-bold italic">
-              Hola, Usuario
+          <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 text-white">
+
+            {/* FRASE DINÁMICA */}
+            <p className="text-lg md:text-xl max-w-2xl leading-relaxed opacity-90 mb-8">
+              "{dailyPhrase}"
+            </p>
+
+            {/* SALUDO */}
+            <h1 className="text-4xl md:text-5xl font-bold italic mb-4">
+              Hola, {userProfile.fullName || "Usuario"}
             </h1>
-            <p className="mt-2 opacity-80">
+
+            <p className="opacity-80 mb-6">
               Bienvenido a tu espacio de calma
             </p>
-          </div>
-        );
 
-      case "ayuda":
-        return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Ayuda</h2>
-            <p className="opacity-70 mt-2">
-              Encuentra apoyo cercano y recursos útiles.
+            {/* ICONO */}
+            <div className="w-16 h-16 flex items-center justify-center rounded-full border border-white/30 mb-4 text-2xl">
+              🧘
+            </div>
+
+            <p className="text-sm opacity-70 tracking-wide">
+              Explora usando la barra inferior
             </p>
+
           </div>
         );
 
-      case "libros":
+      case AppView.CHAT:
+        return <ChatAI />;
+
+      case AppView.PROFILE:
         return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Libros</h2>
-          </div>
+          <Profile
+            userProfile={userProfile}
+            setUserProfile={setUserProfile}
+            onBack={() => setCurrentView(AppView.DASHBOARD)}
+          />
         );
 
-      case "zen":
-        return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Zen</h2>
-          </div>
-        );
+      case AppView.ZEN_SPACE:
+        return <ZenSpace />;
 
-      case "diario":
-        return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Diario</h2>
-          </div>
-        );
+      case AppView.BOOKS:
+        return <Books />;
 
-      case "foro":
-        return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Foro</h2>
-          </div>
-        );
+      case AppView.JOURNAL:
+        return <Journal />;
 
-      case "perfil":
-        return (
-          <div className="text-white text-center mt-10">
-            <h2 className="text-2xl font-bold">Perfil</h2>
-          </div>
-        );
+      case AppView.FORUM:
+        return <Forum userProfile={userProfile} />;
+
+      case AppView.DIRECTORY:
+        return <Directory />;
 
       default:
-        return null;
+        return <Welcome onStart={() => setCurrentView(AppView.AUTH)} />;
     }
   };
 
+  if (!accepted) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center p-6 z-50">
+        <div className="bg-white text-black max-w-lg p-6 rounded-xl">
+          <h2 className="text-xl font-bold mb-4">Aviso Importante</h2>
+          <p className="text-sm mb-4">
+            Esta aplicación es de apoyo emocional y no sustituye ayuda profesional.
+          </p>
+          <button
+            onClick={() => {
+              localStorage.setItem("legalAccepted", "true");
+              setAccepted(true);
+            }}
+            className="w-full bg-black text-white py-2 rounded-lg"
+          >
+            Aceptar y continuar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="min-h-screen bg-cover bg-center"
+    <div 
+      className={`min-h-screen w-full relative flex flex-col ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}
       style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1506126613408-eca07ce68773')",
+        backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(0,0,0,0.6), rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85), rgba(255,255,255,0.95)'}), url(${backgroundUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
       }}
     >
-      {/* CONTENIDO */}
-      <div className="p-4">{renderView()}</div>
 
-      {/* MENÚ INFERIOR */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-6 py-3 rounded-full flex gap-6 text-white text-sm">
+      <header className="p-4 flex justify-between items-center text-white">
 
-        <button onClick={() => setView("inicio")}>INICIO</button>
-        <button onClick={() => setView("ayuda")}>AYUDA</button>
-        <button onClick={() => setView("libros")}>LIBROS</button>
-        <button onClick={() => setView("zen")}>ZEN</button>
-        <button onClick={() => setView("diario")}>DIARIO</button>
-        <button onClick={() => setView("foro")}>FORO</button>
+        <button onClick={() => setCurrentView(AppView.DASHBOARD)} className="text-2xl font-bold italic">
+          CalmaVibe
+        </button>
 
-      </div>
+        <div className="flex gap-3 items-center">
+
+          {isAuthenticated && (
+            <button
+              onClick={() => setCurrentView(AppView.PROFILE)}
+              className="bg-white/10 p-2 rounded-full"
+            >
+              👤
+            </button>
+          )}
+
+          <button onClick={() => setIsDarkMode(!isDarkMode)}>
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+        </div>
+
+      </header>
+
+      <main className="flex-1 px-4 py-8 max-w-6xl mx-auto w-full mb-24">
+        {renderView()}
+      </main>
+
+      {isAuthenticated && (
+        <Navigation currentView={currentView} setView={setCurrentView} />
+      )}
+
     </div>
   );
 };
