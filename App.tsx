@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppView, UserProfile } from './types';
 import Navigation from './components/Navigation';
 import Welcome from './components/Welcome';
@@ -16,7 +16,17 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.WELCOME);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  
+
+  // 🔐 NUEVO: control legal
+  const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => {
+    const acceptedStatus = localStorage.getItem("legalAccepted");
+    if (acceptedStatus === "true") {
+      setAccepted(true);
+    }
+  }, []);
+
   const zenImages = [
     'https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?auto=format&fit=crop&q=80&w=800',
     'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&q=80&w=800',
@@ -54,12 +64,6 @@ const App: React.FC = () => {
             <p className="text-xl md:text-2xl drop-shadow-md max-w-lg font-light leading-relaxed">
               "La paz interior empieza en el momento en que decides no permitir que otra persona o evento controle tus emociones."
             </p>
-            <div className="mt-12 flex flex-col items-center gap-4">
-              <div className={`w-16 h-16 rounded-full border-2 flex items-center justify-center ${isDarkMode ? 'border-white/30' : 'border-blue-900/30'}`}>
-                <span className="text-2xl">🧘</span>
-              </div>
-              <p className="text-sm opacity-60 tracking-widest uppercase">Explora usando la barra inferior</p>
-            </div>
           </div>
         );
       case AppView.CHAT: return <ChatAI />;
@@ -73,6 +77,45 @@ const App: React.FC = () => {
     }
   };
 
+  // 🔐 BLOQUEO LEGAL
+  if (!accepted) {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center p-6 z-50">
+        <div className="bg-white text-black max-w-lg p-6 rounded-xl shadow-xl">
+
+          <h2 className="text-xl font-bold mb-4">
+            Aviso Importante
+          </h2>
+
+          <p className="text-sm mb-4 leading-relaxed">
+            CalmaVibe es una plataforma de acompañamiento emocional y bienestar general.
+            <br /><br />
+            El contenido disponible en esta aplicación (música, textos, herramientas y conversaciones) tiene fines informativos y de apoyo personal únicamente.
+            <br /><br />
+            No sustituye atención médica, psicológica o psiquiátrica profesional.
+            <br /><br />
+            No realizamos diagnósticos, tratamientos ni recomendaciones médicas.
+            <br /><br />
+            Si estás atravesando una crisis emocional o cualquier situación de riesgo, busca ayuda profesional inmediata.
+            <br /><br />
+            Al utilizar esta aplicación, aceptas que el uso es bajo tu propia responsabilidad.
+          </p>
+
+          <button
+            onClick={() => {
+              localStorage.setItem("legalAccepted", "true");
+              setAccepted(true);
+            }}
+            className="w-full bg-black text-white py-2 rounded-lg"
+          >
+            Aceptar y continuar
+          </button>
+
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className={`min-h-screen w-full relative flex flex-col transition-colors duration-700 ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}
@@ -84,35 +127,21 @@ const App: React.FC = () => {
       }}
     >
       <header className="p-4 md:p-6 flex justify-between items-center text-white z-10">
-        <button onClick={() => setCurrentView(AppView.DASHBOARD)} className={`text-2xl font-bold tracking-tight italic ${!isDarkMode && 'text-blue-900'}`}>
+        <button onClick={() => setCurrentView(AppView.DASHBOARD)} className={`text-2xl font-bold italic ${!isDarkMode && 'text-blue-900'}`}>
           CalmaVibe
         </button>
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`p-2 rounded-full transition-all ${isDarkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-blue-900/10 hover:bg-blue-900/20 text-blue-900'}`}
-          >
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          {isAuthenticated && (
-            <button 
-              onClick={() => setCurrentView(AppView.PROFILE)} 
-              className={`w-10 h-10 rounded-full overflow-hidden border-2 transition-all hover:scale-110 ${isDarkMode ? 'border-white/50' : 'border-blue-900/50'}`}
-            >
-              <img src={userProfile.photoUrl} alt="Avatar" className="w-full h-full object-cover" />
-            </button>
-          )}
-        </div>
+
+        <button onClick={() => setIsDarkMode(!isDarkMode)}>
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
       </header>
 
-      <main className={`flex-1 overflow-y-auto px-4 py-8 max-w-6xl mx-auto w-full z-10 mb-24 ${isDarkMode ? 'text-white' : 'text-blue-950'}`}>
+      <main className={`flex-1 px-4 py-8 max-w-6xl mx-auto w-full z-10 mb-24`}>
         {renderView()}
       </main>
 
-      {isAuthenticated && currentView !== AppView.WELCOME && currentView !== AppView.AUTH && (
-        <>
-          <Navigation currentView={currentView} setView={setCurrentView} />
-        </>
+      {isAuthenticated && (
+        <Navigation currentView={currentView} setView={setCurrentView} />
       )}
     </div>
   );
