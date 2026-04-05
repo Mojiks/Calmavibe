@@ -4,7 +4,6 @@ import { AppView } from './types';
 import Navigation from './components/Navigation';
 import Welcome from './components/Welcome';
 import Auth from './components/Auth';
-import ChatAI from './components/ChatAI';
 import Profile from './components/Profile';
 import ZenSpace from './components/ZenSpace';
 import Books from './components/Books';
@@ -14,14 +13,12 @@ import Directory from './components/Directory';
 
 import { Moon, Sun } from 'lucide-react';
 
-// ✅ Tipo limpio
 type UserProfile = {
   fullName: string;
   photoUrl: string;
   mood: string;
 };
 
-// 🧠 FRASES (puedes agregar más aquí)
 const PHRASES = [
   "La paz interior comienza en el momento en que decides no permitir que otra persona o situación controle tus emociones.",
   "Respira profundo. Este momento también pasará.",
@@ -33,6 +30,7 @@ const PHRASES = [
 ];
 
 const App: React.FC = () => {
+
   const [currentView, setCurrentView] = useState<AppView>(AppView.WELCOME);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -46,7 +44,7 @@ const App: React.FC = () => {
 
   const [dailyPhrase, setDailyPhrase] = useState("");
 
-  // 🔥 Cargar perfil
+  // cargar perfil
   useEffect(() => {
     const saved = localStorage.getItem("userProfile");
     if (saved) {
@@ -54,7 +52,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // 🔥 FRASE POR SESIÓN (CLAVE)
+  // frase por sesión
   useEffect(() => {
     const savedPhrase = sessionStorage.getItem("dailyPhrase");
 
@@ -67,7 +65,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // 🔐 aviso legal
+  // aviso legal
   useEffect(() => {
     const acceptedStatus = localStorage.getItem("legalAccepted");
     if (acceptedStatus === "true") {
@@ -75,7 +73,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const backgroundUrl = isDarkMode 
+  const backgroundUrl = isDarkMode
     ? "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
     : "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=2000";
 
@@ -95,12 +93,10 @@ const App: React.FC = () => {
         return (
           <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6 text-white">
 
-            {/* FRASE DINÁMICA */}
             <p className="text-lg md:text-xl max-w-2xl leading-relaxed opacity-90 mb-8">
               "{dailyPhrase}"
             </p>
 
-            {/* SALUDO */}
             <h1 className="text-4xl md:text-5xl font-bold italic mb-4">
               Hola, {userProfile.fullName || "Usuario"}
             </h1>
@@ -109,7 +105,6 @@ const App: React.FC = () => {
               Bienvenido a tu espacio de calma
             </p>
 
-            {/* ICONO */}
             <div className="w-16 h-16 flex items-center justify-center rounded-full border border-white/30 mb-4 text-2xl">
               🧘
             </div>
@@ -120,9 +115,6 @@ const App: React.FC = () => {
 
           </div>
         );
-
-      case AppView.CHAT:
-        return <ChatAI />;
 
       case AppView.PROFILE:
         return (
@@ -176,7 +168,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div 
+    <div
       className={`min-h-screen w-full relative flex flex-col ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}
       style={{
         backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(0,0,0,0.6), rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85), rgba(255,255,255,0.95)'}), url(${backgroundUrl})`,
