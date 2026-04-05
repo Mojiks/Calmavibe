@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AppView, UserProfile } from './types';
+import { AppView } from './types';
+
 import Navigation from './components/Navigation';
 import Welcome from './components/Welcome';
 import Auth from './components/Auth';
@@ -10,7 +11,15 @@ import Books from './components/Books';
 import Journal from './components/Journal';
 import Forum from './components/Forum';
 import Directory from './components/Directory';
+
 import { Moon, Sun } from 'lucide-react';
+
+// ✅ Tipo limpio
+type UserProfile = {
+  fullName: string;
+  photoUrl: string;
+  mood: string;
+};
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.WELCOME);
@@ -18,20 +27,14 @@ const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [accepted, setAccepted] = useState(false);
 
-  const zenImages = [
-    'https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83',
-    'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d',
-    'https://images.unsplash.com/photo-1470770841072-f978cf4d019e',
-    'https://images.unsplash.com/photo-1501854140801-50d01698950b'
-  ];
-
+  // ✅ Perfil limpio
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    fullName: 'Usuario',
-    photoUrl: zenImages[Math.floor(Math.random() * zenImages.length)],
-    mood: 'Neutral'
+    fullName: "",
+    photoUrl: "",
+    mood: ""
   });
 
-  // 🔥 Cargar perfil guardado
+  // 🔥 cargar perfil guardado
   useEffect(() => {
     const saved = localStorage.getItem("userProfile");
     if (saved) {
@@ -39,6 +42,7 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // 🔐 aviso legal
   useEffect(() => {
     const acceptedStatus = localStorage.getItem("legalAccepted");
     if (acceptedStatus === "true") {
@@ -46,8 +50,13 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const backgroundUrl = isDarkMode 
+    ? "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=2000"
+    : "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=2000";
+
   const renderView = () => {
     switch (currentView) {
+
       case AppView.WELCOME:
         return <Welcome onStart={() => setCurrentView(AppView.AUTH)} />;
 
@@ -59,9 +68,9 @@ const App: React.FC = () => {
 
       case AppView.DASHBOARD:
         return (
-          <div className="text-center">
+          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 text-white">
             <h1 className="text-5xl font-bold italic">
-              Paz, {userProfile.fullName}
+              Hola, {userProfile.fullName || "Usuario"}
             </h1>
             <p className="mt-4 text-lg opacity-80">
               Bienvenido a tu espacio de calma
@@ -73,7 +82,13 @@ const App: React.FC = () => {
         return <ChatAI />;
 
       case AppView.PROFILE:
-        return <Profile profile={userProfile} onUpdate={setUserProfile} />;
+        return (
+          <Profile
+            userProfile={userProfile}
+            setUserProfile={setUserProfile}
+            onBack={() => setCurrentView(AppView.DASHBOARD)}
+          />
+        );
 
       case AppView.ZEN_SPACE:
         return <ZenSpace />;
@@ -95,6 +110,7 @@ const App: React.FC = () => {
     }
   };
 
+  // 🔐 BLOQUE LEGAL
   if (!accepted) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center p-6 z-50">
@@ -110,7 +126,7 @@ const App: React.FC = () => {
             }}
             className="w-full bg-black text-white py-2 rounded-lg"
           >
-            Aceptar
+            Aceptar y continuar
           </button>
         </div>
       </div>
@@ -118,19 +134,44 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div 
+      className={`min-h-screen w-full relative flex flex-col ${isDarkMode ? 'bg-slate-950' : 'bg-white'}`}
+      style={{
+        backgroundImage: `linear-gradient(${isDarkMode ? 'rgba(0,0,0,0.6), rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.85), rgba(255,255,255,0.95)'}), url(${backgroundUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
 
-      {/* BOTÓN PERFIL */}
-      {isAuthenticated && (
-        <button
-          onClick={() => setCurrentView(AppView.PROFILE)}
-          className="fixed top-4 right-4 bg-white/10 p-3 rounded-full z-50"
-        >
-          👤
+      {/* HEADER */}
+      <header className="p-4 flex justify-between items-center text-white">
+
+        <button onClick={() => setCurrentView(AppView.DASHBOARD)} className="text-2xl font-bold italic">
+          CalmaVibe
         </button>
-      )}
 
-      <main className="p-6">
+        <div className="flex gap-3 items-center">
+
+          {isAuthenticated && (
+            <button
+              onClick={() => setCurrentView(AppView.PROFILE)}
+              className="bg-white/10 p-2 rounded-full"
+            >
+              👤
+            </button>
+          )}
+
+          <button onClick={() => setIsDarkMode(!isDarkMode)}>
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+        </div>
+
+      </header>
+
+      {/* CONTENIDO */}
+      <main className="flex-1 px-4 py-8 max-w-6xl mx-auto w-full mb-24">
         {renderView()}
       </main>
 
