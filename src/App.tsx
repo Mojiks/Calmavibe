@@ -9,8 +9,8 @@ function App() {
   const [page, setPage] = useState<Page>("inicio");
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden">
-      <Logo />
+<div className="bg-main w-full h-screen">
+          <Logo />
       <Navigation page={page} />
       <NavBar page={page} setPage={setPage} />
     </div>
