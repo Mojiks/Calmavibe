@@ -23,18 +23,7 @@ export default function NavBar({
 
   return (
     <>
-      {/* 🔥 HEADER SUPERIOR (LOGO IZQUIERDA) */}
-      <div className="fixed top-0 left-0 w-full z-50 flex items-center px-6 py-4">
-
-        <img
-          src="/logo.png"
-          alt="CalmaVibe"
-          className="h-8 object-contain"
-        />
-
-      </div>
-
-      {/* 🔥 NAVBAR INFERIOR (TU MENÚ ORIGINAL) */}
+      {/* 🔥 NAVBAR INFERIOR (SIN LOGO, SIN TEXTO, SIN DONACIÓN) */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/60 backdrop-blur-md px-6 py-2 rounded-xl flex gap-4 text-sm">
 
         {btn("inicio", "Inicio")}
@@ -44,15 +33,6 @@ export default function NavBar({
         {btn("diario", "Diario")}
         {btn("videos", "Videos")}
         {btn("reflexiones", "Reflexiones")}
-
-        {/* 💰 APOYO */}
-        <a
-          href="https://www.paypal.com/donate"
-          target="_blank"
-          className="px-3 py-1 text-green-400 hover:text-green-300"
-        >
-          Apoya 💚
-        </a>
 
       </div>
     </>
