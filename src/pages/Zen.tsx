@@ -1,97 +1,138 @@
 import { useEffect, useRef, useState } from "react";
 
+const sounds = [
+  { name: "16hz Beta", file: "/sounds/16hzbetabinaural.mp3" },
+  { name: "Cuencos Tibetanos", file: "/sounds/cuencostibetanos.mp3" },
+  { name: "528Hz", file: "/sounds/frecuenciaambiente528hz.mp3" },
+  { name: "Aliento de Buda", file: "/sounds/alientodebuda.mp3" },
+  { name: "Sueño Profundo", file: "/sounds/frecuenciasuenoprofundo.mp3" },
+  { name: "Meditación", file: "/sounds/meditacion.mp3" },
+  { name: "Cascada", file: "/sounds/meditacionconcascada.mp3" },
+  { name: "Naturaleza Tibetana", file: "/sounds/naturalezatibetana.mp3" },
+  { name: "Océano Cósmico", file: "/sounds/oceanocosmico.mp3" },
+  { name: "Sueño Relajante", file: "/sounds/suenorelajante.mp3" },
+  { name: "Lluvia", file: "/sounds/susurrodelluvia.mp3" },
+  { name: "Tormenta", file: "/sounds/tormentaenigmatica.mp3" },
+];
+
 export default function Zen() {
+
+  // 🔵 RESPIRACIÓN
   const [phase, setPhase] = useState<"inhale" | "hold" | "exhale" | "idle">("idle");
   const [count, setCount] = useState(0);
   const [cycles, setCycles] = useState(0);
   const [running, setRunning] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const intervalRef = useRef<number | null>(null);
+  // 🎧 AUDIO
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
+  const [trackIndex, setTrackIndex] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+
+  // ⏱ TIMER
+  const [timer, setTimer] = useState<number | null>(null);
+
+  // ================= AUDIO =================
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (trackIndex !== null) {
+      audio.src = sounds[trackIndex].file;
+      audio.currentTime = 0;
+      audio.volume = volume;
+
+      if (isPlaying) audio.play();
+    }
+  }, [trackIndex]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.volume = volume;
+
+    if (isPlaying) audio.play();
+    else audio.pause();
+  }, [isPlaying, volume]);
+
+  const playTrack = (i: number) => {
+    setTrackIndex(i);
+    setIsPlaying(true);
+  };
+
+  const stopTrack = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    setIsPlaying(false);
+  };
+
+  const nextTrack = () => {
+    if (trackIndex === null) return;
+    setTrackIndex((trackIndex + 1) % sounds.length);
+  };
+
+  const prevTrack = () => {
+    if (trackIndex === null) return;
+    setTrackIndex((trackIndex - 1 + sounds.length) % sounds.length);
+  };
+
+  // ================= TIMER =================
+  useEffect(() => {
+    if (!timer) return;
+
+    const t = setTimeout(() => {
+      stopTrack();
+      setTimer(null);
+    }, timer);
+
+    return () => clearTimeout(t);
+  }, [timer]);
+
+  // ================= RESPIRACIÓN =================
+  useEffect(() => {
+    if (!running) return;
+
+    let duration = phase === "inhale" ? 4 : phase === "hold" ? 7 : 8;
+
+    setCount(duration);
+
+    intervalRef.current = setInterval(() => {
+      setCount((c) => c - 1);
+    }, 1000);
+
+    const timeout = setTimeout(() => {
+      clearInterval(intervalRef.current!);
+
+      if (phase === "inhale") setPhase("hold");
+      else if (phase === "hold") setPhase("exhale");
+      else {
+        setPhase("inhale");
+        setCycles((prev) => {
+          if (prev + 1 >= 2) {
+            setRunning(false);
+            return 0;
+          }
+          return prev + 1;
+        });
+      }
+    }, duration * 1000);
+
+    return () => {
+      clearInterval(intervalRef.current!);
+      clearTimeout(timeout);
+    };
+  }, [phase, running]);
 
   const startBreathing = () => {
-    if (running) return;
-
-    setRunning(true);
     setCycles(0);
-    runCycle();
+    setPhase("inhale");
+    setRunning(true);
   };
 
   const stopBreathing = () => {
     setRunning(false);
     setPhase("idle");
     setCount(0);
-    setCycles(0);
-
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
   };
-
-  const runCycle = () => {
-    let localCycle = 0;
-
-    const nextCycle = () => {
-      if (localCycle >= 2) {
-        stopBreathing();
-        return;
-      }
-
-      localCycle++;
-      setCycles(localCycle);
-
-      // INHALE
-      setPhase("inhale");
-      setCount(4);
-
-      let c = 4;
-
-      intervalRef.current = window.setInterval(() => {
-        c--;
-        setCount(c);
-
-        if (c === 0) {
-          clearInterval(intervalRef.current!);
-
-          // HOLD
-          setPhase("hold");
-          let hold = 7;
-          setCount(hold);
-
-          intervalRef.current = window.setInterval(() => {
-            hold--;
-            setCount(hold);
-
-            if (hold === 0) {
-              clearInterval(intervalRef.current!);
-
-              // EXHALE
-              setPhase("exhale");
-              let exhale = 8;
-              setCount(exhale);
-
-              intervalRef.current = window.setInterval(() => {
-                exhale--;
-                setCount(exhale);
-
-                if (exhale === 0) {
-                  clearInterval(intervalRef.current!);
-                  nextCycle();
-                }
-              }, 1000);
-            }
-          }, 1000);
-        }
-      }, 1000);
-    };
-
-    nextCycle();
-  };
-
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
 
   const getText = () => {
     if (phase === "inhale") return "Inhala";
@@ -100,52 +141,84 @@ export default function Zen() {
     return "Respira";
   };
 
+  // ================= UI =================
   return (
-    <div className="bg-main min-h-screen flex flex-col items-center justify-center text-white px-4">
+    <div className="bg-main h-screen w-full text-white flex items-center justify-center px-6">
 
-      {/* TITULO */}
-      <h1 className="text-2xl font-semibold mb-2">Respiración 4-7-8</h1>
+      <div className="w-full max-w-6xl flex gap-10">
 
-      {/* DESCRIPCIÓN */}
-      <p className="text-sm text-white/70 text-center max-w-md mb-6">
-        Inhala 4 segundos, mantén 7, exhala 8. Este ejercicio reduce ansiedad,
-        calma el sistema nervioso y mejora el sueño.
-      </p>
+        {/* RESPIRACIÓN */}
+        <div className="flex-1 flex flex-col items-center justify-center">
 
-      {/* CÍRCULO */}
-      <div className="flex flex-col items-center justify-center mb-6">
-        <div
-          className={`w-40 h-40 rounded-full backdrop-blur-md border border-white/10 flex items-center justify-center 
-          ${running ? "animate-breathe" : ""}`}
-        >
-          <div className="text-center">
-            <p className="text-lg">{getText()}</p>
-            <p className="text-3xl font-bold">{count}</p>
+          <div className={`w-48 h-48 rounded-full border border-white/10 flex items-center justify-center backdrop-blur-md ${running ? "animate-breathe" : ""}`}>
+            <div className="text-center">
+              <p className="text-lg">{getText()}</p>
+              <p className="text-4xl">{count}</p>
+            </div>
+          </div>
+
+          <p className="text-xs mt-4">Ciclos: {cycles}/2</p>
+
+          <div className="flex gap-4 mt-6">
+            <button onClick={startBreathing} className="bg-white text-black px-4 py-2 rounded-lg">Iniciar</button>
+            <button onClick={stopBreathing} className="bg-white/20 px-4 py-2 rounded-lg">Detener</button>
+          </div>
+
+        </div>
+
+        {/* AUDIOS */}
+        <div className="flex-1">
+          <div className="bg-black/40 backdrop-blur-xl p-4 rounded-xl h-[420px] overflow-y-auto">
+
+            {sounds.map((s, i) => (
+              <div
+                key={i}
+                onClick={() => playTrack(i)}
+                className="p-3 border-b border-white/10 hover:bg-white/10 cursor-pointer rounded-lg"
+              >
+                {s.name}
+              </div>
+            ))}
+
           </div>
         </div>
 
-        {/* CICLOS (USA cycles → elimina warning) */}
-        <p className="text-xs text-white/60 mt-3">
-          Ciclos: {cycles}/2
-        </p>
       </div>
 
-      {/* BOTONES */}
-      <div className="flex gap-4">
-        <button
-          onClick={startBreathing}
-          className="bg-white text-black px-5 py-2 rounded-lg font-medium hover:scale-105 transition"
-        >
-          Iniciar
-        </button>
+      {/* PLAYER PRO */}
+      {trackIndex !== null && (
+        <div className="fixed bottom-6 right-6 bg-black/70 backdrop-blur-xl p-4 rounded-2xl w-72">
 
-        <button
-          onClick={stopBreathing}
-          className="bg-white/20 px-5 py-2 rounded-lg hover:bg-white/30 transition"
-        >
-          Detener
-        </button>
-      </div>
+          <p className="text-center text-sm mb-2">{sounds[trackIndex].name}</p>
+
+          <div className="flex justify-center gap-4 mb-3 text-lg">
+            <button onClick={prevTrack}>⏮</button>
+            <button onClick={() => setIsPlaying(!isPlaying)}>
+              {isPlaying ? "⏸" : "▶"}
+            </button>
+            <button onClick={nextTrack}>⏭</button>
+            <button onClick={stopTrack}>⏹</button>
+          </div>
+
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="w-full mb-3"
+          />
+
+          {/* TIMER */}
+          <div className="flex justify-between text-xs">
+            <button onClick={() => setTimer(15 * 60000)}>15m</button>
+            <button onClick={() => setTimer(30 * 60000)}>30m</button>
+            <button onClick={() => setTimer(60 * 60000)}>60m</button>
+          </div>
+
+        </div>
+      )}
 
     </div>
   );
