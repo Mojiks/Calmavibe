@@ -20,7 +20,7 @@ html, body, #root {
 .bg-main {
   background-image: url('/bg2.jpg');
   background-size: cover;              /* 🔥 pantalla completa */
-  background-position: center 65%;     /* 🔥 BAJA la imagen */
+  background-position: center 80%;     /* 🔥 BAJA la imagen */
   background-repeat: no-repeat;
 }
 /* =========================
