@@ -3,14 +3,12 @@ import type { Page } from "./types/navigation";
 
 import Navigation from "./components/Navigation";
 import NavBar from "./components/NavBar";
-import Logo from "./components/Logo";
 
 function App() {
   const [page, setPage] = useState<Page>("inicio");
 
   return (
-<div className="bg-main w-full h-screen">
-          <Logo />
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navigation page={page} />
       <NavBar page={page} setPage={setPage} />
     </div>
