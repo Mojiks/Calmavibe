@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   RESET BASE
+========================= */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: black;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* =========================
+   FONDO GLOBAL
+========================= */
+.bg-main {
+  background-image: url('/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* =========================
+   EFECTO GLASS (PRO)
+========================= */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   NUBE RESPIRACIÓN (CINEMÁTICA)
+========================= */
+
+/* núcleo */
+.breathe-core {
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.1) 40%,
+    transparent 70%
+  );
+  box-shadow:
+    0 0 40px rgba(255,255,255,0.2),
+    0 0 80px rgba(255,255,255,0.1);
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* capa externa */
+.breathe-outer {
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.1),
+    transparent 80%
+  );
+  animation: breatheSlow 8s ease-in-out infinite;
+}
+
+/* animación principal */
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+/* animación secundaria */
+@keyframes breatheSlow {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =========================
+   BOTONES PRO
+========================= */
+.btn-zen {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-zen:hover {
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+  transform: scale(1.05);
+}
+
+/* =========================
+   SCROLL ELEGANTE
+========================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+/* =========================
+   PLAYER PRO (FIJO)
+========================= */
+.player {
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 25px rgba(0,0,0,0.8);
+}
+
+/* =========================
+   TEXTO SUAVE
+========================= */
+.text-soft {
+  color: rgba(255,255,255,0.8);
+}
+
+/* =========================
+   TRANSICIONES SUAVES
+========================= */
+.smooth {
+  transition: all 0.3s ease;
+}
