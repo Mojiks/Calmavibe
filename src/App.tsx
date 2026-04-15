@@ -3,7 +3,7 @@ import type { Page } from "./types/navigation";
 
 import Navigation from "./components/Navigation";
 import NavBar from "./components/NavBar";
-import  Logo from "./components/Logo"
+import  Logo from "./components/Logo";
 function App() {
   const [page, setPage] = useState<Page>("inicio");
 
