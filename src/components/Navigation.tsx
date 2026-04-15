@@ -5,14 +5,11 @@ import Ayuda from "../pages/Ayuda";
 import Books from "../pages/Books";
 import Zen from "../pages/Zen";
 import Diario from "../pages/Diario";
-import Reflexiones from "../pages/Reflexiones";
 import Videos from "../pages/Videos";
+import Reflexiones from "../pages/Reflexiones";
 
-type Props = {
-  page: Page;
-};
+export default function Navigation({ page }: { page: Page }) {
 
-export default function Navigation({ page }: Props) {
   switch (page) {
     case "inicio":
       return <Inicio />;

@@ -5,4 +5,4 @@ export type Page =
   | "zen"
   | "diario"
   | "videos"
-  | "reflex";
+  | "reflexiones";

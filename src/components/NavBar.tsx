@@ -1,18 +1,9 @@
 import type { Page } from "../types/navigation";
 
-type Props = {
-  page: Page;
-  setPage: (p: Page) => void;
-};
+export default function NavBar({ setPage }: { setPage: (p: Page) => void }) {
 
-export default function NavBar({ page, setPage }: Props) {
   const btn = (id: Page, label: string) => (
-    <button
-      onClick={() => setPage(id)}
-      className={`px-3 py-1 rounded-lg ${
-        page === id ? "text-green-400" : "text-white/70"
-      }`}
-    >
+    <button onClick={() => setPage(id)}>
       {label}
     </button>
   );
@@ -25,7 +16,7 @@ export default function NavBar({ page, setPage }: Props) {
       {btn("books", "Libros")}
       {btn("zen", "Zen")}
       {btn("diario", "Diario")}
-      {btn("videos", "Videos")} {/* ✅ CORRECTO */}
+      {btn("videos", "Videos")}
       {btn("reflexiones", "Reflexiones")}
 
     </div>
