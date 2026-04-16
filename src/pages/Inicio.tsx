@@ -19,7 +19,6 @@ export default function Inicio() {
   const getRandomFrase = () => {
     let nueva = frases[Math.floor(Math.random() * frases.length)];
 
-    // evitar repetir la misma
     while (nueva === frase) {
       nueva = frases[Math.floor(Math.random() * frases.length)];
     }
@@ -32,30 +31,23 @@ export default function Inicio() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center text-white text-center px-6"
-      style={{
-        backgroundImage: "url('/bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* LOGO BUDA */}
-      <img
-        src="/buda.png"
-        alt="buda"
-        className="w-10 mb-6 opacity-90"
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center text-white text-center px-6 relative">
 
-      {/* FRASE */}
-      <h1 className="text-3xl md:text-4xl max-w-xl leading-relaxed">
-        "{frase}"
-      </h1>
+      {/* 🔥 OVERLAY PRO */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
 
-      {/* SUBTEXTO */}
-      <p className="mt-4 opacity-80 text-sm">
-        Bienvenido a tu refugio digital de paz
-      </p>
+      {/* CONTENIDO */}
+      <div className="relative z-10">
+
+        <h1 className="text-3xl md:text-4xl max-w-xl leading-relaxed">
+          "{frase}"
+        </h1>
+
+        <p className="mt-4 opacity-80 text-sm">
+          Bienvenido a tu refugio digital de paz
+        </p>
+
+      </div>
     </div>
   );
 }
