@@ -18,9 +18,9 @@ html, body, #root {
    FONDO GLOBAL
 ========================= */
 .bg-main {
-  background-image: url('/bg2.jpg');
-  background-size: cover;              /* 🔥 pantalla completa */
-  background-position: center 65%;     /* 🔥 BAJA la imagen */
+  background-image: url('/bg3.jpg');
+  background-size: cover;
+  background-position: center 75%;
   background-repeat: no-repeat;
 }
 /* =========================

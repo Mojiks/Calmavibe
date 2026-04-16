@@ -8,7 +8,7 @@ function App() {
   const [page, setPage] = useState<Page>("inicio");
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-main">
+    <div className="min-h-screen w-full bg-main">
       <Navigation page={page} />
       <NavBar page={page} setPage={setPage} />
     </div>
