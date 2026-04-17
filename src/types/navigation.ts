@@ -6,3 +6,4 @@ export type Page =
   | "diario"
   | "videos"
   | "reflexiones";
+  | "sugerencias"

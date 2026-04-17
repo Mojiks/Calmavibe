@@ -7,6 +7,8 @@ import Zen from "../pages/Zen";
 import Diario from "../pages/Diario";
 import Videos from "../pages/Videos";
 import Reflexiones from "../pages/Reflexiones";
+import Sugerencias from "../pages/Sugerencias";
+
 
 export default function Navigation({ page }: { page: Page }) {
   switch (page) {
@@ -24,6 +26,8 @@ export default function Navigation({ page }: { page: Page }) {
       return <Videos />;
     case "reflexiones":
       return <Reflexiones />;
+      case "sugerencias":
+  return <Sugerencias />;
     default:
       return <Inicio />;
   }

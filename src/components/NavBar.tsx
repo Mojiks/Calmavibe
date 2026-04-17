@@ -31,6 +31,7 @@ export default function NavBar({
       {btn("diario", "Diario")}
       {btn("videos", "Videos")}
       {btn("reflexiones", "Reflexiones")}
+      {btn("sugerencias", "Sugerencias")}
 
     </div>
   );
