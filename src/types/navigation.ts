@@ -5,5 +5,5 @@ export type Page =
   | "zen"
   | "diario"
   | "videos"
-  | "reflexiones";
-  | "sugerencias"
+  | "reflexiones"
+  | "sugerencias";

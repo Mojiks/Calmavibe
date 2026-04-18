@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Método no permitido" });
   }
 
   const { tipo, asunto, mensaje } = req.body;
@@ -16,13 +16,12 @@ export default async function handler(req: any, res: any) {
   try {
     await resend.emails.send({
       from: "CalmaVibe <onboarding@resend.dev>",
-      to: ["AQUI_TU_CORREO@gmail.com"],
+      to: ["TU_CORREO@gmail.com"],
       subject: `[${tipo}] ${asunto}`,
       html: `
-        <h2>Nuevo mensaje de CalmaVibe</h2>
-        <p><strong>Tipo:</strong> ${tipo}</p>
-        <p><strong>Asunto:</strong> ${asunto}</p>
-        <p><strong>Mensaje:</strong></p>
+        <h2>Nuevo mensaje</h2>
+        <p><b>Tipo:</b> ${tipo}</p>
+        <p><b>Asunto:</b> ${asunto}</p>
         <p>${mensaje}</p>
       `,
     });

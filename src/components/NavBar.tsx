@@ -22,7 +22,7 @@ export default function NavBar({
   );
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/60 backdrop-blur-md px-6 py-2 rounded-xl flex gap-4 text-sm">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl flex gap-3 text-xs sm:text-sm flex-wrap justify-center">
 
       {btn("inicio", "Inicio")}
       {btn("ayuda", "Ayuda")}
