@@ -15,7 +15,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     await resend.emails.send({
-from: "CalmaVibe <onboarding@resend.dev>",
+from: "CalmaVibe <noreply@calmavibe.com>",
       to: ["calmavibe.app@gmail.com"],
       subject: `[${tipo}] ${asunto}`,
       html: `
