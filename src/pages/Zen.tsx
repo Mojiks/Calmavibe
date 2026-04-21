@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Layout from "../components/Layout";
 
 const sounds = [
   { name: "16hz Beta", file: "/sounds/16hzbetabinaural.mp3" },
@@ -143,6 +144,7 @@ export default function Zen() {
 
   // ================= UI =================
   return (
+      <Layout>
 <div className="bg-main h-screen w-full text-white flex items-center justify-center px-6 pb-20">
       <div className="w-full max-w-6xl flex gap-10">
 
@@ -220,5 +222,6 @@ export default function Zen() {
       )}
 
     </div>
+      </Layout>
   );
 }

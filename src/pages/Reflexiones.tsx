@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Layout from "../components/Layout";
 
 const imagenes = [
   "cuandonoquedanmasestrellasquecontar.png",
@@ -13,6 +14,7 @@ export default function Reflexiones() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
+      <Layout>
     <div
       className="min-h-screen text-white px-6 py-16 relative pb-20"
       style={{
@@ -104,5 +106,6 @@ export default function Reflexiones() {
         </div>
       )}
     </div>
+      </Layout>
   );
 }

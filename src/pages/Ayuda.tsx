@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Layout from "../components/Layout";
 
 type HelpLine = {
   label: string;
@@ -54,8 +55,9 @@ export default function Ayuda() {
   };
 
   return (
+      <Layout>
     <div
-      className="min-h-screen text-white px-4 py-10 flex flex-col items-center"
+      className="min-h-screen text-white px-4 py-10 flex flex-col items-center pb20"
       style={{
         backgroundImage: "url('/bg.jpg')",
         backgroundSize: "cover",
@@ -100,5 +102,6 @@ export default function Ayuda() {
         ></iframe>
       </div>
     </div>
+      </Layout>
   );
 }

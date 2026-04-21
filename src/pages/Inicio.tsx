@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Layout from "../components/Layout";
 
 const frases = [
   "Nada es permanente, todo fluye.",
@@ -27,29 +28,13 @@ export default function Inicio() {
 
   useEffect(() => {
     setFrase(getRandomFrase());
-
-    // activa animación al cargar
-    setTimeout(() => {
-      setVisible(true);
-    }, 300);
+    setTimeout(() => setVisible(true), 300);
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <Layout>
 
-      {/* 🔥 FONDO */}
-      <div
-        className="absolute inset-0 bg-cover bg-center md:bg-center lg:bg-right scale-105 animate-[slowZoom_20s_ease-in-out_infinite]"
-        style={{
-          backgroundImage: "url('/images/calmavibe-hero-zen.webp')",
-        }}
-      />
-
-      {/* 🔥 OVERLAY */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-
-      {/* 🔥 CONTENIDO */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-white text-center px-6 pb-24">
+      <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pb-24">
 
         <h1
           className={`transition-all duration-1000 ease-out max-w-2xl leading-relaxed font-light drop-shadow-lg
@@ -68,15 +53,6 @@ export default function Inicio() {
 
       </div>
 
-      {/* 🔥 ANIMACIÓN GLOBAL */}
-      <style>{`
-        @keyframes slowZoom {
-          0% { transform: scale(1.05); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1.05); }
-        }
-      `}</style>
-
-    </div>
+    </Layout>
   );
 }

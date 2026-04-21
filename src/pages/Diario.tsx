@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Layout from "../components/Layout";
 
 export default function Diario() {
   const [texto, setTexto] = useState("");
@@ -17,6 +18,7 @@ export default function Diario() {
   };
 
   return (
+      <Layout>
     <div
       className="min-h-screen text-white flex items-center justify-center px-4 relative pb20"
       style={{
@@ -162,5 +164,6 @@ export default function Diario() {
         )}
       </div>
     </div>
+      </Layout>
   );
 }

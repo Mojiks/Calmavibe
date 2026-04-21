@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Layout from "../components/Layout";
 
 type Book = {
   title: string;
@@ -43,6 +44,7 @@ export default function Books() {
   const [selected, setSelected] = useState<Book | null>(null);
 
   return (
+      <Layout>
     <div
       className="min-h-screen text-white p-6 pb-20"
       style={{
@@ -92,5 +94,6 @@ export default function Books() {
         </div>
       )}
     </div>
+      </Layout>
   );
 }
