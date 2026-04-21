@@ -3,19 +3,26 @@ import type { Page } from "./types/navigation";
 
 import Navigation from "./components/Navigation";
 import NavBar from "./components/NavBar";
-import Disclaimer from "./components/Disclaimer";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   const [page, setPage] = useState<Page>("inicio");
 
   return (
-    <div className="min-h-screen w-full bg-main">
+    <div className="min-h-screen w-full bg-main overflow-hidden">
 
-      <Disclaimer />
+      {/* 🖥️ SIDEBAR (solo desktop) */}
+      <Sidebar page={page} setPage={setPage} />
 
-      <Navigation page={page} />
+      {/* 📄 CONTENIDO PRINCIPAL */}
+      <div className="md:ml-16 h-screen overflow-y-auto">
+        <Navigation page={page} />
+      </div>
 
-      <NavBar page={page} setPage={setPage} />
+      {/* 📱 NAVBAR (solo móvil) */}
+      <div className="md:hidden">
+        <NavBar page={page} setPage={setPage} />
+      </div>
 
     </div>
   );
