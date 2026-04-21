@@ -29,16 +29,24 @@ export default function Inicio() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-white text-center px-4 pb-20">
-
-      <h1 className="text-2xl md:text-4xl max-w-xl leading-relaxed">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center text-white text-center px-4 pb-20"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* FRASE PRINCIPAL */}
+      <h1 className="text-3xl md:text-5xl font-semibold max-w-2xl leading-tight">
         "{frase}"
       </h1>
 
-      <p className="mt-4 opacity-80 text-sm">
+      {/* SUBTEXTO */}
+      <p className="mt-6 opacity-70 text-base">
         Bienvenido a tu refugio digital de paz
       </p>
-
     </div>
   );
 }
