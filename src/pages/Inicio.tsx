@@ -31,8 +31,6 @@ export default function Inicio() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-white text-center px-4 pb-20">
 
-      <img src="/buda.png" alt="buda" className="w-10 mb-6 opacity-90" />
-
       <h1 className="text-2xl md:text-4xl max-w-xl leading-relaxed">
         "{frase}"
       </h1>
