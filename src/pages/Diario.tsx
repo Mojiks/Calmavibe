@@ -18,7 +18,7 @@ export default function Diario() {
 
   return (
     <div
-      className="min-h-screen text-white flex items-center justify-center px-4 relative"
+      className="min-h-screen text-white flex items-center justify-center px-4 relative pb20"
       style={{
         backgroundImage: "url('/bg.jpg')",
         backgroundSize: "cover",

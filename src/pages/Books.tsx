@@ -44,7 +44,7 @@ export default function Books() {
 
   return (
     <div
-      className="min-h-screen text-white p-6"
+      className="min-h-screen text-white p-6 pb-20"
       style={{
         backgroundImage: "url('/bg.jpg')",
         backgroundSize: "cover",
