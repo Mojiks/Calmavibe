@@ -8,30 +8,32 @@ export default function NavBar({
   setPage: (p: Page) => void;
 }) {
 
-  const btn = (id: Page, label: string) => (
+  const btn = (id: Page, icon: string) => (
     <button
       onClick={() => setPage(id)}
-      className={`px-3 py-1 rounded-lg transition ${
+      className={`flex flex-col items-center justify-center flex-1 py-2 ${
         page === id
-          ? "text-white bg-white/20"
-          : "text-white/60 hover:text-white"
+          ? "text-white"
+          : "text-white/50"
       }`}
     >
-      {label}
+      <span className="text-xl">{icon}</span>
     </button>
   );
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl flex gap-3 text-xs sm:text-sm flex-wrap justify-center">
+    <div className="
+      fixed bottom-0 left-0 w-full z-50
+      bg-black/80 backdrop-blur-lg
+      border-t border-white/10
+      flex justify-around items-center
+    ">
 
-      {btn("inicio", "Inicio")}
-      {btn("ayuda", "Ayuda")}
-      {btn("books", "Libros")}
-      {btn("zen", "Zen")}
-      {btn("diario", "Diario")}
-      {btn("videos", "Videos")}
-      {btn("reflexiones", "Reflexiones")}
-      {btn("sugerencias", "Sugerencias")}
+      {btn("inicio", "🏠")}
+      {btn("ayuda", "💬")}
+      {btn("zen", "🧘")}
+      {btn("diario", "📓")}
+      {btn("sugerencias", "✉️")}
 
     </div>
   );
