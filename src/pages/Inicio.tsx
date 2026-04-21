@@ -34,16 +34,15 @@ export default function Inicio() {
       style={{
         backgroundImage:
           "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('/bg.jpg')",
-        backgroundSize: "cover",
+        backgroundSize: "contain",   // 🔥 CAMBIO CLAVE
+        backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
       }}
     >
-      {/* FRASE PRINCIPAL */}
       <h1 className="text-3xl md:text-5xl font-semibold max-w-2xl leading-tight">
         "{frase}"
       </h1>
 
-      {/* SUBTEXTO */}
       <p className="mt-6 opacity-70 text-base">
         Bienvenido a tu refugio digital de paz
       </p>
