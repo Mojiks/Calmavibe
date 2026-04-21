@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Layout from "../components/Layout";
 
 export default function Sugerencias() {
   const [tipo, setTipo] = useState("Sugerencia");
@@ -38,8 +39,9 @@ export default function Sugerencias() {
   };
 
   return (
+    <Layout>
 <div className="min-h-screen flex items-center justify-center px-4 text-white pb-20">
-    
+
       <div className="glass p-6 rounded-xl w-full max-w-md text-center">
 
         <h2 className="text-xl mb-2">Sugerencias</h2>
@@ -82,5 +84,6 @@ export default function Sugerencias() {
 
       </div>
     </div>
+ </Layout>
   );
 }
