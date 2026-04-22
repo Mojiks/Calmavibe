@@ -145,7 +145,7 @@ export default function Zen() {
   // ================= UI =================
   return (
       <Layout>
-<div className="bg-main h-screen w-full text-white flex items-center justify-center px-6 pb-20">
+<div className="min-h-screen w-full text-white flex items-center justify-center px-6 pb-20">
       <div className="w-full max-w-6xl flex gap-10">
 
         {/* RESPIRACIÓN */}
