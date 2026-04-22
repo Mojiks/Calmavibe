@@ -39,7 +39,7 @@ export default function Inicio() {
 <img
 src="/images/calmavibe-logo-full.png"
   alt="CalmaVibe"
-  className="w-40 md:w-56 mb-6 opacity-95"
+  className="w-44 md:w-64 mb-6 opacity-95"
 />
 
         <h1

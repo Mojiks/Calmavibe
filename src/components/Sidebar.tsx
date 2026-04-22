@@ -9,28 +9,39 @@ export default function Sidebar({
 }) {
 
   const item = (id: Page, icon: string, label: string) => (
-    <button
-      onClick={() => setPage(id)}
-      className={`group relative flex items-center justify-center w-14 h-14 rounded-xl transition ${
-        page === id
-          ? "bg-white/20"
-          : "hover:bg-white/10"
+  <button
+    onClick={() => setPage(id)}
+    className={`group relative flex items-center justify-center w-14 h-14 rounded-xl transition-all duration-300 ${
+      page === id
+        ? "bg-white/20 shadow-lg scale-105"
+        : "hover:bg-white/10 hover:scale-105"
+    }`}
+  >
+    {/* 🔥 INDICADOR ACTIVO */}
+    {page === id && (
+      <span className="absolute left-0 w-1 h-6 bg-green-400 rounded-r-full"></span>
+    )}
+
+    {/* ICONO */}
+    <span
+      className={`text-xl transition ${
+        page === id ? "text-green-300" : "text-white/80"
       }`}
     >
-      {/* ICONO */}
-      <span className="text-xl">{icon}</span>
+      {icon}
+    </span>
 
-      {/* TOOLTIP */}
-      <span className="
-        absolute left-16
-        opacity-0 group-hover:opacity-100
-        bg-black/80 text-white text-xs px-2 py-1 rounded
-        transition whitespace-nowrap
-      ">
-        {label}
-      </span>
-    </button>
-  );
+    {/* TOOLTIP */}
+    <span className="
+      absolute left-16
+      opacity-0 group-hover:opacity-100
+      bg-black/80 text-white text-xs px-2 py-1 rounded
+      transition whitespace-nowrap
+    ">
+      {label}
+    </span>
+  </button>
+);
 
   return (
     <div className="
