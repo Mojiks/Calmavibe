@@ -45,9 +45,9 @@ export default function Sidebar({
         {/* 🔥 LOGO */}
     <div className="mb-4">
       <img
-        src="/images/calmavibe-logo-full.png"
+        src="/images/calmavibe-logo-icon.png"
         alt="CalmaVibe"
-        className="w-10 opacity-90 hover:opacity-100 transition"
+        className="w-8 opacity-90 hover:opacity-100 transition"
       />
     </div>
 
