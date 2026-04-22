@@ -36,6 +36,12 @@ export default function Inicio() {
 
       <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pb-24">
 
+<img
+  src="/images/calmavibe-logo-icon.png"
+  alt="CalmaVibe"
+  className="w-20 md:w-28 mb-6 opacity-90"
+/>
+
         <h1
           className={`transition-all duration-1000 ease-out max-w-2xl leading-relaxed font-light drop-shadow-lg
           ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}

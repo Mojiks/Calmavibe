@@ -42,6 +42,14 @@ export default function Sidebar({
       border-r border-white/10
       z-50
     ">
+        {/* 🔥 LOGO */}
+    <div className="mb-4">
+      <img
+        src="/images/calmavibe-logo-full.png"
+        alt="CalmaVibe"
+        className="w-10 opacity-90 hover:opacity-100 transition"
+      />
+    </div>
 
       {item("inicio", "🏠", "Inicio")}
       {item("ayuda", "💬", "Ayuda")}
