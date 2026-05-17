@@ -8,26 +8,29 @@ import Diario from "../pages/Diario";
 import Videos from "../pages/Videos";
 import Reflexiones from "../pages/Reflexiones";
 import Sugerencias from "../pages/Sugerencias";
+import NoMeSientoBien from "../pages/NoMeSientoBien";
 
 export default function Navigation({ page }: { page: Page }) {
-  switch (page) {
-    case "inicio":
-      return <Inicio />;
-    case "ayuda":
-      return <Ayuda />;
-    case "books":
-      return <Books />;
-    case "zen":
-      return <Zen />;
-    case "diario":
-      return <Diario />;
-    case "videos":
-      return <Videos />;
-    case "reflexiones":
-      return <Reflexiones />;
-    case "sugerencias":
-      return <Sugerencias />;
-    default:
-      return <Inicio />;
+
+  if (page === "inicio") return <Inicio />;
+
+  if (page === "nomesientobien") {
+    return <NoMeSientoBien />;
   }
+
+  if (page === "ayuda") return <Ayuda />;
+
+  if (page === "books") return <Books />;
+
+  if (page === "zen") return <Zen />;
+
+  if (page === "diario") return <Diario />;
+
+  if (page === "videos") return <Videos />;
+
+  if (page === "reflexiones") return <Reflexiones />;
+
+  if (page === "sugerencias") return <Sugerencias />;
+
+  return null;
 }

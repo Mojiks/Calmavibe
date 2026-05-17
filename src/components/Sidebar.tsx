@@ -70,6 +70,7 @@ export default function Sidebar({
       {item("videos", "🎥", "Videos")}
       {item("reflexiones", "💭", "Reflexiones")}
       {item("sugerencias", "✉️", "Sugerencias")}
+      {item("nomesientobien", "🫂", "No me siento bien")}
 
     </div>
   );

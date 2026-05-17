@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { Page } from "./types/navigation";
-
 import Navigation from "./components/Navigation";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";

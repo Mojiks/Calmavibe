@@ -1,5 +1,6 @@
 export type Page =
   | "inicio"
+  | "nomesientobien"
   | "ayuda"
   | "books"
   | "zen"
