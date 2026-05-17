@@ -36,6 +36,7 @@ export default function NavBar({
         {btn("ayuda", "💬")}
         {btn("zen", "🧘")}
         {btn("diario", "📓")}
+        {btn("nomesientobien", "🫂")}
 
         {/* BOTÓN MÁS */}
         <button
