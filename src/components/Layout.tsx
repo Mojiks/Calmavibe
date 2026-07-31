@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
     const timeout = setTimeout(() => {
       setVisible(true);
-    }, 100);
+    }, 120);
 
     return () => clearTimeout(timeout);
   }, [children]);
@@ -16,31 +16,92 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
 
-      {/* 🔥 FONDO */}
+      {/* =======================
+            FONDO PREMIUM
+      ======================== */}
       <div
-        className="absolute inset-0 bg-cover bg-center md:bg-center lg:bg-right scale-105 animate-[slowZoom_20s_ease-in-out_infinite]"
+        className="
+          absolute
+          inset-0
+          bg-cover
+          bg-center
+          bg-no-repeat
+          bg-fixed
+          scale-105
+          animate-[backgroundZoom_30s_ease-in-out_infinite]
+        "
         style={{
-          backgroundImage: "url('/images/calmavibe-hero-zen.webp')",
+          backgroundImage: "url('/images/backgrounds/fondo.png')",
         }}
       />
 
-      {/* 🔥 OVERLAY */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+      {/* Oscurece ligeramente */}
+      <div className="absolute inset-0 bg-black/45" />
 
-      {/* 🔥 CONTENIDO CON TRANSICIÓN */}
+      {/* Degradado cinematográfico */}
       <div
-        className={`relative z-10 min-h-screen text-white transition-all duration-700 ease-out
-        ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        className="
+          absolute
+          inset-0
+          bg-gradient-to-b
+          from-black/35
+          via-transparent
+          to-black/70
+        "
+      />
+
+      {/* Luz cálida superior */}
+      <div
+        className="
+          absolute
+          top-0
+          left-1/2
+          -translate-x-1/2
+          w-[900px]
+          h-[500px]
+          rounded-full
+          bg-yellow-300/10
+          blur-[180px]
+          animate-pulse
+        "
+      />
+
+      {/* Contenido */}
+      <div
+        className={`
+          relative
+          z-10
+          min-h-screen
+          text-white
+          transition-all
+          duration-700
+          ease-out
+          ${
+            visible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4"
+          }
+        `}
       >
         {children}
       </div>
 
-      {/* 🔥 ANIMACIÓN GLOBAL */}
+      {/* Animación global */}
       <style>{`
-        @keyframes slowZoom {
-          0% { transform: scale(1.05); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1.05); }
+        @keyframes backgroundZoom {
+
+          0%{
+            transform:scale(1.05);
+          }
+
+          50%{
+            transform:scale(1.10);
+          }
+
+          100%{
+            transform:scale(1.05);
+          }
+
         }
       `}</style>
 
