@@ -1,64 +1,66 @@
-import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
+// src/pages/Inicio.tsx
 
-const frases = [
-  "Nada es permanente, todo fluye.",
-  "Respira, todo está pasando.",
-  "No eres tus pensamientos.",
-  "Un paso a la vez.",
-  "La calma también es progreso.",
-  "Suelta lo que no puedes controlar.",
-  "Tu mente merece descanso.",
-  "Hoy es suficiente.",
-  "Estás haciendo lo mejor que puedes.",
-  "Todo llega en su momento.",
-];
+import type { Page } from "../types/navigation";
 
-export default function Inicio() {
-  const [frase, setFrase] = useState("");
-  const [visible, setVisible] = useState(false);
+import Background from "../components/Background";
+import AmbientGlow from "../components/AmbientGlow";
+import FloatingParticles from "../components/FloatingParticles";
 
-  const getRandomFrase = () => {
-    let nueva = frases[Math.floor(Math.random() * frases.length)];
-    while (nueva === frase) {
-      nueva = frases[Math.floor(Math.random() * frases.length)];
-    }
-    return nueva;
-  };
+import TopBar from "../components/home/TopBar";
+import Hero from "../components/home/Hero";
+import QuickCards from "../components/home/QuickCards";
+import BottomWidgets from "../components/home/BottomWidgets";
+import HomeFooter from "../components/home/HomeFooter";
+import SoundPanel from "../components/home/SoundPanel";
 
-  useEffect(() => {
-    setFrase(getRandomFrase());
-    setTimeout(() => setVisible(true), 300);
-  }, []);
+interface InicioProps {
+  setPage: (page: Page) => void;
+}
 
+export default function Inicio({
+  setPage,
+}: InicioProps) {
   return (
-    <Layout>
+    <div className="relative min-h-screen overflow-hidden">
 
-      <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pb-24">
+      <Background />
+      <AmbientGlow />
+      <FloatingParticles />
 
-<img
-src="/images/calmavibe-logo-full.png"
-  alt="CalmaVibe"
-  className="w-44 md:w-64 mb-6 opacity-95"
-/>
+      <div
+        className="
+          relative
+          z-10
+          min-h-screen
+          px-8
+          py-5
+        "
+      >
+        <TopBar />
 
-        <h1
-          className={`transition-all duration-1000 ease-out max-w-2xl leading-relaxed font-light drop-shadow-lg
-          ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
-          text-3xl md:text-5xl`}
+        <div
+          className="
+            mt-2
+            grid
+            grid-cols-[minmax(0,1fr)_330px]
+            items-start
+            gap-8
+          "
         >
-          "{frase}"
-        </h1>
+          <Hero />
+          <SoundPanel />
+        </div>
 
-        <p
-          className={`mt-6 opacity-80 text-base md:text-lg tracking-wide transition-all duration-1000 delay-200
-          ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-        >
-          Bienvenido a tu refugio digital de paz
-        </p>
+        <div className="mt-6">
+          <QuickCards setPage={setPage} />
+        </div>
 
+        <div className="mt-3">
+          <BottomWidgets setPage={setPage} />
+        </div>
+
+        <HomeFooter />
       </div>
-
-    </Layout>
+    </div>
   );
 }

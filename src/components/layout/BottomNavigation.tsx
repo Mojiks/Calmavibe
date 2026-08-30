@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Page } from "../types/navigation";
+import type { Page } from "../../types/navigation";
 
 export default function NavBar({
   page,

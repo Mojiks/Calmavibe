@@ -1,29 +1,58 @@
+// src/App.tsx
+
 import { useState } from "react";
 import type { Page } from "./types/navigation";
+import Background from "./components/Background";
+import BottomNavigation from "./components/layout/BottomNavigation";
+import Sidebar from "./components/layout/sidebar/Sidebar";
 import Navigation from "./components/Navigation";
-import NavBar from "./components/NavBar";
-import Sidebar from "./components/Sidebar";
 
 function App() {
   const [page, setPage] = useState<Page>("inicio");
 
   return (
-    <div className="min-h-screen w-full bg-main overflow-hidden">
+    <>
 
-      {/* 🖥️ SIDEBAR (solo desktop) */}
-      <Sidebar page={page} setPage={setPage} />
+    <Background />
+    
+      {/* ================= DESKTOP ================= */}
 
-      {/* 📄 CONTENIDO PRINCIPAL */}
-      <div className="md:ml-16 h-screen overflow-y-auto">
-        <Navigation page={page} />
+      <div className="hidden min-h-screen lg:flex">
+        <Sidebar
+          page={page}
+          setPage={setPage}
+        />
+
+        <main
+          className="
+            relative
+            min-h-screen
+            min-w-0
+            flex-1
+            overflow-x-hidden
+          "
+        >
+          <Navigation
+            page={page}
+            setPage={setPage}
+          />
+        </main>
       </div>
 
-      {/* 📱 NAVBAR (solo móvil) */}
-      <div className="md:hidden">
-        <NavBar page={page} setPage={setPage} />
-      </div>
+      {/* ================= MOBILE ================= */}
 
-    </div>
+      <div className="min-h-screen lg:hidden">
+        <Navigation
+          page={page}
+          setPage={setPage}
+        />
+
+        <BottomNavigation
+          page={page}
+          setPage={setPage}
+        />
+      </div>
+    </>
   );
 }
 

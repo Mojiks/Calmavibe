@@ -1,227 +1,342 @@
-import { useEffect, useRef, useState } from "react";
+import { useAudio } from "../context/AudioContext";
 import Layout from "../components/Layout";
+import {
+  Moon,
+  Pause,
+  Play,
+  SkipBack,
+  SkipForward,
+  Volume2,
+} from "lucide-react";
 
-const sounds = [
-  { name: "16hz Beta", file: "/sounds/16hzbetabinaural.mp3" },
-  { name: "Cuencos Tibetanos", file: "/sounds/cuencostibetanos.mp3" },
-  { name: "528Hz", file: "/sounds/frecuenciaambiente528hz.mp3" },
-  { name: "Aliento de Buda", file: "/sounds/alientodebuda.mp3" },
-  { name: "Sueño Profundo", file: "/sounds/frecuenciasuenoprofundo.mp3" },
-  { name: "Meditación", file: "/sounds/meditacion.mp3" },
-  { name: "Cascada", file: "/sounds/meditacionconcascada.mp3" },
-  { name: "Naturaleza Tibetana", file: "/sounds/naturalezatibetana.mp3" },
-  { name: "Océano Cósmico", file: "/sounds/oceanocosmico.mp3" },
-  { name: "Sueño Relajante", file: "/sounds/suenorelajante.mp3" },
-  { name: "Lluvia", file: "/sounds/susurrodelluvia.mp3" },
-  { name: "Tormenta", file: "/sounds/tormentaenigmatica.mp3" },
+const timerOptions = [
+  { label: "15 min", value: 15 * 60 * 1000 },
+  { label: "30 min", value: 30 * 60 * 1000 },
+  { label: "60 min", value: 60 * 60 * 1000 },
 ];
 
 export default function Zen() {
+  const {
+    tracks,
+    currentTrack,
+    currentIndex,
+    isPlaying,
+    volume,
+    playTrack,
+    toggle,
+    previous,
+    next,
+    setVolume,
+    sleepTimer,
+    setSleepTimer,
+    clearSleepTimer,
+  } = useAudio();
 
-  // 🔵 RESPIRACIÓN
-  const [phase, setPhase] = useState<"inhale" | "hold" | "exhale" | "idle">("idle");
-  const [count, setCount] = useState(0);
-  const [cycles, setCycles] = useState(0);
-  const [running, setRunning] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // 🎧 AUDIO
-  const audioRef = useRef<HTMLAudioElement>(new Audio());
-  const [trackIndex, setTrackIndex] = useState<number | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-
-  // ⏱ TIMER
-  const [timer, setTimer] = useState<number | null>(null);
-
-  // ================= AUDIO =================
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (trackIndex !== null) {
-      audio.src = sounds[trackIndex].file;
-      audio.currentTime = 0;
-      audio.volume = volume;
-
-      if (isPlaying) audio.play();
-    }
-  }, [trackIndex]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    audio.volume = volume;
-
-    if (isPlaying) audio.play();
-    else audio.pause();
-  }, [isPlaying, volume]);
-
-  const playTrack = (i: number) => {
-    setTrackIndex(i);
-    setIsPlaying(true);
-  };
-
-  const stopTrack = () => {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    setIsPlaying(false);
-  };
-
-  const nextTrack = () => {
-    if (trackIndex === null) return;
-    setTrackIndex((trackIndex + 1) % sounds.length);
-  };
-
-  const prevTrack = () => {
-    if (trackIndex === null) return;
-    setTrackIndex((trackIndex - 1 + sounds.length) % sounds.length);
-  };
-
-  // ================= TIMER =================
-  useEffect(() => {
-    if (!timer) return;
-
-    const t = setTimeout(() => {
-      stopTrack();
-      setTimer(null);
-    }, timer);
-
-    return () => clearTimeout(t);
-  }, [timer]);
-
-  // ================= RESPIRACIÓN =================
-  useEffect(() => {
-    if (!running) return;
-
-    let duration = phase === "inhale" ? 4 : phase === "hold" ? 7 : 8;
-
-    setCount(duration);
-
-    intervalRef.current = setInterval(() => {
-      setCount((c) => c - 1);
-    }, 1000);
-
-    const timeout = setTimeout(() => {
-      clearInterval(intervalRef.current!);
-
-      if (phase === "inhale") setPhase("hold");
-      else if (phase === "hold") setPhase("exhale");
-      else {
-        setPhase("inhale");
-        setCycles((prev) => {
-          if (prev + 1 >= 2) {
-            setRunning(false);
-            return 0;
-          }
-          return prev + 1;
-        });
-      }
-    }, duration * 1000);
-
-    return () => {
-      clearInterval(intervalRef.current!);
-      clearTimeout(timeout);
-    };
-  }, [phase, running]);
-
-  const startBreathing = () => {
-    setCycles(0);
-    setPhase("inhale");
-    setRunning(true);
-  };
-
-  const stopBreathing = () => {
-    setRunning(false);
-    setPhase("idle");
-    setCount(0);
-  };
-
-  const getText = () => {
-    if (phase === "inhale") return "Inhala";
-    if (phase === "hold") return "Sostén";
-    if (phase === "exhale") return "Exhala";
-    return "Respira";
-  };
-
-  // ================= UI =================
   return (
-      <Layout>
-<div className="min-h-screen w-full text-white flex items-center justify-center px-6 pb-20">
-      <div className="w-full max-w-6xl flex gap-10">
+    <Layout>
+      <div
+        className="
+          ml-[228px]
+          min-h-screen
+          px-6
+          py-8
+          overflow-x-hidden
+        "
+      >
+        {/* ENCABEZADO */}
 
-        {/* RESPIRACIÓN */}
-        <div className="flex-1 flex flex-col items-center justify-center">
+        <div className="mb-8">
+          <h1 className="text-4xl font-light text-white">
+            Zen
+          </h1>
 
-          <div className={`w-48 h-48 rounded-full border border-white/10 flex items-center justify-center backdrop-blur-md ${running ? "animate-breathe" : ""}`}>
-            <div className="text-center">
-              <p className="text-lg">{getText()}</p>
-              <p className="text-4xl">{count}</p>
-            </div>
-          </div>
+          <p className="mt-2 text-lg text-white/75">
+            Un espacio para bajar el ritmo.
+          </p>
 
-          <p className="text-xs mt-4">Ciclos: {cycles}/2</p>
-
-          <div className="flex gap-4 mt-6">
-            <button onClick={startBreathing} className="bg-white text-black px-4 py-2 rounded-lg">Iniciar</button>
-            <button onClick={stopBreathing} className="bg-white/20 px-4 py-2 rounded-lg">Detener</button>
-          </div>
-
+          <p className="mt-2 text-sm text-white/50">
+            Elige un sonido, ajusta el volumen y deja que el momento siga su propio ritmo.
+          </p>
         </div>
 
-        {/* AUDIOS */}
-        <div className="flex-1">
-          <div className="bg-black/40 backdrop-blur-xl p-4 rounded-xl h-[420px] overflow-y-auto">
+        {/* CONTENIDO */}
 
-            {sounds.map((s, i) => (
-              <div
-                key={i}
-                onClick={() => playTrack(i)}
-                className="p-3 border-b border-white/10 hover:bg-white/10 cursor-pointer rounded-lg"
-              >
-                {s.name}
+        <div className="grid gap-5 lg:grid-cols-[1fr_330px]">
+          {/* SONIDOS */}
+
+          <section
+            className="
+              rounded-3xl
+              border
+              border-white/10
+              bg-black/30
+              p-4
+              backdrop-blur-2xl
+              sm:p-5
+            "
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-medium text-white">
+                  Sonidos
+                </h2>
+
+                <p className="mt-1 text-xs text-white/45">
+                  Biblioteca de calma
+                </p>
               </div>
-            ))}
+            </div>
 
-          </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {tracks.map((track, index) => {
+                const active = currentIndex === index;
+
+                return (
+                  <button
+                    key={track.file}
+                    type="button"
+                    onClick={() => playTrack(index)}
+                    className={`
+                      rounded-2xl
+                      border
+                      p-4
+                      text-left
+                      transition
+                      ${
+                        active
+                          ? "border-[#9CC37D]/40 bg-[#7B8F5D]/15"
+                          : "border-white/10 bg-white/[0.03] hover:bg-white/[0.07]"
+                      }
+                    `}
+                  >
+                    <p className="text-sm font-medium text-white">
+                      {track.name}
+                    </p>
+
+                    <p className="mt-1 text-[11px] text-white/40">
+                      {track.category}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* PLAYER */}
+
+          <aside
+            className="
+              h-fit
+              rounded-3xl
+              border
+              border-white/10
+              bg-black/35
+              p-5
+              backdrop-blur-2xl
+            "
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className="
+                  flex
+                  h-10
+                  w-10
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#334C43]
+                "
+              >
+                <Moon
+                  size={18}
+                  className="text-[#D8F1D6]"
+                />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-white">
+                  {currentTrack?.name ?? "Sin sonido seleccionado"}
+                </p>
+
+                <p className="text-[11px] text-white/45">
+                  {isPlaying ? "Reproduciendo" : "En pausa"}
+                </p>
+              </div>
+            </div>
+
+            {/* CONTROLES */}
+
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={previous}
+                disabled={currentIndex === null}
+                className="
+                  flex
+                  h-10
+                  w-10
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white/5
+                  text-white/70
+                  transition
+                  hover:bg-white/10
+                  disabled:opacity-30
+                "
+                aria-label="Anterior"
+              >
+                <SkipBack size={16} />
+              </button>
+
+              <button
+                type="button"
+                onClick={toggle}
+                disabled={currentIndex === null}
+                className="
+                  flex
+                  h-12
+                  w-12
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#7B8F5D]
+                  transition
+                  hover:bg-[#879968]
+                  disabled:opacity-30
+                "
+                aria-label={
+                  isPlaying
+                    ? "Pausar"
+                    : "Reproducir"
+                }
+              >
+                {isPlaying ? (
+                  <Pause
+                    size={18}
+                    fill="white"
+                  />
+                ) : (
+                  <Play
+                    size={18}
+                    fill="white"
+                  />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={next}
+                disabled={currentIndex === null}
+                className="
+                  flex
+                  h-10
+                  w-10
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white/5
+                  text-white/70
+                  transition
+                  hover:bg-white/10
+                  disabled:opacity-30
+                "
+                aria-label="Siguiente"
+              >
+                <SkipForward size={16} />
+              </button>
+            </div>
+
+            {/* VOLUMEN */}
+
+            <div className="mt-6">
+              <div
+                className="
+                  mb-2
+                  flex
+                  items-center
+                  gap-2
+                  text-xs
+                  text-white/55
+                "
+              >
+                <Volume2 size={14} />
+                Volumen
+              </div>
+
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={(event) =>
+                  setVolume(Number(event.target.value))
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* TEMPORIZADOR */}
+
+            <div className="mt-6">
+              <div
+                className="
+                  mb-2
+                  flex
+                  items-center
+                  gap-2
+                  text-xs
+                  text-white/55
+                "
+              >
+                <Moon size={14} />
+                Temporizador de sueño
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {timerOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() =>
+                      setSleepTimer(option.value)
+                    }
+                    className="
+                      rounded-xl
+                      bg-white/5
+                      px-2
+                      py-2
+                      text-[11px]
+                      text-white/70
+                      transition
+                      hover:bg-white/10
+                    "
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+
+              {sleepTimer !== null && (
+                <button
+                  type="button"
+                  onClick={clearSleepTimer}
+                  className="
+                    mt-2
+                    w-full
+                    text-[11px]
+                    text-white/40
+                    hover:text-white/70
+                  "
+                >
+                  Cancelar temporizador
+                </button>
+              )}
+            </div>
+          </aside>
         </div>
-
       </div>
-
-      {/* PLAYER PRO */}
-      {trackIndex !== null && (
-        <div className="fixed bottom-6 right-6 bg-black/70 backdrop-blur-xl p-4 rounded-2xl w-72">
-
-          <p className="text-center text-sm mb-2">{sounds[trackIndex].name}</p>
-
-          <div className="flex justify-center gap-4 mb-3 text-lg">
-            <button onClick={prevTrack}>⏮</button>
-            <button onClick={() => setIsPlaying(!isPlaying)}>
-              {isPlaying ? "⏸" : "▶"}
-            </button>
-            <button onClick={nextTrack}>⏭</button>
-            <button onClick={stopTrack}>⏹</button>
-          </div>
-
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={(e) => setVolume(Number(e.target.value))}
-            className="w-full mb-3"
-          />
-
-          {/* TIMER */}
-          <div className="flex justify-between text-xs">
-            <button onClick={() => setTimer(15 * 60000)}>15m</button>
-            <button onClick={() => setTimer(30 * 60000)}>30m</button>
-            <button onClick={() => setTimer(60 * 60000)}>60m</button>
-          </div>
-
-        </div>
-      )}
-
-    </div>
-      </Layout>
+    </Layout>
   );
 }
