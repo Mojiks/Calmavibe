@@ -21,8 +21,7 @@ export default function Inicio({
   setPage,
 }: InicioProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden">
-
+    <div className="relative min-h-screen overflow-x-hidden pb-24 lg:pb-0">
       <Background />
       <AmbientGlow />
       <FloatingParticles />
@@ -32,30 +31,36 @@ export default function Inicio({
           relative
           z-10
           min-h-screen
-          px-8
+          px-4
           py-5
+          sm:px-6
+          lg:px-8
         "
       >
         <TopBar />
 
         <div
           className="
-            mt-2
+            mt-4
             grid
-            grid-cols-[minmax(0,1fr)_330px]
+            grid-cols-1
             items-start
-            gap-8
+            gap-5
+            md:grid-cols-2
+            lg:mt-2
+            lg:grid-cols-[minmax(0,1fr)_330px]
+            lg:gap-8
           "
         >
           <Hero />
           <SoundPanel />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-7 lg:mt-6">
           <QuickCards setPage={setPage} />
         </div>
 
-        <div className="mt-3">
+        <div className="mt-5 lg:mt-3">
           <BottomWidgets setPage={setPage} />
         </div>
 

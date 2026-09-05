@@ -12,9 +12,8 @@ function App() {
 
   return (
     <>
+      <Background />
 
-    <Background />
-    
       {/* ================= DESKTOP ================= */}
 
       <div className="hidden min-h-screen lg:flex">
@@ -39,9 +38,15 @@ function App() {
         </main>
       </div>
 
-      {/* ================= MOBILE ================= */}
+      {/* ================= MOBILE + TABLET ================= */}
 
-      <div className="min-h-screen lg:hidden">
+      <div
+        className="
+          min-h-screen
+          pb-24
+          lg:hidden
+        "
+      >
         <Navigation
           page={page}
           setPage={setPage}

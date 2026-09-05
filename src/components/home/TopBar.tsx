@@ -1,90 +1,107 @@
-import { Search, Smile } from "lucide-react";
+import { Search, Smile, Sprout } from "lucide-react";
 
 export default function TopBar() {
   return (
     <header
       className="
-        mb-6
+        mb-5
         flex
-        items-center
-        justify-between
-        gap-6
+        flex-col
+        items-stretch
+        gap-4
+        lg:mb-6
+        lg:flex-row
+        lg:items-center
+        lg:justify-between
+        lg:gap-6
       "
     >
-      {/* Izquierda */}
-
       <div
         className="
           flex
+          min-w-0
           items-center
           gap-3
           text-white/90
         "
       >
-        <span className="text-lg">🌿</span>
+        <Sprout
+          size={18}
+          strokeWidth={1.8}
+          className="shrink-0 text-[#A7BE84]"
+        />
 
         <span
           className="
-            text-[17px]
+            whitespace-nowrap
+            text-[16px]
             font-light
+            sm:text-[17px]
           "
         >
           Hola, qué bueno verte por aquí
         </span>
       </div>
 
-      {/* Derecha */}
-
       <div
         className="
           flex
+          w-full
           items-center
-          gap-4
+          gap-3
+          lg:w-auto
+          lg:gap-4
         "
       >
-        {/* Buscador */}
-
         <div
           className="
             flex
-            h-14
-            w-[330px]
+            h-12
+            min-w-0
+            flex-1
             items-center
             gap-3
             rounded-full
             border
             border-white/10
             bg-white/5
-            px-5
+            px-4
             backdrop-blur-2xl
+            lg:h-14
+            lg:w-[330px]
+            lg:flex-none
+            lg:px-5
           "
         >
           <Search
             size={18}
-            className="text-white/35"
+            className="shrink-0 text-white/35"
           />
 
           <input
             type="text"
             placeholder="¿Cómo llegaste hoy?"
             className="
+              min-w-0
               w-full
               bg-transparent
-              text-[16px]
+              text-[15px]
               text-white
               outline-none
               placeholder:text-white/35
+              lg:text-[16px]
             "
           />
         </div>
 
-        {/* Botón */}
-
         <button
+          type="button"
+          aria-label="Estado de ánimo"
           className="
             flex
             h-11
             w-11
+            shrink-0
             items-center
             justify-center
             rounded-full

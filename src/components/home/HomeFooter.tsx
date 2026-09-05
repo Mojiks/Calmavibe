@@ -32,19 +32,15 @@ export default function HomeFooter() {
   return (
     <footer
       className="
-        mt-10
+        mt-8
         border-t
         border-white/10
         bg-black/25
         backdrop-blur-3xl
+        lg:mt-10
       "
     >
-      <div
-        className="
-          grid
-          grid-cols-4
-        "
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {items.map((item) => {
           const Icon = item.icon;
 
@@ -55,11 +51,18 @@ export default function HomeFooter() {
                 flex
                 items-center
                 gap-4
-                border-r
+                border-b
                 border-white/10
-                px-8
+                px-5
                 py-5
-                last:border-r-0
+                last:border-b-0
+                md:px-6
+                md:[&:nth-child(odd)]:border-r
+                lg:border-b-0
+                lg:border-r
+                lg:px-8
+                lg:py-5
+                lg:last:border-r-0
               "
             >
               <div
@@ -67,6 +70,7 @@ export default function HomeFooter() {
                   flex
                   h-10
                   w-10
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -79,7 +83,7 @@ export default function HomeFooter() {
                 />
               </div>
 
-              <div>
+              <div className="min-w-0">
                 <p
                   className="
                     text-[14px]

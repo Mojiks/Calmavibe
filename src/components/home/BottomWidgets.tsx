@@ -11,69 +11,41 @@ interface BottomWidgetsProps {
   setPage: (page: Page) => void;
 }
 
+const widgetClass = `
+  min-h-[305px]
+  rounded-[20px]
+  border
+  border-white/10
+  bg-black/30
+  backdrop-blur-3xl
+  overflow-hidden
+  lg:h-[305px]
+  lg:min-h-0
+`;
+
 export default function BottomWidgets({
   setPage,
 }: BottomWidgetsProps) {
   return (
-    <div className="grid grid-cols-4 gap-3">
-
-      <div
-        className="
-          h-[305px]
-          rounded-[20px]
-          border
-          border-white/10
-          bg-black/30
-          backdrop-blur-3xl
-          overflow-hidden
-        "
-      >
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+      <div className={widgetClass}>
         <MoodWidget />
       </div>
 
       <div
         id="breathing-widget"
-        className="
-          h-[305px]
-          rounded-[20px]
-          border
-          border-white/10
-          bg-black/30
-          backdrop-blur-3xl
-          overflow-hidden
-        "
+        className={widgetClass}
       >
         <BreathingWidget />
       </div>
 
-      <div
-        className="
-          h-[305px]
-          rounded-[20px]
-          border
-          border-white/10
-          bg-black/30
-          backdrop-blur-3xl
-          overflow-hidden
-        "
-      >
+      <div className={widgetClass}>
         <Mindfulness />
       </div>
 
-      <div
-        className="
-          h-[305px]
-          rounded-[20px]
-          border
-          border-white/10
-          bg-black/30
-          backdrop-blur-3xl
-          overflow-hidden
-        "
-      >
+      <div className={widgetClass}>
         <GamesWidget setPage={setPage} />
       </div>
-
     </div>
   );
 }

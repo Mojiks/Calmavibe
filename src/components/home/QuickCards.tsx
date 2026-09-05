@@ -61,7 +61,7 @@ export default function QuickCards({
         Explora tu espacio
       </h2>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => {
           const Icon = card.icon;
 
@@ -72,7 +72,7 @@ export default function QuickCards({
               onClick={() => setPage(card.page)}
               className={`
                 relative
-                h-[150px]
+                min-h-[145px]
                 overflow-hidden
                 rounded-[20px]
                 border
@@ -86,6 +86,8 @@ export default function QuickCards({
                 duration-300
                 hover:-translate-y-1
                 hover:border-white/20
+                lg:h-[150px]
+                lg:min-h-0
               `}
             >
               <div
@@ -113,14 +115,15 @@ export default function QuickCards({
                 <Icon
                   size={18}
                   strokeWidth={1.8}
-                  className="text-white"
+                  className="shrink-0 text-white"
                 />
 
                 <h3
                   className="
+                    min-w-0
                     text-[14px]
                     font-semibold
-                    leading-none
+                    leading-tight
                     text-white
                   "
                 >
@@ -130,7 +133,10 @@ export default function QuickCards({
 
               <p
                 className="
+                  relative
+                  z-10
                   mt-3
+                  max-w-[34rem]
                   pr-9
                   text-[12px]
                   leading-5

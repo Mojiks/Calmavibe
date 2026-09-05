@@ -7,16 +7,18 @@ export default function Hero() {
     ];
 
   return (
-    <div>
-      {/* Título */}
-
+    <div className="min-w-0">
       <h1
         className="
-          text-[54px]
-          leading-[56px]
+          text-[42px]
+          leading-[44px]
           font-extralight
           tracking-[-0.045em]
           text-white
+          sm:text-[48px]
+          sm:leading-[50px]
+          lg:text-[54px]
+          lg:leading-[56px]
         "
       >
         La calma
@@ -25,8 +27,6 @@ export default function Hero() {
         <br />
         progreso.
       </h1>
-
-      {/* Texto */}
 
       <p
         className="

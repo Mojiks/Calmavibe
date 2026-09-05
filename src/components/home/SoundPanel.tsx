@@ -18,15 +18,17 @@ export default function SoundPanel() {
     <aside
       className="
         w-full
-        max-w-[305px]
+        max-w-none
         rounded-[24px]
         border
         border-white/10
         bg-[#1A140F]/88
         backdrop-blur-[30px]
-        px-6
+        px-5
         py-5
         shadow-[0_18px_45px_rgba(0,0,0,.45)]
+        sm:px-6
+        lg:max-w-[305px]
       "
     >
       <h3 className="text-[20px] font-light text-white">
@@ -39,7 +41,7 @@ export default function SoundPanel() {
 
       <div className="mt-4 border-t border-white/10" />
 
-      <div className="sound-scroll mt-2 h-[154px] overflow-y-auto pr-2">
+      <div className="sound-scroll mt-2 h-[170px] overflow-y-auto pr-1 sm:h-[154px] sm:pr-2">
         {tracks.map((sound, index) => {
           const Icon = icons[index % icons.length];
           const active = currentIndex === index;
@@ -68,7 +70,7 @@ export default function SoundPanel() {
               <div className="flex min-w-0 items-center gap-3">
                 <Icon
                   size={17}
-                  className={active ? "text-[#A7BE84]" : "text-white/75"}
+                  className={active ? "shrink-0 text-[#A7BE84]" : "shrink-0 text-white/75"}
                 />
 
                 <span className="truncate text-[14px] text-white/92">
