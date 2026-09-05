@@ -36,36 +36,88 @@ export default function Zen() {
     <Layout>
       <div
         className="
-          ml-[228px]
+          ml-0
           min-h-screen
-          px-6
-          py-8
+          w-full
+          max-w-full
           overflow-x-hidden
+          px-4
+          py-6
+          pb-28
+          sm:px-5
+          sm:py-7
+          sm:pb-28
+          lg:ml-[228px]
+          lg:px-6
+          lg:py-8
+          lg:pb-8
         "
       >
         {/* ENCABEZADO */}
 
-        <div className="mb-8">
-          <h1 className="text-4xl font-light text-white">
+        <div
+          className="
+            mb-6
+            max-w-3xl
+            sm:mb-8
+          "
+        >
+          <h1
+            className="
+              text-3xl
+              font-light
+              leading-tight
+              text-white
+              sm:text-4xl
+            "
+          >
             Zen
           </h1>
 
-          <p className="mt-2 text-lg text-white/75">
+          <p
+            className="
+              mt-2
+              text-base
+              leading-relaxed
+              text-white/75
+              sm:text-lg
+            "
+          >
             Un espacio para bajar el ritmo.
           </p>
 
-          <p className="mt-2 text-sm text-white/50">
-            Elige un sonido, ajusta el volumen y deja que el momento siga su propio ritmo.
+          <p
+            className="
+              mt-2
+              max-w-2xl
+              text-sm
+              leading-relaxed
+              text-white/50
+            "
+          >
+            Elige un sonido, ajusta el volumen y deja que el momento siga su
+            propio ritmo.
           </p>
         </div>
 
         {/* CONTENIDO */}
 
-        <div className="grid gap-5 lg:grid-cols-[1fr_330px]">
+        <div
+          className="
+            grid
+            min-w-0
+            grid-cols-1
+            gap-4
+            sm:gap-5
+            lg:grid-cols-[1fr_330px]
+          "
+        >
           {/* SONIDOS */}
 
           <section
             className="
+              min-w-0
+              overflow-hidden
               rounded-3xl
               border
               border-white/10
@@ -75,8 +127,16 @@ export default function Zen() {
               sm:p-5
             "
           >
-            <div className="mb-4 flex items-center justify-between">
-              <div>
+            <div
+              className="
+                mb-4
+                flex
+                min-w-0
+                items-center
+                justify-between
+              "
+            >
+              <div className="min-w-0">
                 <h2 className="text-lg font-medium text-white">
                   Sonidos
                 </h2>
@@ -87,7 +147,15 @@ export default function Zen() {
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div
+              className="
+                grid
+                min-w-0
+                grid-cols-1
+                gap-2
+                sm:grid-cols-2
+              "
+            >
               {tracks.map((track, index) => {
                 const active = currentIndex === index;
 
@@ -97,6 +165,8 @@ export default function Zen() {
                     type="button"
                     onClick={() => playTrack(index)}
                     className={`
+                      min-w-0
+                      overflow-hidden
                       rounded-2xl
                       border
                       p-4
@@ -109,11 +179,28 @@ export default function Zen() {
                       }
                     `}
                   >
-                    <p className="text-sm font-medium text-white">
+                    <p
+                      className="
+                        min-w-0
+                        break-words
+                        text-sm
+                        font-medium
+                        leading-relaxed
+                        text-white
+                      "
+                    >
                       {track.name}
                     </p>
 
-                    <p className="mt-1 text-[11px] text-white/40">
+                    <p
+                      className="
+                        mt-1
+                        break-words
+                        text-[11px]
+                        leading-relaxed
+                        text-white/40
+                      "
+                    >
                       {track.category}
                     </p>
                   </button>
@@ -126,21 +213,32 @@ export default function Zen() {
 
           <aside
             className="
+              min-w-0
               h-fit
+              overflow-hidden
               rounded-3xl
               border
               border-white/10
               bg-black/35
-              p-5
+              p-4
               backdrop-blur-2xl
+              sm:p-5
             "
           >
-            <div className="flex items-center gap-3">
+            <div
+              className="
+                flex
+                min-w-0
+                items-center
+                gap-3
+              "
+            >
               <div
                 className="
                   flex
                   h-10
                   w-10
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -153,8 +251,15 @@ export default function Zen() {
                 />
               </div>
 
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-white">
+              <div className="min-w-0 flex-1">
+                <p
+                  className="
+                    truncate
+                    text-sm
+                    font-medium
+                    text-white
+                  "
+                >
                   {currentTrack?.name ?? "Sin sonido seleccionado"}
                 </p>
 
@@ -166,7 +271,15 @@ export default function Zen() {
 
             {/* CONTROLES */}
 
-            <div className="mt-6 flex items-center justify-center gap-3">
+            <div
+              className="
+                mt-6
+                flex
+                items-center
+                justify-center
+                gap-3
+              "
+            >
               <button
                 type="button"
                 onClick={previous}
@@ -175,6 +288,7 @@ export default function Zen() {
                   flex
                   h-10
                   w-10
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -197,6 +311,7 @@ export default function Zen() {
                   flex
                   h-12
                   w-12
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -232,6 +347,7 @@ export default function Zen() {
                   flex
                   h-10
                   w-10
+                  shrink-0
                   items-center
                   justify-center
                   rounded-full
@@ -303,6 +419,7 @@ export default function Zen() {
                       setSleepTimer(option.value)
                     }
                     className="
+                      min-w-0
                       rounded-xl
                       bg-white/5
                       px-2
