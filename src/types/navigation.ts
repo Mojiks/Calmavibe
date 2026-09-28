@@ -5,6 +5,7 @@ export type Page =
   | "ayuda"
   | "books"
   | "zen"
+  | "mindfulness"
   | "diario"
   | "videos"
   | "reflexiones"

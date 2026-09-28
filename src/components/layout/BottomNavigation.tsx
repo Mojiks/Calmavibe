@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import type { Page } from "../../types/navigation";
 
+const BUY_ME_A_COFFEE_URL = "https://buymeacoffee.com/mamojtavx";
+
 export default function BottomNavigation({
   page,
   setPage,
@@ -57,14 +59,55 @@ export default function BottomNavigation({
         size={21}
         strokeWidth={page === id ? 2.1 : 1.7}
       />
+
       <span className="text-[10px] font-medium">
         {label}
       </span>
     </button>
   );
 
+  const menuButton = (
+    id: Page,
+    Icon: typeof Home,
+    label: string,
+  ) => (
+    <button
+      type="button"
+      onClick={() => {
+        setPage(id);
+        setOpen(false);
+      }}
+      className="
+        flex
+        min-h-[64px]
+        items-center
+        justify-center
+        gap-3
+        rounded-[18px]
+        bg-white/[0.06]
+        px-3
+        text-sm
+        font-medium
+        text-white/90
+        transition-all
+        duration-200
+        hover:bg-white/[0.10]
+        active:scale-[0.985]
+      "
+    >
+      <Icon
+        size={21}
+        strokeWidth={1.8}
+        className="shrink-0"
+      />
+
+      <span>{label}</span>
+    </button>
+  );
+
   return (
     <>
+      {/* Navegación inferior móvil */}
       <nav
         className="
           fixed
@@ -94,15 +137,30 @@ export default function BottomNavigation({
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Más opciones"
-          className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 py-2 text-white/55"
+          className="
+            flex
+            min-w-0
+            flex-1
+            flex-col
+            items-center
+            justify-center
+            gap-1
+            py-2
+            text-white/55
+          "
         >
-          <Menu size={22} strokeWidth={1.8} />
+          <Menu
+            size={22}
+            strokeWidth={1.8}
+          />
+
           <span className="text-[10px] font-medium">
             Más
           </span>
         </button>
       </nav>
 
+      {/* Modal Más opciones */}
       {open && (
         <div
           className="
@@ -125,9 +183,13 @@ export default function BottomNavigation({
         >
           <div
             className="
+              flex
               w-full
               max-w-md
-              rounded-3xl
+              max-h-[calc(100dvh-104px)]
+              flex-col
+              overflow-hidden
+              rounded-[28px]
               border
               border-white/10
               bg-[#11120F]/95
@@ -137,8 +199,9 @@ export default function BottomNavigation({
             "
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-medium">
+            {/* Encabezado */}
+            <div className="mb-4 flex shrink-0 items-center justify-between">
+              <h2 className="text-[22px] font-semibold tracking-tight">
                 Más opciones
               </h2>
 
@@ -146,78 +209,133 @@ export default function BottomNavigation({
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Cerrar"
-                className="rounded-full p-2 text-white/60 hover:bg-white/10 hover:text-white"
+                className="
+                  rounded-full
+                  p-2
+                  text-white/55
+                  transition-colors
+                  hover:bg-white/10
+                  hover:text-white
+                "
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setPage("books");
-                  setOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-4 text-left text-sm hover:bg-white/[0.09]"
-              >
-                <BookOpen size={19} />
-                Libros
-              </button>
+            {/* Contenido desplazable */}
+            <div className="min-h-0 overflow-y-auto pr-0.5">
+              {/* Opciones */}
+              <div className="grid grid-cols-2 gap-2.5">
+                {menuButton("books", BookOpen, "Libros")}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setPage("videos");
-                  setOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-4 text-left text-sm hover:bg-white/[0.09]"
-              >
-                <Video size={19} />
-                Videos
-              </button>
+                {menuButton(
+                  "mindfulness",
+                  Flower2,
+                  "Mindfulness",
+                )}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setPage("reflexiones");
-                  setOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-4 text-left text-sm hover:bg-white/[0.09]"
-              >
-                <MessagesSquare size={19} />
-                Reflexiones
-              </button>
+                {menuButton("videos", Video, "Videos")}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setPage("sugerencias");
-                  setOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-4 text-left text-sm hover:bg-white/[0.09]"
-              >
-                <Mail size={19} />
-                Sugerencias
-              </button>
+                {menuButton(
+                  "reflexiones",
+                  MessagesSquare,
+                  "Reflexiones",
+                )}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setPage("juegos");
-                  setOpen(false);
-                }}
-                className="flex items-center gap-3 rounded-2xl bg-white/[0.05] p-4 text-left text-sm hover:bg-white/[0.09]"
+                {menuButton(
+                  "sugerencias",
+                  Mail,
+                  "Sugerencias",
+                )}
+
+                {menuButton(
+                  "juegos",
+                  Gamepad2,
+                  "Juegos",
+                )}
+              </div>
+
+              {/* Buy Me a Coffee */}
+              <div
+                className="
+                  mx-auto
+                  mt-4
+                  w-[78%]
+                  overflow-hidden
+                  rounded-[14px]
+                  border
+                  border-[#E8B84A]/20
+                  bg-black/30
+                  shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+                "
               >
-                <Gamepad2 size={19} />
-                Juegos
-              </button>
+                <div className="relative">
+                  <img
+                    src="/images/buymeacoffee-calmavibe.png"
+                    alt="Apoya a CalmaVibe en Buy Me a Coffee"
+                    className="
+                      block
+                      h-auto
+                      w-full
+                      select-none
+                    "
+                    draggable={false}
+                  />
+
+                  <a
+                    href={BUY_ME_A_COFFEE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Apoyar a CalmaVibe en Buy Me a Coffee"
+                    title="Apoyar a CalmaVibe"
+                    className="
+                      absolute
+                      left-[30.3%]
+                      top-[42.1%]
+                      h-[18.8%]
+                      w-[67%]
+                      rounded-full
+                      transition-all
+                      duration-200
+                      hover:bg-white/[0.04]
+                      hover:shadow-[0_0_18px_rgba(255,210,70,0.28)]
+                      active:scale-[0.985]
+                      focus:outline-none
+                      focus-visible:ring-2
+                      focus-visible:ring-[#FFD95A]
+                      focus-visible:ring-offset-2
+                      focus-visible:ring-offset-[#17130B]
+                    "
+                  >
+                    <span className="sr-only">
+                      Apoyar a CalmaVibe
+                    </span>
+                  </a>
+                </div>
+              </div>
             </div>
 
+            {/* Cerrar */}
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="mt-4 w-full rounded-2xl border border-white/10 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
+              className="
+                mt-4
+                h-[58px]
+                shrink-0
+                w-full
+                rounded-[20px]
+                border
+                border-white/10
+                text-sm
+                font-medium
+                text-white/60
+                transition-all
+                duration-200
+                hover:bg-white/5
+                hover:text-white
+                active:scale-[0.99]
+              "
             >
               Cerrar
             </button>

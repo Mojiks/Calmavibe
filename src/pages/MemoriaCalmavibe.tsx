@@ -1,4 +1,4 @@
-// src/pages/MemoriaCalmavibe.tsx
+﻿// src/pages/MemoriaCalmavibe.tsx
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -22,7 +22,7 @@ interface Card {
 
 /*
  * ==========================================================
- * CONFIGURACIÓN DEL JUEGO
+ * CONFIGURACIÃ“N DEL JUEGO
  * ==========================================================
  */
 
@@ -39,23 +39,23 @@ const PAIRS_PER_LEVEL = [
 
 /*
  * ==========================================================
- * SÍMBOLOS
+ * SÃMBOLOS
  * ==========================================================
  */
 
 const SYMBOLS = [
-  { symbol: "🌿", pair: "naturaleza" },
-  { symbol: "🌙", pair: "noche" },
-  { symbol: "☁️", pair: "nube" },
-  { symbol: "💧", pair: "agua" },
-  { symbol: "🌸", pair: "flor" },
-  { symbol: "🕯️", pair: "luz" },
-  { symbol: "🍃", pair: "hoja" },
-  { symbol: "⭐", pair: "estrella" },
-  { symbol: "🌊", pair: "mar" },
-  { symbol: "🍂", pair: "otoño" },
-  { symbol: "🌻", pair: "sol" },
-  { symbol: "🪷", pair: "calma" },
+  { symbol: "ðŸŒ¿", pair: "naturaleza" },
+  { symbol: "ðŸŒ™", pair: "noche" },
+  { symbol: "â˜ï¸", pair: "nube" },
+  { symbol: "ðŸ’§", pair: "agua" },
+  { symbol: "ðŸŒ¸", pair: "flor" },
+  { symbol: "ðŸ•¯ï¸", pair: "luz" },
+  { symbol: "ðŸƒ", pair: "hoja" },
+  { symbol: "â­", pair: "estrella" },
+  { symbol: "ðŸŒŠ", pair: "mar" },
+  { symbol: "ðŸ‚", pair: "otoÃ±o" },
+  { symbol: "ðŸŒ»", pair: "sol" },
+  { symbol: "ðŸª·", pair: "calma" },
 ];
 
 /*
@@ -104,7 +104,6 @@ export default function MemoriaCalmavibe({
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
 
-  const [moves, setMoves] = useState(0);
   const [totalMoves, setTotalMoves] = useState(0);
 
   const [score, setScore] = useState(0);
@@ -123,7 +122,7 @@ export default function MemoriaCalmavibe({
 
   /*
    * ==========================================================
-   * CONFIGURACIÓN VISUAL DEL TABLERO
+   * CONFIGURACIÃ“N VISUAL DEL TABLERO
    * ==========================================================
    */
 
@@ -151,8 +150,10 @@ export default function MemoriaCalmavibe({
     }
 
     if (time <= 0) {
-      setGameOver(true);
-      return;
+      const finishTimer = window.setTimeout(() => {
+        setGameOver(true);
+      }, 0);
+      return () => window.clearTimeout(finishTimer);
     }
 
     const timer = window.setTimeout(() => {
@@ -185,8 +186,6 @@ export default function MemoriaCalmavibe({
       return;
     }
 
-    setLocked(true);
-
     const check = window.setTimeout(() => {
       if (first.pair === second.pair) {
         setMatched((current) => [
@@ -207,8 +206,6 @@ export default function MemoriaCalmavibe({
         setFlipped([]);
         setLocked(false);
       }
-
-      setMoves((current) => current + 1);
 
       setTotalMoves((current) => current + 1);
     }, 650);
@@ -232,9 +229,11 @@ export default function MemoriaCalmavibe({
      */
 
     if (level >= TOTAL_LEVELS) {
-      setGameCompleted(true);
-      setGameOver(true);
-      return;
+      const finishTimer = window.setTimeout(() => {
+        setGameCompleted(true);
+        setGameOver(true);
+      }, 0);
+      return () => window.clearTimeout(finishTimer);
     }
 
     /*
@@ -251,7 +250,6 @@ export default function MemoriaCalmavibe({
       setFlipped([]);
       setMatched([]);
 
-      setMoves(0);
 
       setTime(STARTING_TIME);
 
@@ -289,10 +287,13 @@ export default function MemoriaCalmavibe({
       return;
     }
 
-    setFlipped((current) => [
-      ...current,
-      index,
-    ]);
+    const nextFlipped = [...flipped, index];
+
+    if (nextFlipped.length === 2) {
+      setLocked(true);
+    }
+
+    setFlipped(nextFlipped);
   };
 
   /*
@@ -309,7 +310,7 @@ export default function MemoriaCalmavibe({
     setFlipped([]);
     setMatched([]);
 
-    setMoves(0);
+    setTotalMoves(0);
     setTotalMoves(0);
 
     setScore(0);
@@ -379,7 +380,7 @@ export default function MemoriaCalmavibe({
         </div>
 
         {/* =====================================================
-            EXPLICACIÓN
+            EXPLICACIÃ“N
         ===================================================== */}
 
         <div
@@ -417,13 +418,13 @@ export default function MemoriaCalmavibe({
             <div>
 
               <h2 className="text-sm font-medium text-white">
-                ¿Cómo funciona?
+                Â¿CÃ³mo funciona?
               </h2>
 
               <p className="mt-1 text-xs leading-5 text-white/50">
                 Voltea dos cartas e intenta encontrar sus parejas.
                 Observa, recuerda y juega con calma. Es una experiencia
-                recreativa diseñada para ejercitar la atención y la
+                recreativa diseÃ±ada para ejercitar la atenciÃ³n y la
                 memoria de forma sencilla.
               </p>
 
@@ -434,7 +435,7 @@ export default function MemoriaCalmavibe({
         </div>
 
         {/* =====================================================
-            INFORMACIÓN
+            INFORMACIÃ“N
         ===================================================== */}
 
         <div className="mt-5 grid grid-cols-4 gap-3">
@@ -582,7 +583,7 @@ export default function MemoriaCalmavibe({
               </h2>
 
               <p className="mt-1 text-xs text-white/35">
-                {numberOfPairs} parejas · {numberOfPairs * 2} cartas
+                {numberOfPairs} parejas Â· {numberOfPairs * 2} cartas
               </p>
 
             </div>
@@ -680,7 +681,7 @@ export default function MemoriaCalmavibe({
                           hover:text-white/40
                         "
                       >
-                        ✦
+                        âœ¦
                       </div>
 
                     )}
@@ -693,7 +694,7 @@ export default function MemoriaCalmavibe({
             </div>
 
             {/* =================================================
-                TRANSICIÓN ENTRE NIVELES
+                TRANSICIÃ“N ENTRE NIVELES
             ================================================= */}
 
             {completed &&
@@ -745,7 +746,7 @@ export default function MemoriaCalmavibe({
 
                   <>
                     <p className="text-sm text-[#A7D36D]">
-                      ¡Completaste los 5 niveles!
+                      Â¡Completaste los 5 niveles!
                     </p>
 
                     <h2 className="mt-2 text-2xl font-medium">
@@ -758,7 +759,7 @@ export default function MemoriaCalmavibe({
                     </p>
 
                     <p className="mt-2 text-sm text-white/40">
-                      Puntuación final: {score} puntos.
+                      PuntuaciÃ³n final: {score} puntos.
                     </p>
                   </>
 
@@ -766,7 +767,7 @@ export default function MemoriaCalmavibe({
 
                   <>
                     <p className="text-sm text-white/50">
-                      El tiempo terminó
+                      El tiempo terminÃ³
                     </p>
 
                     <h2 className="mt-2 text-2xl font-medium">
@@ -779,7 +780,7 @@ export default function MemoriaCalmavibe({
                     </p>
 
                     <p className="mt-2 text-sm text-white/40">
-                      Puntuación: {score} puntos.
+                      PuntuaciÃ³n: {score} puntos.
                     </p>
                   </>
 
@@ -844,9 +845,9 @@ export default function MemoriaCalmavibe({
             />
 
             <p className="text-[11px] leading-5 text-white/35">
-              Esta experiencia es recreativa y está diseñada para
-              acompañar momentos de concentración y entretenimiento.
-              No sustituye una evaluación, diagnóstico, tratamiento
+              Esta experiencia es recreativa y estÃ¡ diseÃ±ada para
+              acompaÃ±ar momentos de concentraciÃ³n y entretenimiento.
+              No sustituye una evaluaciÃ³n, diagnÃ³stico, tratamiento
               ni las indicaciones de un profesional de la salud.
             </p>
 
@@ -871,3 +872,4 @@ export default function MemoriaCalmavibe({
     </section>
   );
 }
+

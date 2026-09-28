@@ -56,7 +56,7 @@ export default function Desafio100({
 
   const numbers = useMemo(
     () => shuffleNumbers(target),
-    [level, target]
+    [target]
   );
 
   /*
@@ -71,8 +71,10 @@ export default function Desafio100({
     }
 
     if (time <= 0) {
-      setGameOver(true);
-      return;
+      const finishTimer = window.setTimeout(() => {
+        setGameOver(true);
+      }, 0);
+      return () => window.clearTimeout(finishTimer);
     }
 
     const timer = window.setTimeout(() => {

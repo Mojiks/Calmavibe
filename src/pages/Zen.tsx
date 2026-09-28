@@ -1,4 +1,4 @@
-import { useAudio } from "../context/AudioContext";
+﻿import { useAudio } from "../context/useAudio";
 import Layout from "../components/Layout";
 import {
   Moon,
@@ -407,7 +407,7 @@ export default function Zen() {
                 "
               >
                 <Moon size={14} />
-                Temporizador de sueño
+                Temporizador de sueÃ±o
               </div>
 
               <div className="grid grid-cols-3 gap-2">
@@ -457,3 +457,4 @@ export default function Zen() {
     </Layout>
   );
 }
+

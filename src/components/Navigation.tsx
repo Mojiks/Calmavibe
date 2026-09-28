@@ -6,6 +6,7 @@ import Inicio from "../pages/Inicio";
 import Ayuda from "../pages/Ayuda";
 import Books from "../pages/Books";
 import Zen from "../pages/Zen";
+import Mindfulness from "../pages/Mindfulness";
 import Diario from "../pages/Diario";
 import Videos from "../pages/Videos";
 import Reflexiones from "../pages/Reflexiones";
@@ -47,6 +48,9 @@ export default function Navigation({
     case "zen":
       return <Zen />;
 
+    case "mindfulness":
+      return <Mindfulness />;
+
     case "diario":
       return <Diario />;
 
@@ -60,7 +64,7 @@ export default function Navigation({
       return <Sugerencias />;
 
     case "nomesientobien":
-      return <NoMeSientoBien />;
+      return <NoMeSientoBien setPage={setPage} />;
 
     case "juegos":
       return (

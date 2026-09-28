@@ -152,8 +152,10 @@ export default function Constelacion({
     if (gameOver) return;
 
     if (time <= 0) {
-      setGameOver(true);
-      return;
+      const finishTimer = window.setTimeout(() => {
+        setGameOver(true);
+      }, 0);
+      return () => window.clearTimeout(finishTimer);
     }
 
     const timer =

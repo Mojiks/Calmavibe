@@ -6,7 +6,7 @@ import {
   ArrowRight,
   Eye,
   Hand,
-  Infinity,
+  Infinity as InfinityIcon,
   Sparkles,
   Waves,
   Brain,
@@ -74,13 +74,13 @@ const games = [
     visual: "number",
   },
   {
-  title: "Fluye",
-  category: "CALMA",
-  description:
-    "Encuentra el camino a través del laberinto y avanza a tu propio ritmo, sin presión.",
-  icon: Infinity,
-  visual: "maze",
-},
+    title: "Fluye",
+    category: "CALMA",
+    description:
+      "Sigue el movimiento de la onda y deja que tu atención encuentre su ritmo.",
+    icon: InfinityIcon,
+    visual: "wave",
+  },
 ];
 
 export default function Juegos({
@@ -90,33 +90,61 @@ export default function Juegos({
     <section
       className="
         min-h-screen
-        px-8
-        pb-10
-        pt-8
+        overflow-x-hidden
+        px-4
+        pb-24
+        pt-6
         text-white
+        sm:px-6
+        sm:pb-10
+        sm:pt-7
+        lg:px-8
+        lg:pb-10
+        lg:pt-8
       "
     >
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[1400px]">
 
-        <div className="mb-7">
+        <div className="mb-6 sm:mb-7">
           <h1
             className="
-              text-[42px]
+              text-[34px]
+              leading-tight
               font-extralight
               tracking-[-0.04em]
+              sm:text-[38px]
+              lg:text-[42px]
             "
           >
             Juegos
           </h1>
 
-          <p className="mt-2 text-[15px] text-white/55">
+          <p
+            className="
+              mt-2
+              max-w-[700px]
+              text-[14px]
+              leading-6
+              text-white/55
+              sm:text-[15px]
+            "
+          >
             Pequeñas experiencias para concentrarte,
             distraerte y volver al presente.
           </p>
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
-
+        {/* MÓVIL: 1 columna / TABLET: 2 / PC: 4.
+            La distribución de PC permanece exactamente en 4 columnas. */}
+        <div
+          className="
+            grid
+            grid-cols-1
+            gap-4
+            sm:grid-cols-2
+            lg:grid-cols-4
+          "
+        >
           {games.map((game) => {
             const Icon = game.icon;
 
@@ -125,45 +153,80 @@ export default function Juegos({
                 key={game.title}
                 className="
                   group
+                  min-w-0
                   overflow-hidden
                   rounded-[24px]
                   border
                   border-white/10
                   bg-black/30
-                  p-5
+                  p-4
                   backdrop-blur-2xl
                   transition-all
                   duration-300
                   hover:-translate-y-1
                   hover:border-white/20
                   hover:bg-black/40
+                  lg:p-5
                 "
               >
-                <div className="flex items-center gap-2 text-white/45">
-                  <Icon size={15} strokeWidth={1.7} />
+                <div
+                  className="
+                    flex
+                    min-w-0
+                    items-center
+                    gap-2
+                    text-white/45
+                  "
+                >
+                  <Icon
+                    size={15}
+                    strokeWidth={1.7}
+                    className="shrink-0"
+                  />
 
-                  <span className="text-[11px] tracking-wide">
+                  <span
+                    className="
+                      truncate
+                      text-[10px]
+                      tracking-wide
+                      sm:text-[11px]
+                    "
+                  >
                     {game.category}
                   </span>
                 </div>
 
                 <div
                   className="
-                    mt-4
-                    h-[145px]
+                    mt-3
+                    h-[125px]
                     overflow-hidden
                     rounded-[18px]
                     border
                     border-white/10
                     bg-white/[0.025]
+                    sm:h-[140px]
+                    lg:mt-4
+                    lg:h-[145px]
                   "
                 >
                   {game.visual === "colors" && (
-                    <div className="grid h-full grid-cols-5 gap-2 p-5">
+                    <div
+                      className="
+                        grid
+                        h-full
+                        grid-cols-5
+                        gap-1.5
+                        p-4
+                        sm:gap-2
+                        sm:p-5
+                      "
+                    >
                       {Array.from({ length: 20 }).map((_, i) => (
                         <div
                           key={i}
                           className={`
+                            min-h-0
                             rounded-md
                             ${
                               i === 13
@@ -180,10 +243,10 @@ export default function Juegos({
 
                   {game.visual === "bubbles" && (
                     <div className="relative h-full">
-                      <div className="absolute left-[25%] top-[30%] h-8 w-8 rounded-full border border-white/30" />
-                      <div className="absolute left-[48%] top-[20%] h-12 w-12 rounded-full border border-white/30" />
-                      <div className="absolute left-[62%] top-[42%] h-16 w-16 rounded-full border border-[#A88EDB]/40" />
-                      <div className="absolute left-[40%] top-[55%] h-10 w-10 rounded-full border border-white/20" />
+                      <div className="absolute left-[25%] top-[30%] h-7 w-7 rounded-full border border-white/30 sm:h-8 sm:w-8" />
+                      <div className="absolute left-[48%] top-[20%] h-10 w-10 rounded-full border border-white/30 sm:h-12 sm:w-12" />
+                      <div className="absolute left-[62%] top-[42%] h-12 w-12 rounded-full border border-[#A88EDB]/40 sm:h-16 sm:w-16" />
+                      <div className="absolute left-[40%] top-[55%] h-8 w-8 rounded-full border border-white/20 sm:h-10 sm:w-10" />
                     </div>
                   )}
 
@@ -206,7 +269,17 @@ export default function Juegos({
                   )}
 
                   {game.visual === "memory" && (
-                    <div className="grid h-full grid-cols-4 gap-2 p-5">
+                    <div
+                      className="
+                        grid
+                        h-full
+                        grid-cols-4
+                        gap-1.5
+                        p-4
+                        sm:gap-2
+                        sm:p-5
+                      "
+                    >
                       {Array.from({ length: 8 }).map((_, i) => (
                         <div
                           key={i}
@@ -218,7 +291,8 @@ export default function Juegos({
                             border
                             border-white/10
                             bg-white/[0.04]
-                            text-lg
+                            text-base
+                            sm:text-lg
                           "
                         >
                           {["🌿", "🌙", "☁️", "💧"][i % 4]}
@@ -228,7 +302,17 @@ export default function Juegos({
                   )}
 
                   {game.visual === "pattern" && (
-                    <div className="grid h-full grid-cols-4 gap-2 p-7">
+                    <div
+                      className="
+                        grid
+                        h-full
+                        grid-cols-4
+                        gap-1.5
+                        p-5
+                        sm:gap-2
+                        sm:p-7
+                      "
+                    >
                       {Array.from({ length: 12 }).map((_, i) => (
                         <div
                           key={i}
@@ -246,172 +330,226 @@ export default function Juegos({
                   )}
 
                   {game.visual === "grounding" && (
-                    <div className="flex h-full items-center justify-center gap-8">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#7DA8D9]/40">
-                        <Eye size={19} className="text-[#7DA8D9]" />
+                    <div
+                      className="
+                        flex
+                        h-full
+                        items-center
+                        justify-center
+                        gap-4
+                        sm:gap-8
+                      "
+                    >
+                      <div
+                        className="
+                          flex
+                          h-10
+                          w-10
+                          items-center
+                          justify-center
+                          rounded-full
+                          border
+                          border-[#7DA8D9]/40
+                          sm:h-12
+                          sm:w-12
+                        "
+                      >
+                        <Eye
+                          size={17}
+                          className="text-[#7DA8D9] sm:h-[19px] sm:w-[19px]"
+                        />
                       </div>
 
                       <span className="text-white/30">+</span>
 
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#9D83D5]/40">
-                        <Hand size={19} className="text-[#9D83D5]" />
+                      <div
+                        className="
+                          flex
+                          h-10
+                          w-10
+                          items-center
+                          justify-center
+                          rounded-full
+                          border
+                          border-[#9D83D5]/40
+                          sm:h-12
+                          sm:w-12
+                        "
+                      >
+                        <Hand
+                          size={17}
+                          className="text-[#9D83D5] sm:h-[19px] sm:w-[19px]"
+                        />
                       </div>
                     </div>
                   )}
 
                   {game.visual === "number" && (
                     <div className="flex h-full items-center justify-center">
-                      <span className="text-[52px] font-extralight text-white/80">
+                      <span
+                        className="
+                          text-[42px]
+                          font-extralight
+                          text-white/80
+                          sm:text-[48px]
+                          lg:text-[52px]
+                        "
+                      >
                         100
                       </span>
                     </div>
                   )}
 
-  {game.visual === "maze" && (
-  <div className="relative h-full p-5">
-
-    <div className="grid h-full grid-cols-7 gap-1.5">
-
-      {[
-        1, 1, 1, 0, 1, 1, 1,
-        0, 0, 1, 0, 1, 0, 1,
-        1, 0, 1, 0, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1, 1, 0,
-      ].map((wall, index) => (
-        <div
-          key={index}
-          className={`
-            rounded-[3px]
-            ${
-              wall === 1
-                ? "bg-white/15"
-                : "bg-[#7B8F5D]/20"
-            }
-          `}
-        />
-      ))}
-
-    </div>
-
-    <div
-      className="
-        absolute
-        bottom-[14%]
-        right-[8%]
-        h-3
-        w-3
-        rounded-full
-        bg-[#A7D36D]
-        shadow-[0_0_12px_rgba(167,211,109,.45)]
-      "
-    />
-
-  </div>
-)}
+                  {game.visual === "wave" && (
+                    <div
+                      className="
+                        flex
+                        h-full
+                        items-center
+                        px-4
+                        sm:px-7
+                      "
+                    >
+                      <svg
+                        viewBox="0 0 400 100"
+                        className="w-full"
+                        fill="none"
+                        preserveAspectRatio="none"
+                      >
+                        <path
+                          d="M0 50 C40 10 70 90 110 50 C150 10 180 90 220 50 C260 10 290 90 330 50 C360 20 380 65 400 45"
+                          stroke="#82B5E0"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </div>
+                  )}
                 </div>
 
-                <h2 className="mt-5 text-[17px] font-semibold">
+                <h2
+                  className="
+                    mt-4
+                    break-words
+                    text-[16px]
+                    font-semibold
+                    leading-5
+                    sm:mt-5
+                    sm:text-[17px]
+                  "
+                >
                   {game.title}
                 </h2>
 
-                <p className="mt-2 min-h-[60px] text-[13px] leading-6 text-white/55">
+                <p
+                  className="
+                    mt-2
+                    min-h-0
+                    text-[12px]
+                    leading-5
+                    text-white/55
+                    sm:text-[13px]
+                    sm:leading-6
+                    lg:min-h-[60px]
+                  "
+                >
                   {game.description}
                 </p>
 
-              <button
-  type="button"
-  onClick={() => {
-  if (game.visual === "colors") {
-    setPage("colorzen");
-  }
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (game.visual === "colors") {
+                      setPage("colorzen");
+                    }
 
-  if (game.visual === "bubbles") {
-    setPage("burbuja");
-  }
+                    if (game.visual === "bubbles") {
+                      setPage("burbuja");
+                    }
 
-  if (game.visual === "stars") {
-    setPage("constelacion");
-  }
+                    if (game.visual === "stars") {
+                      setPage("constelacion");
+                    }
 
-  if (game.visual === "memory") {
-    setPage("memoria");
-  }
+                    if (game.visual === "memory") {
+                      setPage("memoria");
+                    }
 
-  if (game.visual === "pattern") {
-    setPage("patron");
-  }
+                    if (game.visual === "pattern") {
+                      setPage("patron");
+                    }
 
-  if (game.visual === "grounding") {
-    setPage("tres333");
-  }
+                    if (game.visual === "grounding") {
+                      setPage("tres333");
+                    }
 
-  if (game.visual === "number") {
-    setPage("desafio100");
-  }
+                    if (game.visual === "number") {
+                      setPage("desafio100");
+                    }
 
-  if (game.visual === "maze") {
-  setPage("fluye");
-}
-}}
-  className="
-    mt-4
-    inline-flex
-    items-center
-    gap-2
-    rounded-full
-    bg-white/[0.07]
-    px-4
-    py-2
-    text-[12px]
-    text-white/60
-    transition
-    hover:bg-[#7B8F5D]
-    hover:text-white
-  "
->
-{game.visual === "colors" ||
-game.visual === "bubbles" ||
-game.visual === "stars" ||
-game.visual === "memory" ||
-game.visual === "pattern" ||
-game.visual === "grounding" ||
-game.visual === "number" ||
-game.visual === "maze"
-  ? "Jugar"
-  : "Próximamente"}
+                    if (game.visual === "wave") {
+                      setPage("fluye");
+                    }
+                  }}
+                  className="
+                    mt-4
+                    inline-flex
+                    min-h-9
+                    items-center
+                    gap-2
+                    rounded-full
+                    bg-white/[0.07]
+                    px-4
+                    py-2
+                    text-[12px]
+                    text-white/60
+                    transition
+                    hover:bg-[#7B8F5D]
+                    hover:text-white
+                  "
+                >
+                  {game.visual === "colors" ||
+                  game.visual === "bubbles" ||
+                  game.visual === "stars" ||
+                  game.visual === "memory" ||
+                  game.visual === "pattern" ||
+                  game.visual === "grounding" ||
+                  game.visual === "number" ||
+                  game.visual === "wave"
+                    ? "Jugar"
+                    : "Próximamente"}
 
-  <ArrowRight size={13} />
-</button>
-
+                  <ArrowRight size={13} />
+                </button>
               </div>
             );
           })}
-
         </div>
 
         <div
           className="
-            mt-5
+            mt-4
             flex
-            items-center
-            justify-between
+            flex-col
+            gap-4
             rounded-[22px]
             border
             border-white/10
             bg-black/25
-            px-6
+            px-5
             py-5
+            sm:mt-5
+            sm:px-6
+            md:flex-row
+            md:items-center
+            md:justify-between
           "
         >
-          <div>
-            <h3 className="text-[16px] font-medium text-white">
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-medium text-white sm:text-[16px]">
               Aquí no tienes que ganar.
             </h3>
 
-            <p className="mt-1 text-[12px] text-white/40">
+            <p className="mt-1 text-[12px] leading-5 text-white/40">
               Solo jugar, respirar y volver a tu ritmo.
             </p>
           </div>
@@ -420,17 +558,23 @@ game.visual === "maze"
             type="button"
             onClick={() => setPage("inicio")}
             className="
+              inline-flex
+              w-full
+              shrink-0
+              items-center
+              justify-center
               rounded-full
               border
               border-white/10
               bg-white/[0.04]
               px-5
-              py-2
+              py-2.5
               text-[12px]
               text-white/60
               transition
               hover:bg-white/10
               hover:text-white
+              sm:w-auto
             "
           >
             Volver al inicio

@@ -1,6 +1,6 @@
 // src/pages/Fluye.tsx
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowDown,
@@ -253,29 +253,6 @@ export default function Fluye({
    * ========================================================
    */
 
-  const resetMaze = (
-    currentLevel = level
-  ) => {
-    const newMaze =
-      generateMaze(
-        currentLevel
-      );
-
-    setMaze(newMaze);
-
-    setPlayer(
-      newMaze.start
-    );
-
-    setMoves(0);
-
-    setCompletedLevel(
-      false
-    );
-
-    setFeedback("");
-  };
-
   /*
    * ========================================================
    * COMENZAR
@@ -317,7 +294,7 @@ export default function Fluye({
    * ========================================================
    */
 
-  const movePlayer = (
+  const movePlayer = useCallback((
     direction:
       | "up"
       | "down"
@@ -493,8 +470,7 @@ export default function Fluye({
         setFeedback("");
       }, 1000);
     }
-  };
-
+  }, [completedGame, completedLevel, level, maze, moves, player, started]);
   /*
    * ========================================================
    * TECLADO
@@ -563,14 +539,7 @@ export default function Fluye({
         "keydown",
         handleKeyDown
       );
-  }, [
-    player,
-    maze,
-    started,
-    completedLevel,
-    completedGame,
-    moves,
-  ]);
+  }, [movePlayer]);
 
   /*
    * ========================================================

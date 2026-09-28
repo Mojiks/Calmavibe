@@ -3,6 +3,7 @@
 import {
   BookOpen,
   Home,
+  Flower2,
   Mail,
   MessageCircle,
   Video,
@@ -18,6 +19,7 @@ interface SidebarMenuProps {
 const items = [
   { id: "inicio" as Page, label: "Inicio", icon: Home },
   { id: "books" as Page, label: "Libros", icon: BookOpen },
+  { id: "mindfulness" as Page, label: "Mindfulness", icon: Flower2 },
   { id: "videos" as Page, label: "Videos", icon: Video },
   { id: "ayuda" as Page, label: "Ayuda", icon: MessageCircle },
   {

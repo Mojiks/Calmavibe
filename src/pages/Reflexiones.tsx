@@ -18,7 +18,7 @@ export default function Reflexiones() {
     <div
       className="min-h-screen text-white px-6 py-16 relative pb-20"
       style={{
-        backgroundImage: "url('/bg.jpg')",
+        backgroundImage: "url('/images/backgrounds/fondo.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

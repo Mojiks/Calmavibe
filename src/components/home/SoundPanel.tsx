@@ -1,4 +1,4 @@
-import {
+﻿import {
   ChevronRight,
   CloudRain,
   Flame,
@@ -7,7 +7,7 @@ import {
   Waves,
   Wind,
 } from "lucide-react";
-import { useAudio } from "../../context/AudioContext";
+import { useAudio } from "../../context/useAudio";
 
 const icons = [CloudRain, Flower2, Music2, Waves, Wind, Flame];
 
@@ -32,7 +32,7 @@ export default function SoundPanel() {
       "
     >
       <h3 className="text-[20px] font-light text-white">
-        Acompaña tu momento
+        AcompaÃ±a tu momento
       </h3>
 
       <p className="mt-2 text-[13px] leading-6 text-white/60">
@@ -91,9 +91,11 @@ export default function SoundPanel() {
 
       {currentIndex !== null && (
         <p className="mt-3 truncate text-center text-[11px] text-white/45">
-          {isPlaying ? "Reproduciendo" : "En pausa"} · {tracks[currentIndex]?.name}
+          {isPlaying ? "Reproduciendo" : "En pausa"} Â· {tracks[currentIndex]?.name}
         </p>
       )}
     </aside>
   );
 }
+
+

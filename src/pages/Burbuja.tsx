@@ -10,7 +10,6 @@ import {
   Sparkles,
   Volume2,
   VolumeX,
-  Accessibility,
   Lightbulb,
   Minus,
   Plus,
@@ -64,7 +63,7 @@ export default function Burbuja({
   onBack,
   onSuggestions,
 }: BurbujaProps) {
-  const [bubbles, setBubbles] = useState(INITIAL_BUBBLES);
+  const bubbles = INITIAL_BUBBLES;
   const [popped, setPopped] = useState<number[]>([]);
   const [cycles, setCycles] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);

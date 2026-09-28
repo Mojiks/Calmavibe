@@ -23,12 +23,14 @@ export default function Sidebar({
         relative
         z-50
         flex
-        h-screen
+        h-full
+        min-h-0
         w-[270px]
         min-w-[270px]
         shrink-0
         flex-col
-        overflow-hidden
+        overflow-x-hidden
+        overflow-y-auto
         border-r
         border-white/10
         bg-[#0D0E0C]/95

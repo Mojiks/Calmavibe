@@ -1,10 +1,13 @@
-import {
+﻿import {
   Music4,
   Play,
   Pause,
 } from "lucide-react";
 
-import { useAudio } from "../../../context/AudioContext";
+import { useAudio } from "../../../context/useAudio";
+
+const BUY_ME_A_COFFEE_URL =
+  "https://buymeacoffee.com/mamojtavx";
 
 export default function SidebarPlayer() {
   const {
@@ -114,7 +117,7 @@ export default function SidebarPlayer() {
             />
           </div>
 
-          {/* Información */}
+          {/* InformaciÃ³n */}
 
           <div className="min-w-0 flex-1">
 
@@ -258,48 +261,122 @@ export default function SidebarPlayer() {
         "
       >
         <svg
-  width="15"
-  height="15"
-  viewBox="0 0 24 24"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
-  className="
-    transition-transform
-    duration-200
-    group-hover:scale-110
-  "
->
-  <rect
-    x="3"
-    y="3"
-    width="18"
-    height="18"
-    rx="5"
-    stroke="currentColor"
-    strokeWidth="1.7"
-  />
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="
+            transition-transform
+            duration-200
+            group-hover:scale-110
+          "
+        >
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="5"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          />
 
-  <circle
-    cx="12"
-    cy="12"
-    r="4"
-    stroke="currentColor"
-    strokeWidth="1.7"
-  />
+          <circle
+            cx="12"
+            cy="12"
+            r="4"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          />
 
-  <circle
-    cx="17.5"
-    cy="6.5"
-    r="1"
-    fill="currentColor"
-  />
-</svg>
+          <circle
+            cx="17.5"
+            cy="6.5"
+            r="1"
+            fill="currentColor"
+          />
+        </svg>
 
         <span className="text-[11px]">
           @calmavibe
         </span>
       </a>
 
+      {/* =========================================================
+          BUY ME A COFFEE â€” CALMAVIBE
+          ========================================================= */}
+
+      <div
+        className="
+          relative
+          mt-3
+          w-full
+          overflow-hidden
+          rounded-[14px]
+          border
+          border-[#E8B84A]/20
+          bg-black/30
+          shadow-[0_10px_30px_rgba(0,0,0,0.25)]
+        "
+      >
+
+        {/* Imagen visual */}
+
+        <img
+          src="/images/buymeacoffee-calmavibe.png"
+          alt="Apoya a CalmaVibe en Buy Me a Coffee"
+          className="
+            block
+            h-auto
+            w-full
+            select-none
+          "
+          draggable={false}
+        />
+
+        {/* =====================================================
+            BOTÃ“N REAL
+            Solo la zona amarilla de la imagen es clickeable.
+            ===================================================== */}
+
+        <a
+          href={BUY_ME_A_COFFEE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Apoyar a CalmaVibe en Buy Me a Coffee"
+          title="Apoyar a CalmaVibe"
+          className="
+            absolute
+            left-[30.3%]
+            top-[42.1%]
+            h-[18.8%]
+            w-[67%]
+            rounded-full
+
+            focus:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-[#FFD95A]
+            focus-visible:ring-offset-2
+            focus-visible:ring-offset-[#17130B]
+
+            transition-all
+            duration-200
+
+            hover:bg-white/[0.04]
+            hover:shadow-[0_0_18px_rgba(255,210,70,0.28)]
+
+            active:scale-[0.985]
+          "
+        >
+          <span className="sr-only">
+            Apoyar a CalmaVibe
+          </span>
+        </a>
+
+      </div>
+
     </div>
   );
 }
+

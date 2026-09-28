@@ -1,3 +1,5 @@
+// src/components/home/HomeFooter.tsx
+
 import {
   Leaf,
   Lock,
@@ -37,7 +39,7 @@ export default function HomeFooter() {
         border-white/10
         bg-black/25
         backdrop-blur-3xl
-        lg:mt-10
+        lg:mt-0
       "
     >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">

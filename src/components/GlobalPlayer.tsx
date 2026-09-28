@@ -1,5 +1,5 @@
-import { Pause, Play, SkipBack, SkipForward, X } from "lucide-react";
-import { useAudio } from "../context/AudioContext";
+﻿import { Pause, Play, SkipBack, SkipForward, X } from "lucide-react";
+import { useAudio } from "../context/useAudio";
 
 export default function GlobalPlayer() {
   const {
@@ -43,3 +43,5 @@ export default function GlobalPlayer() {
     </div>
   );
 }
+
+

@@ -64,7 +64,16 @@ export default function Inicio({
           <BottomWidgets setPage={setPage} />
         </div>
 
-        <HomeFooter />
+        {/* =====================================================
+            MOBILE + TABLET
+
+            En escritorio el HomeFooter vive en App.tsx
+            para poder ocupar el ancho completo.
+            ===================================================== */}
+
+        <div className="lg:hidden">
+          <HomeFooter />
+        </div>
       </div>
     </div>
   );

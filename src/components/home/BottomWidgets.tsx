@@ -40,7 +40,7 @@ export default function BottomWidgets({
       </div>
 
       <div className={widgetClass}>
-        <Mindfulness />
+        <Mindfulness setPage={setPage} />
       </div>
 
       <div className={widgetClass}>

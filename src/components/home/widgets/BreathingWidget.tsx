@@ -115,58 +115,58 @@ export default function BreathingWidget() {
   useEffect(() => {
     if (seconds > 0) return;
 
-    switch (phase) {
-      case "inhale":
-        if (technique.hold > 0) {
-          setPhase("hold");
-          setSeconds(technique.hold);
-        } else {
+    const transition = window.setTimeout(() => {
+      switch (phase) {
+        case "inhale":
+          if (technique.hold > 0) {
+            setPhase("hold");
+            setSeconds(technique.hold);
+          } else {
+            setPhase("exhale");
+            setSeconds(technique.exhale);
+          }
+          break;
+
+        case "hold":
           setPhase("exhale");
           setSeconds(technique.exhale);
-        }
-        break;
+          break;
 
-      case "hold":
-        setPhase("exhale");
-        setSeconds(technique.exhale);
-        break;
+        case "exhale": {
+          if (technique.pause && technique.pause > 0) {
+            setPhase("pause");
+            setSeconds(technique.pause);
+            break;
+          }
 
-      case "exhale": {
-        if (technique.pause && technique.pause > 0) {
-          setPhase("pause");
-          setSeconds(technique.pause);
+          const nextCycle = cycle + 1;
+          if (nextCycle > technique.cycles) {
+            setPhase("done");
+            return;
+          }
+
+          setCycle(nextCycle);
+          setPhase("inhale");
+          setSeconds(technique.inhale);
           break;
         }
 
-        const nextCycle = cycle + 1;
+        case "pause": {
+          const nextCycle = cycle + 1;
+          if (nextCycle > technique.cycles) {
+            setPhase("done");
+            return;
+          }
 
-        if (nextCycle > technique.cycles) {
-          setPhase("done");
-          return;
+          setCycle(nextCycle);
+          setPhase("inhale");
+          setSeconds(technique.inhale);
+          break;
         }
-
-        setCycle(nextCycle);
-        setPhase("inhale");
-        setSeconds(technique.inhale);
-
-        break;
       }
+    }, 0);
 
-      case "pause": {
-        const nextCycle = cycle + 1;
-
-        if (nextCycle > technique.cycles) {
-          setPhase("done");
-          return;
-        }
-
-        setCycle(nextCycle);
-        setPhase("inhale");
-        setSeconds(technique.inhale);
-
-        break;
-      }
-    }
+    return () => window.clearTimeout(transition);
   }, [seconds, phase, cycle, technique]);
 
   /*

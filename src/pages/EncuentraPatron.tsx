@@ -164,8 +164,10 @@ export default function EncuentraPatron({
     }
 
     if (time <= 0) {
-      setGameOver(true);
-      return;
+      const finishTimer = window.setTimeout(() => {
+        setGameOver(true);
+      }, 0);
+      return () => window.clearTimeout(finishTimer);
     }
 
     const timer = window.setTimeout(() => {

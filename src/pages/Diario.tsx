@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Layout from "../components/Layout";
 
 export default function Diario() {
-  const [texto, setTexto] = useState("");
+  const [texto, setTexto] = useState(() => {
+    try {
+      return localStorage.getItem("calmavibe_diario") ?? "";
+    } catch {
+      return "";
+    }
+  });
   const [modo, setModo] = useState<"diario" | "liberacion" | "ritual" | "final">("diario");
 
   const hayTexto = texto.trim().length > 0;
-
-  useEffect(() => {
-    const saved = localStorage.getItem("calmavibe_diario");
-    if (saved) setTexto(saved);
-  }, []);
 
   const guardar = () => {
     if (!hayTexto) return;
@@ -22,7 +23,7 @@ export default function Diario() {
     <div
       className="min-h-screen text-white flex items-center justify-center px-4 relative pb20"
       style={{
-        backgroundImage: "url('/bg.jpg')",
+        backgroundImage: "url('/images/backgrounds/fondo.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

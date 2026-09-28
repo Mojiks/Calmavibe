@@ -1,289 +1,199 @@
-import {
-  createContext,
+﻿import {
   useCallback,
-  useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
+import { AudioContext } from "./AudioContextContext";
 
-import {
-  sounds,
-  type SoundTrack,
-} from "../data/sounds";
-
-type AudioContextType = {
-  tracks: SoundTrack[];
-
-  currentTrack: SoundTrack | null;
-  currentIndex: number | null;
-
-  isPlaying: boolean;
-
-  volume: number;
-
-  currentTime: number;
-  duration: number;
-
-  sleepTimer: number | null;
-
-  playTrack: (index: number) => void;
-  play: (src: string) => void;
-
-  pause: () => void;
-  toggle: () => void;
-  stop: () => void;
-
-  next: () => void;
-  previous: () => void;
-
-  setVolume: (value: number) => void;
-
-  setSleepTimer: (milliseconds: number) => void;
-  clearSleepTimer: () => void;
+export type AudioTrack = {
+  name: string;
+  file: string;
+  src: string;
+  category: string;
 };
 
-const AudioContext =
-  createContext<AudioContextType | null>(null);
-
-export function AudioProvider({
-  children,
-}: {
+type AudioProviderProps = {
   children: ReactNode;
-}) {
-  const audioRef =
-    useRef<HTMLAudioElement | null>(null);
+};
 
-  const sleepTimerRef =
-    useRef<ReturnType<typeof setTimeout> | null>(
-      null
-    );
+export function AudioProvider({ children }: AudioProviderProps) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const [currentIndex, setCurrentIndex] =
-    useState<number | null>(null);
+  const [tracks] = useState<AudioTrack[]>([
+    {
+      name: "Aliento de Buda",
+      file: "alientodebuda.mp3",
+      src: "/sounds/alientodebuda.mp3",
+      category: "Meditación",
+    },
+    {
+      name: "Cuencos Tibetanos",
+      file: "cuencostibetanos.mp3",
+      src: "/sounds/cuencostibetanos.mp3",
+      category: "Relajación",
+    },
+    {
+      name: "Frecuencia Ambiente 528 Hz",
+      file: "frecuenciaambiente528hz.mp3",
+      src: "/sounds/frecuenciaambiente528hz.mp3",
+      category: "Frecuencias",
+    },
+    {
+      name: "Frecuencia Sueño Profundo",
+      file: "frecuenciasuenoprofundo.mp3",
+      src: "/sounds/frecuenciasuenoprofundo.mp3",
+      category: "Sueño",
+    },
+    {
+      name: "Meditación",
+      file: "meditacion.mp3",
+      src: "/sounds/meditacion.mp3",
+      category: "Meditación",
+    },
+    {
+      name: "Meditación con Cascada",
+      file: "meditacionconcascada.mp3",
+      src: "/sounds/meditacionconcascada.mp3",
+      category: "Naturaleza",
+    },
+    {
+      name: "Meditación Cuencos Tibetanos",
+      file: "meditacioncuencostibetanos.mp3",
+      src: "/sounds/meditacioncuencostibetanos.mp3",
+      category: "Meditación",
+    },
+    {
+      name: "Naturaleza Tibetana",
+      file: "naturalezatibetana.mp3",
+      src: "/sounds/naturalezatibetana.mp3",
+      category: "Naturaleza",
+    },
+    {
+      name: "Océano Cósmico",
+      file: "oceanocosmico.mp3",
+      src: "/sounds/oceanocosmico.mp3",
+      category: "Naturaleza",
+    },
+    {
+      name: "Sueño Relajante",
+      file: "suenorelajante.mp3",
+      src: "/sounds/suenorelajante.mp3",
+      category: "Sueño",
+    },
+    {
+      name: "Susurro de Lluvia",
+      file: "susurrodelluvia.mp3",
+      src: "/sounds/susurrodelluvia.mp3",
+      category: "Naturaleza",
+    },
+    {
+      name: "Tormenta Enigmática",
+      file: "tormentaenigmatica.mp3",
+      src: "/sounds/tormentaenigmatica.mp3",
+      category: "Naturaleza",
+    },
+    {
+      name: "16 Hz Beta Binaural",
+      file: "16hzbetabinaural.mp3",
+      src: "/sounds/16hzbetabinaural.mp3",
+      category: "Frecuencias",
+    },
+  ]);
 
-  const [current, setCurrent] =
-    useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolumeState] = useState(0.7);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [sleepTimer, setSleepTimerState] = useState<number | null>(null);
 
-  const [isPlaying, setIsPlaying] =
-    useState(false);
+  const currentTrack = tracks[currentIndex] ?? null;
 
-  const [volume, setVolumeState] =
-    useState(0.5);
+  const ensureAudio = useCallback(() => {
+    if (!audioRef.current) {
+      const audio = new Audio();
+      audio.preload = "metadata";
+      audioRef.current = audio;
+    }
 
-  const [currentTime, setCurrentTime] =
-    useState(0);
-
-  const [duration, setDuration] =
-    useState(0);
-
-  const [sleepTimer, setSleepTimerState] =
-    useState<number | null>(null);
-
-  /*
-   * ================================
-   * CREAR AUDIO
-   * ================================
-   */
-
-  useEffect(() => {
-    const audio = new Audio();
-
-    audio.preload = "metadata";
-    audio.volume = volume;
-
-    audioRef.current = audio;
-
-    const handlePlay = () => {
-      setIsPlaying(true);
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-    };
-
-    const handleTimeUpdate = () => {
-      setCurrentTime(
-        audio.currentTime || 0
-      );
-    };
-
-    const handleLoadedMetadata = () => {
-      setDuration(
-        audio.duration || 0
-      );
-    };
-
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    };
-
-    audio.addEventListener(
-      "play",
-      handlePlay
-    );
-
-    audio.addEventListener(
-      "pause",
-      handlePause
-    );
-
-    audio.addEventListener(
-      "timeupdate",
-      handleTimeUpdate
-    );
-
-    audio.addEventListener(
-      "loadedmetadata",
-      handleLoadedMetadata
-    );
-
-    audio.addEventListener(
-      "ended",
-      handleEnded
-    );
-
-    return () => {
-      audio.pause();
-
-      audio.removeEventListener(
-        "play",
-        handlePlay
-      );
-
-      audio.removeEventListener(
-        "pause",
-        handlePause
-      );
-
-      audio.removeEventListener(
-        "timeupdate",
-        handleTimeUpdate
-      );
-
-      audio.removeEventListener(
-        "loadedmetadata",
-        handleLoadedMetadata
-      );
-
-      audio.removeEventListener(
-        "ended",
-        handleEnded
-      );
-
-      audioRef.current = null;
-    };
+    return audioRef.current;
   }, []);
 
-  /*
-   * ================================
-   * VOLUMEN
-   * ================================
-   */
+  const playTrack = useCallback(
+    async (trackOrIndex: AudioTrack | number) => {
+      const index =
+        typeof trackOrIndex === "number"
+          ? trackOrIndex
+          : tracks.findIndex((track) => track.file === trackOrIndex.file);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
+      if (index < 0 || index >= tracks.length) return;
 
-  /*
-   * ================================
-   * REPRODUCIR ARCHIVO
-   * ================================
-   */
+      const audio = ensureAudio();
+      const track = tracks[index];
 
-  const play = useCallback(
-    (src: string) => {
-      const audio = audioRef.current;
+      const trackUrl = new URL(track.src, window.location.href).href;
 
-      if (!audio) return;
-
-      const absoluteSrc =
-        new URL(
-          src,
-          window.location.origin
-        ).href;
-
-      if (audio.src !== absoluteSrc) {
-        audio.src = src;
+      if (currentIndex !== index || audio.src !== trackUrl) {
+        audio.pause();
+        audio.src = track.src;
         audio.currentTime = 0;
+        audio.volume = volume;
 
+        setCurrentIndex(index);
         setCurrentTime(0);
-        setDuration(0);
       }
 
-      void audio
-        .play()
-        .catch(() => {
-          setIsPlaying(false);
-        });
-
-      setCurrent(src);
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch {
+        setIsPlaying(false);
+      }
     },
-    []
+    [currentIndex, ensureAudio, tracks, volume],
   );
-
-  /*
-   * ================================
-   * REPRODUCIR TRACK
-   * ================================
-   */
-
-  const playTrack = useCallback(
-    (index: number) => {
-      const track = sounds[index];
-
-      if (!track) return;
-
-      setCurrentIndex(index);
-      setCurrent(track.file);
-
-      play(track.file);
-    },
-    [play]
-  );
-
-  /*
-   * ================================
-   * PAUSAR
-   * ================================
-   */
 
   const pause = useCallback(() => {
     audioRef.current?.pause();
+    setIsPlaying(false);
   }, []);
 
-  /*
-   * ================================
-   * PLAY / PAUSE
-   * ================================
-   */
-
-  const toggle = useCallback(() => {
+  const resume = useCallback(async () => {
     const audio = audioRef.current;
 
-    if (!audio || !current) return;
+    if (!audio || !currentTrack) return;
 
-    if (audio.paused) {
-      void audio
-        .play()
-        .catch(() => {
-          setIsPlaying(false);
-        });
-    } else {
-      audio.pause();
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch {
+      setIsPlaying(false);
     }
-  }, [current]);
+  }, [currentTrack]);
 
-  /*
-   * ================================
-   * DETENER
-   * ================================
-   */
+  const toggle = useCallback(async () => {
+    if (isPlaying) {
+      pause();
+    } else {
+      await resume();
+    }
+  }, [isPlaying, pause, resume]);
+
+  const previous = useCallback(async () => {
+    const nextIndex =
+      currentIndex <= 0 ? tracks.length - 1 : currentIndex - 1;
+
+    await playTrack(nextIndex);
+  }, [currentIndex, playTrack, tracks.length]);
+
+  const next = useCallback(async () => {
+    const nextIndex =
+      currentIndex >= tracks.length - 1 ? 0 : currentIndex + 1;
+
+    await playTrack(nextIndex);
+  }, [currentIndex, playTrack, tracks.length]);
 
   const stop = useCallback(() => {
     const audio = audioRef.current;
@@ -292,215 +202,123 @@ export function AudioProvider({
 
     audio.pause();
     audio.currentTime = 0;
-
     setCurrentTime(0);
     setIsPlaying(false);
   }, []);
 
-  /*
-   * ================================
-   * SIGUIENTE
-   * ================================
-   */
+  const seek = useCallback((time: number) => {
+    const audio = audioRef.current;
 
-  const next = useCallback(() => {
-    if (currentIndex === null) return;
+    if (!audio) return;
 
-    playTrack(
-      (currentIndex + 1) %
-        sounds.length
-    );
-  }, [currentIndex, playTrack]);
+    const safeTime = Math.max(0, Math.min(time, audio.duration || time));
 
-  /*
-   * ================================
-   * ANTERIOR
-   * ================================
-   */
+    audio.currentTime = safeTime;
+    setCurrentTime(safeTime);
+  }, []);
 
-  const previous = useCallback(() => {
-    if (currentIndex === null) return;
+  const setVolume = useCallback((nextVolume: number) => {
+    const safeVolume = Math.min(1, Math.max(0, nextVolume));
 
-    playTrack(
-      (currentIndex - 1 + sounds.length) %
-        sounds.length
-    );
-  }, [currentIndex, playTrack]);
+    setVolumeState(safeVolume);
 
-  /*
-   * ================================
-   * VOLUMEN
-   * ================================
-   */
+    if (audioRef.current) {
+      audioRef.current.volume = safeVolume;
+    }
+  }, []);
 
-  const setVolume = useCallback(
-    (value: number) => {
-      setVolumeState(
-        Math.min(
-          1,
-          Math.max(0, value)
-        )
-      );
-    },
-    []
-  );
+  const setSleepTimer = useCallback((minutes: number | null) => {
+    setSleepTimerState(minutes);
+  }, []);
 
-  /*
-   * ================================
-   * LIMPIAR TEMPORIZADOR
-   * ================================
-   */
+  const clearSleepTimer = useCallback(() => {
+    setSleepTimerState(null);
+  }, []);
 
-  const clearSleepTimer =
-    useCallback(() => {
-      if (sleepTimerRef.current) {
-        clearTimeout(
-          sleepTimerRef.current
-        );
+  useEffect(() => {
+    const audio = ensureAudio();
 
-        sleepTimerRef.current = null;
-      }
+    audio.volume = volume;
 
-      setSleepTimerState(null);
-    }, []);
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
 
-  /*
-   * ================================
-   * TEMPORIZADOR
-   * ================================
-   */
+    const handleLoadedMetadata = () => {
+      setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
+    };
 
-  const setSleepTimer =
-    useCallback(
-      (milliseconds: number) => {
-        clearSleepTimer();
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
 
-        sleepTimerRef.current =
-          setTimeout(() => {
-            const audio =
-              audioRef.current;
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
 
-            audio?.pause();
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [ensureAudio, volume]);
 
-            if (audio) {
-              audio.currentTime = 0;
-            }
+  useEffect(() => {
+    if (sleepTimer === null || sleepTimer <= 0) {
+      return;
+    }
 
-            setIsPlaying(false);
-            setCurrentTime(0);
+    const timer = window.setTimeout(() => {
+      setSleepTimerState((previousTimer) => {
+        if (previousTimer === null) return null;
 
-            sleepTimerRef.current =
-              null;
+        const nextTimer = Math.max(0, previousTimer - 1);
 
-            setSleepTimerState(null);
-          }, milliseconds);
+        if (nextTimer === 0) {
+          audioRef.current?.pause();
+          setIsPlaying(false);
+        }
 
-        setSleepTimerState(
-          milliseconds
-        );
-      },
-      [clearSleepTimer]
-    );
+        return nextTimer;
+      });
+    }, 60000);
 
-  /*
-   * Limpiar temporizador al desmontar.
-   */
+    return () => window.clearTimeout(timer);
+  }, [sleepTimer]);
 
   useEffect(() => {
     return () => {
-      clearSleepTimer();
+      audioRef.current?.pause();
+      audioRef.current = null;
     };
-  }, [clearSleepTimer]);
-
-  /*
-   * ================================
-   * VALOR DEL CONTEXTO
-   * ================================
-   */
-
-  const value = useMemo(
-    () => ({
-      tracks: sounds,
-
-      currentTrack:
-        currentIndex === null
-          ? null
-          : sounds[
-              currentIndex
-            ] ?? null,
-
-      currentIndex,
-
-      isPlaying,
-
-      volume,
-
-      currentTime,
-
-      duration,
-
-      sleepTimer,
-
-      playTrack,
-
-      play,
-
-      pause,
-
-      toggle,
-
-      stop,
-
-      next,
-
-      previous,
-
-      setVolume,
-
-      setSleepTimer,
-
-      clearSleepTimer,
-    }),
-    [
-      currentIndex,
-      isPlaying,
-      volume,
-      currentTime,
-      duration,
-      sleepTimer,
-
-      playTrack,
-      play,
-      pause,
-      toggle,
-      stop,
-
-      next,
-      previous,
-
-      setVolume,
-
-      setSleepTimer,
-      clearSleepTimer,
-    ]
-  );
+  }, []);
 
   return (
-    <AudioContext.Provider value={value}>
+    <AudioContext.Provider
+      value={{
+        tracks,
+        currentTrack,
+        currentIndex,
+        isPlaying,
+        volume,
+        currentTime,
+        duration,
+        playTrack,
+        pause,
+        resume,
+        toggle,
+        previous,
+        next,
+        stop,
+        seek,
+        setVolume,
+        sleepTimer,
+        setSleepTimer,
+        clearSleepTimer,
+      }}
+    >
       {children}
     </AudioContext.Provider>
   );
-}
-
-export function useAudio() {
-  const context =
-    useContext(AudioContext);
-
-  if (!context) {
-    throw new Error(
-      "useAudio debe usarse dentro de AudioProvider"
-    );
-  }
-
-  return context;
 }
