@@ -366,26 +366,19 @@ const categoryMap = new Map(categories.map((category) => [category.id, category]
 
 export default function Books() {
   const [selected, setSelected] = useState<Book | null>(null);
-  const [activeCategory, setActiveCategory] = useState<CategoryId | null>(
-    null,
-  );
+  const [activeCategory, setActiveCategory] = useState<CategoryId | null>(null);
 
   const visibleBooks = useMemo(() => {
-    if (!activeCategory) {
-      return books;
-    }
-
+    if (!activeCategory) return books;
     return books.filter((book) => book.categories.includes(activeCategory));
   }, [activeCategory]);
 
-  const selectedCategory = activeCategory
-    ? categoryMap.get(activeCategory)
-    : null;
+  const selectedCategory = activeCategory ? categoryMap.get(activeCategory) : null;
 
   return (
     <Layout>
       <div
-        className="min-h-screen text-white p-4 sm:p-6 pb-20"
+        className="min-h-screen px-4 py-7 pb-24 text-white sm:px-6 sm:py-10 lg:px-8"
         style={{
           backgroundImage: "url('/images/backgrounds/fondo.png')",
           backgroundSize: "cover",
@@ -393,206 +386,190 @@ export default function Books() {
         }}
       >
         {!selected ? (
-          <>
-            <div className="max-w-5xl mx-auto mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-semibold mb-3">
+          <div className="mx-auto max-w-7xl">
+            <header className="mx-auto mb-10 max-w-3xl text-center sm:mb-12">
+              <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.34em] text-amber-200/80 sm:text-xs">
+                CALMAVIBE · ESPACIO DE LECTURA
+              </p>
+              <h1 className="font-serif text-4xl font-normal tracking-[0.015em] text-white drop-shadow-sm sm:text-5xl md:text-6xl">
                 Biblioteca
               </h1>
-
-              <p className="text-white/75 max-w-3xl mx-auto leading-relaxed">
-                Algunas lecturas no buscan darte respuestas inmediatas.
-                Simplemente abren un espacio para detenerte, mirar desde otra
-                perspectiva y descubrir nuevas preguntas.
+              <div className="mx-auto my-5 flex items-center justify-center gap-3" aria-hidden="true">
+                <span className="h-px w-10 bg-amber-200/35" />
+                <span className="text-sm text-amber-200/80">✧</span>
+                <span className="h-px w-10 bg-amber-200/35" />
+              </div>
+              <p className="mx-auto max-w-2xl text-sm leading-7 text-white/75 sm:text-base sm:leading-8">
+                Algunas lecturas no buscan darte respuestas inmediatas. Abren un espacio para detenerte, mirar desde otra perspectiva y descubrir nuevas preguntas.
               </p>
-            </div>
+              <p className="mt-4 text-xs tracking-wide text-white/50">
+                {books.length} lecturas seleccionadas · Sin archivos ni portadas reproducidas
+              </p>
+            </header>
 
-            <div className="max-w-5xl mx-auto mb-10">
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-6">
-                <div className="text-center mb-5">
-                  <h2 className="text-xl font-semibold mb-2">
-                    ¿Qué necesitas hoy?
-                  </h2>
-
-                  <p className="text-sm text-white/60">
-                    Elige un momento que se parezca a lo que estás viviendo.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap justify-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setActiveCategory(null)}
-                    className={`px-4 py-2 rounded-full text-sm transition ${
-                      activeCategory === null
-                        ? "bg-white text-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    Ver todas
-                  </button>
-
-                  {categories.map((category) => (
+            <section
+              aria-labelledby="reading-intention"
+              className="mb-10 overflow-hidden rounded-3xl border border-amber-100/15 bg-[#171513]/55 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.20)] backdrop-blur-xl sm:mb-12 sm:p-7 lg:p-8"
+            >
+              <div className="mx-auto mb-6 max-w-2xl text-center">
+                <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-amber-100/65">Elige sin prisa</p>
+                <h2 id="reading-intention" className="font-serif text-2xl font-normal sm:text-3xl">
+                  ¿Qué necesitas hoy?
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-white/60">
+                  Puedes empezar por lo que más se acerque a tu momento. No necesitas tenerlo todo claro.
+                </p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveCategory(null)}
+                  aria-pressed={activeCategory === null}
+                  className={`rounded-full border px-4 py-2.5 text-xs transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/70 sm:text-sm ${
+                    activeCategory === null
+                      ? "border-amber-100/80 bg-amber-100 text-[#29221b] shadow-[0_4px_18px_rgba(226,196,139,0.12)]"
+                      : "border-white/15 bg-white/[0.035] text-white/75 hover:border-amber-100/35 hover:bg-white/[0.08] hover:text-white"
+                  }`}
+                >
+                  Ver todas <span className="ml-1 opacity-65">({books.length})</span>
+                </button>
+                {categories.map((category) => {
+                  const count = books.filter((book) => book.categories.includes(category.id)).length;
+                  const isActive = activeCategory === category.id;
+                  return (
                     <button
                       key={category.id}
                       type="button"
                       onClick={() => setActiveCategory(category.id)}
-                      className={`px-4 py-2 rounded-full text-sm transition ${
-                        activeCategory === category.id
-                          ? "bg-white text-black"
-                          : "bg-white/10 text-white hover:bg-white/20"
+                      aria-pressed={isActive}
+                      className={`rounded-full border px-4 py-2.5 text-xs transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/70 sm:text-sm ${
+                        isActive
+                          ? "border-amber-100/80 bg-amber-100 text-[#29221b]"
+                          : "border-white/15 bg-white/[0.035] text-white/75 hover:border-amber-100/35 hover:bg-white/[0.08] hover:text-white"
                       }`}
                     >
-                      {category.label}
+                      {category.label} <span className="ml-1 opacity-55">{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section aria-labelledby="books-list-heading">
+              <div className="mb-5 flex flex-col gap-3 border-b border-white/15 pb-4 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-amber-100/65">Una colección para volver a ella</p>
+                  <h2 id="books-list-heading" className="font-serif text-2xl font-normal sm:text-3xl">
+                    {selectedCategory ? selectedCategory.label : "Lecturas para distintos momentos"}
+                  </h2>
+                  {selectedCategory && <p className="mt-2 max-w-2xl text-sm leading-6 text-white/60">{selectedCategory.description}</p>}
+                </div>
+                <p className="shrink-0 text-xs tracking-wide text-white/50">
+                  {visibleBooks.length} {visibleBooks.length === 1 ? "lectura" : "lecturas"}
+                </p>
+              </div>
+
+              {visibleBooks.length > 0 ? (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+                  {visibleBooks.map((book, index) => (
+                    <button
+                      key={book.id}
+                      type="button"
+                      onClick={() => setSelected(book)}
+                      aria-label={`Leer información de ${book.title}, de ${book.author}`}
+                      className="group relative flex min-h-[228px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#171513]/55 p-5 text-left shadow-[0_10px_30px_rgba(0,0,0,0.12)] backdrop-blur-lg transition duration-300 hover:-translate-y-1 hover:border-amber-100/35 hover:bg-[#201c17]/75 hover:shadow-[0_18px_42px_rgba(0,0,0,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/70 sm:min-h-[250px] sm:p-6"
+                    >
+                      <span className="pointer-events-none absolute right-4 top-3 font-serif text-5xl font-light text-amber-100/[0.08] transition duration-300 group-hover:text-amber-100/[0.16]" aria-hidden="true">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="mb-5 flex items-center gap-2 text-[9px] uppercase tracking-[0.22em] text-amber-100/70">
+                        <span className="h-px w-5 bg-amber-200/60" />
+                        Lectura recomendada
+                      </span>
+                      <span className="relative block font-serif text-xl font-normal leading-snug text-white transition-colors group-hover:text-amber-50 sm:text-[1.35rem]">
+                        {book.title}
+                      </span>
+                      <span className="mt-2 block text-sm leading-5 text-white/55">{book.author}</span>
+                      <span className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                        <span className="text-[10px] leading-4 text-white/45">
+                          {book.categories.slice(0, 2).map((id) => categoryMap.get(id)?.label.replace("Necesito ", "").replace("Quiero ", "").replace("Estoy ", "").replace("Me preocupa ", "").replace("Solo ", "")).join(" · ")}
+                        </span>
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-100/20 text-amber-100/75 transition duration-300 group-hover:border-amber-100/55 group-hover:bg-amber-100/10 group-hover:translate-x-0.5" aria-hidden="true">↗</span>
+                      </span>
                     </button>
                   ))}
                 </div>
-              </div>
-            </div>
+              ) : (
+                <div className="rounded-2xl border border-white/10 bg-black/25 px-6 py-14 text-center text-sm text-white/65">
+                  No encontramos lecturas para esta selección.
+                </div>
+              )}
+            </section>
 
-            {selectedCategory && (
-              <div className="max-w-5xl mx-auto mb-6">
-                <p className="text-center text-sm text-white/65">
-                  {selectedCategory.description}
+            <aside className="mx-auto mt-12 max-w-4xl rounded-3xl border border-amber-100/15 bg-[#171513]/50 px-5 py-7 backdrop-blur-xl sm:mt-16 sm:px-8 sm:py-9">
+              <div className="mb-5 text-center">
+                <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-amber-100/65">Criterio y transparencia</p>
+                <h2 className="font-serif text-2xl font-normal">Sobre esta selección</h2>
+              </div>
+              <div className="space-y-4 text-sm leading-7 text-white/65">
+                <p>
+                  Las lecturas de Calmavibe se presentan como recursos de reflexión, bienestar y conocimiento. La colección reúne obras de filosofía, literatura y divulgación psicológica; su presencia aquí no significa que Calmavibe, la APA o la ADAA las respalden como tratamiento o recomendación clínica.
+                </p>
+                <p>
+                  Las descripciones de esta página están redactadas para Calmavibe y buscan presentar cada obra de forma general, sin reproducir sus textos. Los títulos y nombres de autor se muestran para identificar las publicaciones; los derechos correspondientes pertenecen a sus respectivos titulares.
+                </p>
+                <p className="border-t border-white/10 pt-4 text-white/50">
+                  Calmavibe no aloja ni distribuye los libros. La lectura puede aportar información y reflexión, pero no sustituye una evaluación ni la atención de un profesional de la salud.
                 </p>
               </div>
-            )}
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
-              {visibleBooks.map((book) => (
-                <button
-                  key={book.id}
-                  type="button"
-                  onClick={() => setSelected(book)}
-                  className="group text-left rounded-2xl overflow-hidden bg-black/35 backdrop-blur-md border border-white/10 shadow-lg transition duration-300 hover:bg-black/50 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white/60"
-                  aria-label={`Ver información de ${book.title}`}
-                >
-                  <div className="aspect-[2/3] flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-white/10 via-black/10 to-white/5 p-4 text-center">
-                    <span aria-hidden="true" className="text-3xl text-white/75 transition-transform duration-300 group-hover:scale-110">
-                      ◈
-                    </span>
-                    <span className="text-sm sm:text-base font-semibold leading-snug text-white">
-                      {book.title}
-                    </span>
-                    <span className="text-xs leading-relaxed text-white/60">
-                      {book.author}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-[0.18em] text-white/40">
-                      Recomendación de lectura
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {visibleBooks.length === 0 && (
-              <div className="max-w-xl mx-auto text-center py-12 text-white/70">
-                No encontramos lecturas para esta selección.
-              </div>
-            )}
-
-            <div className="max-w-4xl mx-auto mt-12">
-              <div className="bg-black/30 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8">
-                <h2 className="text-xl font-semibold mb-4 text-center">
-                  Sobre esta selección
-                </h2>
-
-                <p className="text-sm text-white/70 leading-7">
-                  Las lecturas de Calmavibe fueron seleccionadas como recursos
-                  de reflexión, bienestar y conocimiento. Para construir esta
-                  colección se tomaron como referencia recursos profesionales
-                  de psicología y salud mental, incluyendo materiales de la
-                  American Psychological Association (APA) y de la Anxiety &
-                  Depression Association of America (ADAA), además de obras de
-                  autores clínicos, investigadores y especialistas.
-                </p>
-
-                <p className="text-sm text-white/55 leading-7 mt-4">
-                  La presencia de una obra en esta biblioteca no significa que
-                  Calmavibe, la APA o la ADAA la estén presentando como
-                  tratamiento o recomendación clínica. Las lecturas pueden
-                  aportar información y reflexión, pero no sustituyen una
-                  evaluación ni la atención de un profesional de la salud.
-                </p>
-
-                <p className="text-sm text-white/55 leading-7 mt-4">
-                  Para respetar los derechos sobre las imágenes editoriales, Calmavibe no reproduce portadas en esta biblioteca. Los títulos y nombres de autor se muestran únicamente para identificar las obras recomendadas; los derechos correspondientes pertenecen a sus respectivos titulares. La inclusión de una obra no implica patrocinio ni afiliación con su autor o editorial.
-                </p>
-              </div>
-            </div>
-          </>
+            </aside>
+          </div>
         ) : (
-          <article className="max-w-5xl mx-auto">
+          <article className="mx-auto max-w-6xl">
             <button
               type="button"
               onClick={() => setSelected(null)}
-              className="mb-6 bg-white/90 text-black px-4 py-2 rounded-lg hover:bg-white transition focus:outline-none focus:ring-2 focus:ring-white"
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/15 bg-[#171513]/55 px-4 py-2.5 text-sm text-white/80 backdrop-blur-lg transition hover:border-amber-100/35 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/70"
             >
-              ← Volver a la biblioteca
+              <span aria-hidden="true">←</span> Volver a la biblioteca
             </button>
 
-            <div className="grid md:grid-cols-[280px_1fr] gap-8 items-start">
-              <div className="w-full max-w-[280px] mx-auto">
-                <div className="aspect-[2/3] flex flex-col items-center justify-center gap-5 rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 via-black/20 to-white/5 p-6 text-center shadow-2xl">
-                  <span aria-hidden="true" className="text-5xl text-white/75">◈</span>
-                  <h2 className="text-xl font-semibold leading-snug">{selected.title}</h2>
-                  <p className="text-sm text-white/60">{selected.author}</p>
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-white/40">Recomendación de lectura</span>
+            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.5fr)] lg:gap-7">
+              <aside className="relative overflow-hidden rounded-3xl border border-amber-100/20 bg-[#171513]/65 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-8 lg:sticky lg:top-8">
+                <span className="absolute -right-3 -top-8 font-serif text-[150px] font-light leading-none text-amber-100/[0.06]" aria-hidden="true">✧</span>
+                <p className="relative mb-7 text-[10px] uppercase tracking-[0.28em] text-amber-100/65">Biblioteca Calmavibe</p>
+                <div className="relative flex min-h-[250px] flex-col justify-between border-y border-amber-100/20 py-7 sm:min-h-[300px] sm:py-9">
+                  <span className="text-sm text-amber-100/70" aria-hidden="true">✧ ✧ ✧</span>
+                  <div>
+                    <h1 className="font-serif text-3xl font-normal leading-tight text-white sm:text-4xl">{selected.title}</h1>
+                    <p className="mt-4 text-sm leading-6 text-white/60">{selected.author}</p>
+                  </div>
+                  <p className="mt-8 text-[9px] uppercase tracking-[0.23em] text-white/40">Una recomendación de lectura</p>
                 </div>
-              </div>
+                <p className="mt-6 text-sm leading-7 text-amber-50/75">{selected.moment}</p>
+              </aside>
 
-              <div className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 p-6 md:p-8">
-                <p className="text-sm uppercase tracking-[0.2em] text-white/55 mb-2">
-                  Una lectura para descubrir
-                </p>
-
-                <h1 className="text-3xl md:text-4xl font-semibold mb-2">
-                  {selected.title}
-                </h1>
-
-                <p className="text-white/65 mb-4">{selected.author}</p>
-
-                <p className="text-sm text-white/55 italic mb-8">
-                  {selected.moment}
-                </p>
-
-                <section className="mb-8">
-                  <h2 className="text-xl font-semibold mb-4">Sinopsis</h2>
-
-                  <p className="text-white/80 leading-8">
-                    {selected.synopsis}
-                  </p>
+              <div className="rounded-3xl border border-white/10 bg-[#171513]/65 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-8 lg:p-10">
+                <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-amber-100/65">Una lectura para descubrir</p>
+                <div className="mb-8 h-px w-16 bg-amber-200/50" />
+                <section className="mb-8 sm:mb-10">
+                  <h2 className="mb-3 font-serif text-2xl font-normal sm:text-3xl">La historia detrás de la obra</h2>
+                  <p className="text-sm leading-7 text-white/75 sm:text-base sm:leading-8">{selected.synopsis}</p>
                 </section>
-
-                <section className="mb-8">
-                  <h2 className="text-xl font-semibold mb-4">
-                    ¿Por qué está en Calmavibe?
-                  </h2>
-
-                  <p className="text-white/80 leading-8">
-                    {selected.whyCalmavibe}
-                  </p>
+                <section className="mb-8 rounded-2xl border border-amber-100/15 bg-amber-100/[0.045] p-5 sm:mb-10 sm:p-6">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.24em] text-amber-100/65">Por qué la elegimos</p>
+                  <h2 className="mb-3 font-serif text-xl font-normal sm:text-2xl">¿Por qué está en Calmavibe?</h2>
+                  <p className="text-sm leading-7 text-white/75 sm:text-base sm:leading-8">{selected.whyCalmavibe}</p>
                 </section>
-
                 {selected.sensitive && (
-                  <section className="mb-8 rounded-xl border border-white/10 bg-white/5 p-4">
-                    <h2 className="text-base font-semibold mb-2">
-                      Contenido sensible
-                    </h2>
-
-                    <p className="text-sm text-white/65 leading-6">
-                      {selected.sensitive}
-                    </p>
+                  <section className="mb-8 rounded-2xl border border-amber-100/15 bg-black/20 p-5 sm:p-6" aria-label="Aviso de contenido sensible">
+                    <h2 className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-amber-100/80">Contenido sensible</h2>
+                    <p className="text-sm leading-6 text-white/65">{selected.sensitive}</p>
                   </section>
                 )}
-
-                <div className="pt-6 border-t border-white/10">
-                  <p className="text-sm text-white/55 leading-6">
-                    Calmavibe recomienda esta obra como referencia de lectura.
-                    No almacenamos ni distribuimos el libro desde esta
-                    plataforma. Puedes buscar la edición que prefieras en una
-                    biblioteca, librería o fuente que consideres adecuada.
-                  </p>
-                </div>
+                <footer className="border-t border-white/10 pt-5 text-xs leading-6 text-white/50">
+                  Calmavibe no almacena ni distribuye esta obra. Puedes buscar una edición en una biblioteca o librería de tu elección. Los derechos de la publicación corresponden a sus titulares; su mención no implica patrocinio ni afiliación.
+                </footer>
               </div>
             </div>
           </article>
