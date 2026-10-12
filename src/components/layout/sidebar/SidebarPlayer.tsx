@@ -117,7 +117,7 @@ export default function SidebarPlayer() {
             />
           </div>
 
-          {/* InformaciÃ³n */}
+          {/* Información */}
 
           <div className="min-w-0 flex-1">
 
@@ -304,7 +304,7 @@ export default function SidebarPlayer() {
       </a>
 
       {/* =========================================================
-          BUY ME A COFFEE â€” CALMAVIBE
+          BUY ME A COFFEE — CALMAVIBE
           ========================================================= */}
 
       <div
@@ -336,7 +336,7 @@ export default function SidebarPlayer() {
         />
 
         {/* =====================================================
-            BOTÃ“N REAL
+            BOTÓN REAL
             Solo la zona amarilla de la imagen es clickeable.
             ===================================================== */}
 

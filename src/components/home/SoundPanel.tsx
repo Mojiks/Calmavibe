@@ -32,7 +32,7 @@ export default function SoundPanel() {
       "
     >
       <h3 className="text-[20px] font-light text-white">
-        AcompaÃ±a tu momento
+        Acompaña tu momento
       </h3>
 
       <p className="mt-2 text-[13px] leading-6 text-white/60">
@@ -91,7 +91,7 @@ export default function SoundPanel() {
 
       {currentIndex !== null && (
         <p className="mt-3 truncate text-center text-[11px] text-white/45">
-          {isPlaying ? "Reproduciendo" : "En pausa"} Â· {tracks[currentIndex]?.name}
+          {isPlaying ? "Reproduciendo" : "En pausa"} · {tracks[currentIndex]?.name}
         </p>
       )}
     </aside>

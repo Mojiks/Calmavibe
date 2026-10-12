@@ -22,7 +22,7 @@ interface Card {
 
 /*
  * ==========================================================
- * CONFIGURACIÃ“N DEL JUEGO
+ * CONFIGURACIÓN DEL JUEGO
  * ==========================================================
  */
 
@@ -39,23 +39,23 @@ const PAIRS_PER_LEVEL = [
 
 /*
  * ==========================================================
- * SÃMBOLOS
+ * SIMBOLOS
  * ==========================================================
  */
 
 const SYMBOLS = [
-  { symbol: "ðŸŒ¿", pair: "naturaleza" },
-  { symbol: "ðŸŒ™", pair: "noche" },
-  { symbol: "â˜ï¸", pair: "nube" },
-  { symbol: "ðŸ’§", pair: "agua" },
-  { symbol: "ðŸŒ¸", pair: "flor" },
-  { symbol: "ðŸ•¯ï¸", pair: "luz" },
-  { symbol: "ðŸƒ", pair: "hoja" },
-  { symbol: "â­", pair: "estrella" },
-  { symbol: "ðŸŒŠ", pair: "mar" },
-  { symbol: "ðŸ‚", pair: "otoÃ±o" },
-  { symbol: "ðŸŒ»", pair: "sol" },
-  { symbol: "ðŸª·", pair: "calma" },
+  { symbol: "🌿", pair: "naturaleza" },
+  { symbol: "🌙", pair: "noche" },
+  { symbol: "☁️", pair: "nube" },
+  { symbol: "💧", pair: "agua" },
+  { symbol: "🌸", pair: "flor" },
+ { symbol: "🕯️", pair: "luz" },
+ { symbol: "🍃", pair: "hoja" },
+  { symbol: "⭐", pair: "estrella" },
+  { symbol: "🌊", pair: "mar" },
+  { symbol: "🍂", pair: "otoño" },
+  { symbol: "🌻", pair: "sol" },
+  { symbol: "🪷", pair: "calma" },
 ];
 
 /*
@@ -122,7 +122,7 @@ export default function MemoriaCalmavibe({
 
   /*
    * ==========================================================
-   * CONFIGURACIÃ“N VISUAL DEL TABLERO
+   * CONFIGURACIÓN VISUAL DEL TABLERO
    * ==========================================================
    */
 
@@ -380,7 +380,7 @@ export default function MemoriaCalmavibe({
         </div>
 
         {/* =====================================================
-            EXPLICACIÃ“N
+            EXPLICACIÓN
         ===================================================== */}
 
         <div
@@ -418,13 +418,13 @@ export default function MemoriaCalmavibe({
             <div>
 
               <h2 className="text-sm font-medium text-white">
-                Â¿CÃ³mo funciona?
+                ¿Cómo funciona?
               </h2>
 
               <p className="mt-1 text-xs leading-5 text-white/50">
                 Voltea dos cartas e intenta encontrar sus parejas.
                 Observa, recuerda y juega con calma. Es una experiencia
-                recreativa diseÃ±ada para ejercitar la atenciÃ³n y la
+                recreativa diseñada para ejercitar la atención y la
                 memoria de forma sencilla.
               </p>
 
@@ -435,7 +435,7 @@ export default function MemoriaCalmavibe({
         </div>
 
         {/* =====================================================
-            INFORMACIÃ“N
+            INFORMACIÓN
         ===================================================== */}
 
         <div className="mt-5 grid grid-cols-4 gap-3">
@@ -583,7 +583,7 @@ export default function MemoriaCalmavibe({
               </h2>
 
               <p className="mt-1 text-xs text-white/35">
-                {numberOfPairs} parejas Â· {numberOfPairs * 2} cartas
+                {numberOfPairs} parejas · {numberOfPairs * 2} cartas
               </p>
 
             </div>
@@ -681,7 +681,7 @@ export default function MemoriaCalmavibe({
                           hover:text-white/40
                         "
                       >
-                        âœ¦
+                        ✦
                       </div>
 
                     )}
@@ -694,7 +694,7 @@ export default function MemoriaCalmavibe({
             </div>
 
             {/* =================================================
-                TRANSICIÃ“N ENTRE NIVELES
+                TRANSICIÓN ENTRE NIVELES
             ================================================= */}
 
             {completed &&
@@ -746,7 +746,7 @@ export default function MemoriaCalmavibe({
 
                   <>
                     <p className="text-sm text-[#A7D36D]">
-                      Â¡Completaste los 5 niveles!
+                      ¡Completaste los 5 niveles!
                     </p>
 
                     <h2 className="mt-2 text-2xl font-medium">
@@ -759,7 +759,7 @@ export default function MemoriaCalmavibe({
                     </p>
 
                     <p className="mt-2 text-sm text-white/40">
-                      PuntuaciÃ³n final: {score} puntos.
+                      Puntuación final: {score} puntos.
                     </p>
                   </>
 
@@ -767,7 +767,7 @@ export default function MemoriaCalmavibe({
 
                   <>
                     <p className="text-sm text-white/50">
-                      El tiempo terminÃ³
+                      El tiempo terminó
                     </p>
 
                     <h2 className="mt-2 text-2xl font-medium">
@@ -780,7 +780,7 @@ export default function MemoriaCalmavibe({
                     </p>
 
                     <p className="mt-2 text-sm text-white/40">
-                      PuntuaciÃ³n: {score} puntos.
+                      Puntuación: {score} puntos.
                     </p>
                   </>
 
@@ -845,9 +845,9 @@ export default function MemoriaCalmavibe({
             />
 
             <p className="text-[11px] leading-5 text-white/35">
-              Esta experiencia es recreativa y estÃ¡ diseÃ±ada para
-              acompaÃ±ar momentos de concentraciÃ³n y entretenimiento.
-              No sustituye una evaluaciÃ³n, diagnÃ³stico, tratamiento
+              Esta experiencia es recreativa y está diseñada para
+              acompañar momentos de concentración y entretenimiento.
+              No sustituye una evaluación, diagnóstico, tratamiento
               ni las indicaciones de un profesional de la salud.
             </p>
 
@@ -872,4 +872,5 @@ export default function MemoriaCalmavibe({
     </section>
   );
 }
+
 

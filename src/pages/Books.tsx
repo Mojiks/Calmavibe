@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Layout from "../components/Layout";
 
 type CategoryId =
@@ -374,6 +374,12 @@ export default function Books() {
   }, [activeCategory]);
 
   const selectedCategory = activeCategory ? categoryMap.get(activeCategory) : null;
+
+  useEffect(() => {
+  if (selected) {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+}, [selected]);
 
   return (
     <Layout>

@@ -41,12 +41,12 @@ const COUNTRY_CONFIG: Record<string, CountryConfig> = {
     emergency: "911",
     emergencyLabel: "Emergencias",
     support: {
-      name: "LÃ­nea de la Vida",
+      name: "Línea de la Vida",
       number: "800 911 2000",
       description:
-        "OrientaciÃ³n y apoyo especializado en salud mental y adicciones. Atiende, entre otros temas, ansiedad, depresiÃ³n y crisis emocionales.",
+        "Orientación y apoyo especializado en salud mental y adicciones. Atiende, entre otros temas, ansiedad, depresión y crisis emocionales.",
       href: "tel:8009112000",
-      available: "24 horas Â· 365 dÃ­as",
+      available: "24 horas · 365 días",
     },
   },
 
@@ -59,7 +59,7 @@ const COUNTRY_CONFIG: Record<string, CountryConfig> = {
       description:
         "Apoyo gratuito y confidencial para crisis emocionales y de salud mental.",
       href: "tel:988",
-      available: "24 horas Â· 7 dÃ­as",
+      available: "24 horas · 7 días",
     },
   },
 
@@ -70,20 +70,20 @@ const COUNTRY_CONFIG: Record<string, CountryConfig> = {
       name: "9-8-8 Suicide Crisis Helpline",
       number: "988",
       description:
-        "Apoyo para personas que atraviesan una crisis relacionada con el suicidio o estÃ¡n preocupadas por alguien.",
+        "Apoyo para personas que atraviesan una crisis relacionada con el suicidio o están preocupadas por alguien.",
       href: "tel:988",
-      available: "24 horas Â· 7 dÃ­as",
+      available: "24 horas · 7 días",
     },
   },
 
   GB: {
     emergency: "999",
-    emergencyLabel: "Emergencias Â· tambiÃ©n 112",
+    emergencyLabel: "Emergencias · también 112",
     support: {
       name: "Samaritans",
       number: "116 123",
       description:
-        "LÃ­nea de apoyo emocional para personas que necesitan hablar con alguien.",
+        "Línea de apoyo emocional para personas que necesitan hablar con alguien.",
       href: "tel:116123",
       available: "24 horas",
     },
@@ -96,9 +96,9 @@ const COUNTRY_CONFIG: Record<string, CountryConfig> = {
       name: "Lifeline",
       number: "13 11 14",
       description:
-        "Apoyo en crisis y prevenciÃ³n del suicidio por telÃ©fono.",
+        "Apoyo en crisis y prevención del suicidio por teléfono.",
       href: "tel:131114",
-      available: "24 horas Â· 7 dÃ­as",
+      available: "24 horas · 7 días",
     },
   },
 
@@ -109,7 +109,7 @@ const COUNTRY_CONFIG: Record<string, CountryConfig> = {
       name: "1737",
       number: "1737",
       description:
-        "Apoyo de salud mental y emocional. TambiÃ©n puedes utilizarlo para pedir orientaciÃ³n durante una crisis.",
+        "Apoyo de salud mental y emocional. También puedes utilizarlo para pedir orientación durante una crisis.",
       href: "tel:1737",
       available: "24 horas",
     },
@@ -147,7 +147,7 @@ const EU_COUNTRIES = new Set([
 ]);
 
 function getCountryName(country: string | null) {
-  if (!country) return "tu paÃ­s";
+  if (!country) return "tu país";
 
   try {
     const displayNames = new Intl.DisplayNames(["es"], {
@@ -306,7 +306,7 @@ export default function Ayuda() {
   function requestPreciseLocation() {
     if (!navigator.geolocation) {
       setLocationError(
-        "Este navegador no permite obtener tu ubicaciÃ³n precisa.",
+        "Este navegador no permite obtener tu ubicación precisa.",
       );
       return;
     }
@@ -329,15 +329,15 @@ export default function Ayuda() {
 
         if (error.code === error.PERMISSION_DENIED) {
           setLocationError(
-            "No se concediÃ³ permiso para usar tu ubicaciÃ³n. Puedes intentarlo nuevamente desde los permisos del navegador.",
+            "No se concedió permiso para usar tu ubicación. Puedes intentarlo nuevamente desde los permisos del navegador.",
           );
         } else if (error.code === error.TIMEOUT) {
           setLocationError(
-            "La ubicaciÃ³n tardÃ³ demasiado en responder. IntÃ©ntalo nuevamente.",
+            "La ubicación tardó demasiado en responder. Inténtalo nuevamente.",
           );
         } else {
           setLocationError(
-            "No fue posible obtener tu ubicaciÃ³n precisa.",
+            "No fue posible obtener tu ubicación precisa.",
           );
         }
       },
@@ -371,8 +371,8 @@ export default function Ayuda() {
             </h1>
 
             <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-white/60 sm:text-base">
-              Encuentra servicios de emergencia, lÃ­neas de apoyo emocional y
-              hospitales cercanos a tu ubicaciÃ³n.
+              Encuentra servicios de emergencia, líneas de apoyo emocional y
+              hospitales cercanos a tu ubicación.
             </p>
           </div>
 
@@ -380,8 +380,8 @@ export default function Ayuda() {
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/25 px-3 py-1.5">
               <Globe2 size={14} />
               {loadingCountry
-                ? "Detectando paÃ­s..."
-                : `PaÃ­s detectado: ${countryName}`}
+                ? "Detectando país..."
+                : `País detectado: ${countryName}`}
             </span>
 
             {geo.city && (
@@ -403,7 +403,7 @@ export default function Ayuda() {
                   Si existe peligro inmediato
                 </h2>
                 <p className="mt-1 text-sm leading-5 text-white/60">
-                  Utiliza el servicio de emergencias de tu paÃ­s.
+                  Utiliza el servicio de emergencias de tu país.
                 </p>
               </div>
             </div>
@@ -458,7 +458,7 @@ export default function Ayuda() {
                   Apoyo emocional y salud mental
                 </h2>
                 <p className="mt-1 text-sm leading-5 text-white/60">
-                  Puedes buscar ayuda aunque no estÃ©s en una emergencia.
+                  Puedes buscar ayuda aunque no estés en una emergencia.
                 </p>
               </div>
             </div>
@@ -498,7 +498,7 @@ export default function Ayuda() {
                 </p>
 
                 <p className="mt-2 text-sm leading-6 text-white/60">
-                  Busca lÃ­neas verificadas para ansiedad, depresiÃ³n, estrÃ©s,
+                  Busca líneas verificadas para ansiedad, depresión, estrés,
                   crisis, autolesiones, consumo de sustancias y otras
                   situaciones emocionales.
                 </p>
@@ -510,7 +510,7 @@ export default function Ayuda() {
                   className="mt-4 inline-flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.06] px-5 text-sm font-semibold transition hover:bg-white/[0.1]"
                 >
                   <Globe2 size={18} />
-                  Buscar ayuda en mi paÃ­s
+                  Buscar ayuda en mi país
                   <ExternalLink size={15} />
                 </a>
               </div>
@@ -523,7 +523,7 @@ export default function Ayuda() {
                 rel="noopener noreferrer"
                 className="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 text-center text-xs text-white/65 transition hover:bg-white/[0.07]"
               >
-                Ansiedad y estrÃ©s
+                Ansiedad y estrés
               </a>
 
               <a
@@ -532,7 +532,7 @@ export default function Ayuda() {
                 rel="noopener noreferrer"
                 className="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 text-center text-xs text-white/65 transition hover:bg-white/[0.07]"
               >
-                DepresiÃ³n
+                Depresión
               </a>
 
               <a
@@ -558,7 +558,7 @@ export default function Ayuda() {
                     Hospitales cercanos
                   </h2>
                   <p className="mt-1 text-sm leading-5 text-white/60">
-                    Puedes usar tu ubicaciÃ³n precisa para centrar el mapa.
+                    Puedes usar tu ubicación precisa para centrar el mapa.
                   </p>
                 </div>
               </div>
@@ -571,8 +571,8 @@ export default function Ayuda() {
               >
                 <LocateFixed size={17} />
                 {locationLoading
-                  ? "Buscando ubicaciÃ³n..."
-                  : "Usar mi ubicaciÃ³n"}
+                  ? "Buscando ubicación..."
+                  : "Usar mi ubicación"}
               </button>
             </div>
 
@@ -586,7 +586,7 @@ export default function Ayuda() {
               <>
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
                   <iframe
-                    title="Mapa de ubicaciÃ³n aproximada y hospitales cercanos"
+                    title="Mapa de ubicación aproximada y hospitales cercanos"
                     src={mapUrl}
                     className="h-[320px] w-full border-0 sm:h-[380px]"
                     loading="lazy"
@@ -625,7 +625,7 @@ export default function Ayuda() {
                 />
 
                 <p className="mt-3 font-medium text-white/80">
-                  Necesitamos una ubicaciÃ³n para mostrar el mapa
+                  Necesitamos una ubicación para mostrar el mapa
                 </p>
 
                 <p className="mt-2 max-w-md text-sm leading-6 text-white/45">
@@ -639,26 +639,27 @@ export default function Ayuda() {
                   className="mt-4 inline-flex min-h-[48px] items-center justify-center gap-2 rounded-2xl bg-[#D8E9C3] px-5 text-sm font-semibold text-[#171A14] transition hover:brightness-105"
                 >
                   <LocateFixed size={17} />
-                  Permitir ubicaciÃ³n
+                  Permitir ubicación
                 </button>
               </div>
             )}
 
             <p className="mt-3 text-center text-[11px] leading-5 text-white/35">
-              Mapa: OpenStreetMap Â· La ubicaciÃ³n aproximada puede provenir de
-              la conexiÃ³n. La ubicaciÃ³n precisa solo se usa cuando tÃº la
+              Mapa: OpenStreetMap · La ubicación aproximada puede provenir de
+              la conexión. La ubicación precisa solo se usa cuando tú la
               autorizas.
             </p>
           </section>
 
           <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-center text-xs leading-5 text-white/45">
             Calmavibe no sustituye a los servicios de emergencia ni a la
-            atenciÃ³n profesional. Si existe peligro inmediato, utiliza el
-            nÃºmero de emergencias de tu ubicaciÃ³n.
+            atención profesional. Si existe peligro inmediato, utiliza el
+            número de emergencias de tu ubicación.
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+
 
