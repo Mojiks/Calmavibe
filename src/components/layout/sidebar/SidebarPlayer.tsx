@@ -1,4 +1,4 @@
-﻿import {
+import {
   Music4,
   Play,
   Pause,
@@ -306,6 +306,20 @@ export default function SidebarPlayer() {
       {/* =========================================================
           BUY ME A COFFEE — CALMAVIBE
           ========================================================= */}
+      <div className="mt-3 w-full px-1 text-center">
+        <h3 className="text-sm font-medium tracking-wide text-[#F0EEE8]">
+          Un espacio que crece contigo
+        </h3>
+        <p className="mt-1 text-[11px] leading-4 text-white/60">
+          Calmavibe es gratuito para todos.
+        </p>
+        <p className="mt-1 text-[11px] leading-4 text-white/55">
+          Si este espacio te ha ayudado, puedes apoyar voluntariamente su continuidad y ayudarnos a crear más contenido.
+        </p>
+        <p className="mt-1 text-[10px] italic text-white/45">
+          Gracias por formar parte de Calmavibe. ♡
+        </p>
+      </div>
 
       <div
         className="
