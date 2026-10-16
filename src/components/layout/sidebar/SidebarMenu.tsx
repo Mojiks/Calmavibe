@@ -1,11 +1,11 @@
 import {
   BookOpen,
   Home,
-  Flower2,
+
   Mail,
   MessageCircle,
   Video,
-  Moon,
+
   Gamepad2,
 } from "lucide-react";
 
@@ -19,8 +19,8 @@ interface SidebarMenuProps {
 const items = [
   { id: "inicio" as Page, label: "Inicio", icon: Home },
   { id: "books" as Page, label: "Libros", icon: BookOpen },
-  { id: "zen" as Page, label: "Zen", icon: Moon },
-  { id: "mindfulness" as Page, label: "Mindfulness", icon: Flower2 },
+
+
   { id: "juegos" as Page, label: "Juegos", icon: Gamepad2 },
   { id: "videos" as Page, label: "Videos", icon: Video },
   { id: "ayuda" as Page, label: "Ayuda", icon: MessageCircle },
@@ -127,3 +127,4 @@ export default function SidebarMenu({
     </nav>
   );
 }
+

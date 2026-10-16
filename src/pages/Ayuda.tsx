@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   ExternalLink,
@@ -252,7 +252,10 @@ export default function Ayuda() {
         const data = (await response.json()) as GeoLocation;
 
         if (active) {
-          setGeo(data);
+          setGeo({
+            ...data,
+            country: data.country ?? getCountryFromLanguage(),
+          });
         }
       } catch {
         if (active) {
@@ -661,5 +664,6 @@ export default function Ayuda() {
     </Layout>
   );
 }
+
 
 

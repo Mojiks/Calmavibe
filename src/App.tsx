@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Page } from "./types/navigation";
 
 import Background from "./components/Background";
@@ -9,6 +9,20 @@ import HomeFooter from "./components/home/HomeFooter";
 
 function App() {
   const [page, setPage] = useState<Page>("inicio");
+
+  // Reiniciar el contenedor desplazable al cambiar de sección.
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    const scrollContainer = document.querySelector<HTMLElement>(
+      "main.overflow-y-auto"
+    );
+
+    if (scrollContainer) {
+      scrollContainer.scrollTop = 0;
+      scrollContainer.scrollLeft = 0;
+    }
+  }, [page]);
 
   return (
     <>
@@ -92,3 +106,4 @@ function App() {
 }
 
 export default App;
+

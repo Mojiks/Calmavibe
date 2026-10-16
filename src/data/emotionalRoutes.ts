@@ -32,6 +32,8 @@ export type CalmRoute = {
   id: CalmEmotion;
   label: string;
   description: string;
+  patternTitle?: string;
+  patternDescription?: string;
   patterns: Array<{ id: CalmPattern; label: string }>;
 };
 
@@ -39,13 +41,16 @@ export const emotionalRoutes: CalmRoute[] = [
   {
     id: "ansiedad",
     label: "Ansiedad",
-    description: "Siento inquietud, alerta o una sensación difícil de bajar.",
+    description: "La preocupación, la inquietud o la sensación de alerta me cuesta bajarlas.",
+    patternTitle: "¿Qué pasa por tu mente?",
+    patternDescription: "Aquí no hay respuestas correctas. Elige lo que más se identifique con lo que estás viviendo.",
     patterns: [
       { id: "pensamiento", label: "Mi mente va muy rápido" },
       { id: "cuerpo", label: "Lo siento mucho en mi cuerpo" },
-      { id: "anticipacion", label: "Tengo miedo de que ocurra algo" },
+      { id: "anticipacion", label: "Me preocupa que algo malo pueda pasar" },
       { id: "pensamiento", label: "No puedo dejar de pensar" },
       { id: "sin-patron", label: "No sé exactamente qué pasa" },
+      { id: "anticipacion", label: "Siento que necesito resolverlo todo ahora" },
     ],
   },
   {
@@ -62,10 +67,14 @@ export const emotionalRoutes: CalmRoute[] = [
   {
     id: "estres",
     label: "Estrés o tensión",
-    description: "Siento presión, cansancio o tensión acumulada.",
+    description: "Siento que las demandas del día me están sobrepasando.",
+    patternTitle: "¿Cómo se está manifestando en ti?",
+    patternDescription: "El estrés puede aparecer cuando sentimos que las demandas de la vida superan los recursos que tenemos para afrontarlas. Se puede manifestar en nuestra mente, cuerpo o forma de actuar.",
     patterns: [
       { id: "cuerpo", label: "Mi cuerpo está tenso" },
-      { id: "pensamiento", label: "No puedo desconectar" },
+      { id: "cuerpo", label: "Tengo tensión en el cuello, los hombros o la mandíbula" },
+      { id: "pensamiento", label: "Sigo alerta aunque debería estar descansando" },
+      { id: "sin-patron", label: "Estoy agotado/a incluso después de descansar" },
       { id: "critica", label: "Me estoy exigiendo demasiado" },
       { id: "sin-patron", label: "Solo necesito bajar el ritmo" },
     ],
@@ -73,10 +82,14 @@ export const emotionalRoutes: CalmRoute[] = [
   {
     id: "tristeza",
     label: "Tristeza",
-    description: "Hay un peso emocional, vacío o ganas de aislarme.",
+    description: "La tristeza puede sentirse en mis pensamientos, mi cuerpo o mi día a día.",
+    patternTitle: "¿Cómo estás viviendo lo que sientes?",
+    patternDescription: "La tristeza puede sentirse de muchas formas. Elige lo que más identifique a lo que estás sintiendo.",
     patterns: [
       { id: "soledad", label: "Me siento solo/a" },
-      { id: "cuerpo", label: "Lo siento como un peso en el cuerpo" },
+      { id: "cuerpo", label: "Siento un peso en el cuerpo" },
+      { id: "sin-patron", label: "He perdido el interés en cosas que antes disfrutaba" },
+      { id: "sin-patron", label: "Siento que todo me cuesta más de lo normal" },
       { id: "pensamiento", label: "No dejo de pensar en lo que pasó" },
       { id: "sin-patron", label: "No sé qué necesito" },
     ],
@@ -84,12 +97,16 @@ export const emotionalRoutes: CalmRoute[] = [
   {
     id: "miedo",
     label: "Miedo",
-    description: "Algo me preocupa o siento que necesito protegerme.",
+    description: "Siento miedo o percibo una amenaza de la que necesito protegerme.",
+    patternTitle: "¿Cómo se siente el miedo en ti?",
+    patternDescription: "Observa qué está pasando en tu mente y en tu cuerpo, sin exigirte encontrar respuestas.",
     patterns: [
       { id: "anticipacion", label: "Estoy anticipando lo peor" },
+      { id: "anticipacion", label: "Siento que algo malo va a pasar" },
       { id: "cuerpo", label: "Mi cuerpo está en alerta" },
-      { id: "pensamiento", label: "No puedo dejar de imaginarlo" },
-      { id: "sin-patron", label: "Solo necesito sentirme más presente" },
+      { id: "pensamiento", label: "No puedo dejar de imaginar que algo malo va a pasar" },
+      { id: "sin-patron", label: "Siento que necesito escapar de lo que estoy sintiendo" },
+      { id: "anticipacion", label: "Me cuesta sentirme tranquilo/a aunque sé que estoy a salvo" },
     ],
   },
   {

@@ -4,7 +4,6 @@ import type { Page } from "../../../types/navigation";
 
 import SidebarLogo from "./SidebarLogo";
 import SidebarMenu from "./SidebarMenu";
-import SidebarRefuge from "./SidebarRefuge";
 import SidebarPlayer from "./SidebarPlayer";
 import SidebarFooter from "./SidebarFooter";
 
@@ -44,10 +43,7 @@ export default function Sidebar({
           setPage={setPage}
         />
       </div>
-
-      <div className="mt-7 px-[18px]">
-        <SidebarRefuge />
-      </div>
+      <div className="mt-7 px-[18px]"></div>
 
       <div className="mt-5 px-[18px]">
         <SidebarPlayer />

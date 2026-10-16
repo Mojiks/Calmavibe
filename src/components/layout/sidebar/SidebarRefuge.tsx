@@ -2,8 +2,9 @@ import {
   MoonStar,
   ArrowRight,
 } from "lucide-react";
+import type { Page } from "../../../types/navigation";
 
-export default function SidebarRefuge() {
+export default function SidebarRefuge({ setPage }: { setPage: (page: Page) => void }) {
   return (
     <section
       className="
@@ -125,6 +126,9 @@ export default function SidebarRefuge() {
 
         <button
           type="button"
+          onClick={() => setPage("nomesientobien")}
+          aria-label="Abrir No me siento bien"
+          title="Abrir No me siento bien"
           className="
             flex
             h-9
